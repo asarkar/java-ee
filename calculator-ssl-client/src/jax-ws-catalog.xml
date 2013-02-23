@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	prefer="system">
+	<system
+		systemId="https://abhijits-macbook-pro.local:8181/calculator-ssl/CalculatorWS?wsdl"
+		uri="wsdl/CalculatorWS.wsdl" />
+	<system
+		systemId="https://abhijits-macbook-pro.local:8181/calculator-ssl/CalculatorWS?xsd=1"
+		uri="wsdl/CalculatorWS.xsd" />
+</catalog>

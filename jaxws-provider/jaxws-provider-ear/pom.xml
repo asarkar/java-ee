@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>jaxws-provider</artifactId>
+		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>jaxws-provider-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<name>jaxws-provider-ear</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<encoding>${sourceEncoding}</encoding>
+					<modules>
+						<ejbModule>
+							<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+							<artifactId>jaxws-provider-ejb</artifactId>
+						</ejbModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+			<artifactId>jaxws-provider-ejb</artifactId>
+			<version>1.0</version>
+			<type>ejb</type>
+		</dependency>
+	</dependencies>
+</project>

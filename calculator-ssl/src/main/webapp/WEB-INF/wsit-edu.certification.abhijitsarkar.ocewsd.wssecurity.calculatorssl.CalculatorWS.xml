@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ <definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="CalculatorWS"
+	targetNamespace="http://calculatorssl.wssecurity.ocewsd.abhijitsarkar.certification.edu/"
+	xmlns:tns="http://calculatorssl.wssecurity.ocewsd.abhijitsarkar.certification.edu/"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsp1="http://www.w3.org/ns/ws-policy"
+	xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service"
+	xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service"
+	xmlns:wsaw="http://www.w3.org/2005/08/addressing" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+	xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy">
+    <message name="add"/>
+    <message name="addResponse"/>
+    <portType name="CalculatorWS">
+        <operation name="add">
+            <input message="tns:add"/>
+            <output message="tns:addResponse"/>
+        </operation>
+    </portType>
+    <binding name="CalculatorWSPortBinding" type="tns:CalculatorWS">
+        <wsp:PolicyReference URI="#CalculatorWSPortBindingPolicy"/>
+        <operation name="add">
+            <input></input>
+            <output></output>
+        </operation>
+    </binding>
+    <service name="CalculatorWS">
+        <port name="CalculatorWSPort" binding="tns:CalculatorWSPortBinding"/>
+    </service>
+    <wsp:Policy wsu:Id="CalculatorWSPortBindingPolicy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="false"/>
+                <sp:TransportBinding>
+                    <wsp:Policy>
+                        <sp:TransportToken>
+                            <wsp:Policy>
+                                <sp:HttpsToken RequireClientCertificate="false"/>
+                            </wsp:Policy>
+                        </sp:TransportToken>
+                        <sp:Layout>
+                            <wsp:Policy>
+                                <sp:Lax/>
+                            </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp/>
+                        <sp:AlgorithmSuite>
+                            <wsp:Policy>
+                                <sp:Basic128/>
+                            </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                    </wsp:Policy>
+                </sp:TransportBinding>
+                <sp:Wss10/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+</definitions>

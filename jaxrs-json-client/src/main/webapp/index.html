@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JAX-RS JSON Client</title>
+</head>
+<body>
+	<form>
+		<table>
+			<tr>
+				<td>First number:</td>
+				<td><input type="text" name="arg0"></td>
+			</tr>
+			<tr>
+				<td>Second number:</td>
+				<td><input type="text" name="arg1"></td>
+			</tr>
+			<tr>
+				<td>HTTP Method:</td>
+				<td><input type="radio" name="method" value="GET" checked="checked" />GET <input
+					type="radio" name="method" value="POST" />POST </td>
+			</tr>
+			<tr>
+				<td><button type="button" name="add">Add</button></td>
+			</tr>
+			<tr>
+				<td>Sum:</td>
+				<td><input type="text" name="sum" readonly="readonly"></td>
+			</tr>
+			<tr>
+				<td>Server Response:</td>
+				<td><textarea name="response" rows="10" cols="50"
+						readonly="readonly"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	
+	<script>
+	$(document).ready(function(){
+		$('button[name=add]').click(function() {
+			
+			var params = {
+					arg0 : $('input[name=arg0]').val(),
+					arg1 : $('input[name=arg1]').val()
+			};
+				
+			var accepts = 'json';
+			var httpMethod = $(":checked").val();
+			if (httpMethod == 'POST') {
+				accepts = 'xml';
+			}
+				
+			var request = $.ajax({
+				  url: 'http://abhijit-lenovo:8080/jaxrs-json/calc',
+				  data: params,
+				  dataType: accepts,
+				  type: httpMethod,
+			});
+			
+			request.done(function(data, textStatus, jqXHR) {
+				if (httpMethod == 'GET') {
+					$('textarea[name=response]').val(JSON.stringify(data));
+					$('input[name=sum]').val(data.sum);
+				} else {
+					$('textarea[name=response]').val(jqXHR.responseText);
+					$('input[name=sum]').val($(jqXHR.responseText).find("sum").text());
+				}				
+			});
+			
+			request.fail(function(jqXHR, textStatus, errorThrown) {
+				$('textarea[name=response]').val("Request failed: " + textStatus);
+			});
+		});	
+	});
+</script>
+</body>
+</html>

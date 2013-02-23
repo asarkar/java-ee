@@ -1,0 +1,12 @@
+<webservices xmlns="http://www.jboss.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"
+	xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss_webservices_1_0.xsd">
+	<context-root>/jaxws-ejb-endpoint</context-root>
+	<port-component>
+		<ejb-name>TimeService</ejb-name>
+		<port-component-uri>/TimeService</port-component-uri>
+		<auth-method>BASIC</auth-method>
+		<transport-guarantee>NONE</transport-guarantee>
+		<secure-wsdl-access>false</secure-wsdl-access>
+	</port-component>
+</webservices>

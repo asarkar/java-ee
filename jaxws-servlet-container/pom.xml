@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>jaxws-parent</artifactId>
+		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+		<version>1.0</version>
+		<relativePath>../jaxws-parent</relativePath>
+	</parent>
+
+	<artifactId>jaxws-servlet-container</artifactId>
+	<packaging>war</packaging>
+
+	<name>jaxws-servlet-container</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+			<artifactId>jaxws-utility</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.parsers</groupId>
+			<artifactId>jaxp-ri</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<!-- The webservices.xml and web.xml had to be excluded 
+					because otherwise GlassFish was treating the endpoint 
+					as JAXRPC and failing to deploy it.
+					http://java.net/jira/browse/GLASSFISH-19366 -->
+					<warSourceExcludes>WEB-INF/web*.xml</warSourceExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

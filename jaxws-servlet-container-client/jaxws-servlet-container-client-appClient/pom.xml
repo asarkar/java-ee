@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>jaxws-servlet-container-client</artifactId>
+		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>jaxws-servlet-container-client-appClient</artifactId>
+	<packaging>app-client</packaging>
+
+	<name>jaxws-servlet-container-client-appClient</name>
+
+	<properties>
+		<wsdlUrl>http://abhijit-lenovo:8080/jaxws-servlet-container/TimeServiceServletContainer?wsdl</wsdlUrl>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+			<artifactId>jaxws-utility</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.parsers</groupId>
+			<artifactId>jaxp-ri</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-acr-plugin</artifactId>
+				<version>1.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>edu.certification.abhijitsarkar.ocewsd.jaxws.servlet.container.client.AppClient</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jvnet.jax-ws-commons</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>none</phase>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<!-- Custom JAX-WS Binding files -->
+							<!-- Couldn't customize the package for the xsd -->
+							<bindingFiles>
+								<bindingFile>${basedir}/src/jaxws/bindings.xml</bindingFile>
+							</bindingFiles>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

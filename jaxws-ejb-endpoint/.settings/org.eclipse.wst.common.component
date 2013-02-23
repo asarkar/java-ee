@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jaxws-ejb-endpoint">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <dependent-module archiveName="jaxws-utility-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jaxws-utility/jaxws-utility">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="utility-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/utility/utility">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/jaxws-ejb-endpoint/target/classes"/>
+        <property name="context-root" value="jaxws-ejb-endpoint"/>
+        <property name="component.inclusion.patterns" value="WEB-INF/jboss*.xml"/>
+    </wb-module>
+</project-modules>
