@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>maven-super-parent</artifactId>
+		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+		<version>1.0</version>
+		<relativePath>../maven-super-parent</relativePath>
+	</parent>
+	<artifactId>amazon-awsecommerceservice</artifactId>
+	<packaging>jar</packaging>
+
+	<name>amazon-awsecommerceservice</name>
+	<url>https://affiliate-program.amazon.com/gp/advertising/api/detail/main.html</url>
+
+	<properties>
+		<deploy.webService.wsdlUrl>http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl</deploy.webService.wsdlUrl>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
+			<artifactId>jaxws-utility</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jvnet.jax-ws-commons</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>2.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<!-- Relative to src/wsdl dir -->
+							<wsdlFiles>
+								<wsdlFile>AWSECommerceService.wsdl</wsdlFile>
+							</wsdlFiles>
+						</configuration>
+						<!-- <phase>generate-sources</phase> -->
+						<phase>none</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
+					<keep>true</keep>
+					<verbose>true</verbose>
+					<target>2.2</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.jvnet.jax-ws-commons
+										</groupId>
+										<artifactId>
+											jaxws-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2,)
+										</versionRange>
+										<goals>
+											<goal>wsimport</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
