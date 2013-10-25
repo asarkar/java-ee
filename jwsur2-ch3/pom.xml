@@ -6,10 +6,10 @@
 		<artifactId>jwsur2-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>ch1</artifactId>
+	<artifactId>ch3</artifactId>
 	<packaging>war</packaging>
 	<name>ch1</name>
-	<description>Java Web Services: Up and Running, 2e, chapter 1, practice code</description>
+	<description>Java Web Services: Up and Running, 2e, chapter 3, practice code</description>
 
 	<build>
 		<plugins>
@@ -43,6 +43,15 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<!-- jackson-dataformat-xml works better with woodstox -->
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>woodstox-core-asl</artifactId>
 		</dependency>
 	</dependencies>
 
