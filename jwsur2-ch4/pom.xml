@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.mkalin.jwsur2</groupId>
+		<artifactId>jwsur2-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>ch4</artifactId>
+	<packaging>war</packaging>
+	<name>ch1</name>
+	<description>Java Web Services: Up and Running, 2e, chapter 4, practice code</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+			<artifactId>jaxws-util</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>wsimport</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jvnet.jax-ws-commons</groupId>
+						<artifactId>jaxws-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>wsimport1</id>
+								<configuration>
+									<packageName>com.github.mkalin.jwsur2.ch4.rand.client.generated</packageName>
+									<wsdlUrls>
+										<wsdlUrl>http://localhost:8080/ch4/rand?wsdl</wsdlUrl>
+									</wsdlUrls>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
