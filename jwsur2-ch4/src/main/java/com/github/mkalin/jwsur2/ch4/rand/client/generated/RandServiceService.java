@@ -4,7 +4,6 @@ package com.github.mkalin.jwsur2.ch4.rand.client.generated;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
-
 import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -19,8 +18,8 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "RandServiceService", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", wsdlLocation = "http://localhost:8080/ch4/rand?wsdl")
-@HandlerChain(file="handler-chain.xml")
+@WebServiceClient(name = "RandServiceService", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", wsdlLocation = "file:/Users/Abhijit/Repositories/git/ocewsd/jwsur2-ch4/src/main/resources/wsdl/rand.wsdl")
+@HandlerChain(file = "RandServiceService_handler.xml")
 public class RandServiceService
     extends Service
 {
@@ -33,9 +32,9 @@ public class RandServiceService
         try {
             URL baseUrl;
             baseUrl = com.github.mkalin.jwsur2.ch4.rand.client.generated.RandServiceService.class.getResource(".");
-            url = new URL(baseUrl, "http://localhost:8080/ch4/rand?wsdl");
+            url = new URL(baseUrl, "file:/Users/Abhijit/Repositories/git/ocewsd/jwsur2-ch4/src/main/resources/wsdl/rand.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://localhost:8080/ch4/rand?wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'file:/Users/Abhijit/Repositories/git/ocewsd/jwsur2-ch4/src/main/resources/wsdl/rand.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         RANDSERVICESERVICE_WSDL_LOCATION = url;

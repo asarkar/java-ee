@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema
+	xmlns:tns="http://abhijitsarkar.name/learning/webservices/jaxws/calculator/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+	targetNamespace="http://abhijitsarkar.name/learning/webservices/jaxws/calculator/">
+
+	<xs:element name="addRequest" type="tns:addRequest" />
+
+	<xs:element name="addResponse" type="tns:addResponse" />
+
+	<xs:element name="subtractRequest" type="tns:subtractRequest" />
+
+	<xs:element name="subtractResponse" type="tns:subtractResponse" />
+
+	<xs:complexType name="addRequest">
+		<xs:sequence>
+			<xs:element name="param1" type="xs:float" />
+			<xs:element name="param2" type="xs:float" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="addResponse">
+		<xs:sequence>
+			<xs:element name="result" type="xs:float" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="subtractRequest">
+		<xs:sequence>
+			<xs:element name="param1" type="xs:float" />
+			<xs:element name="param2" type="xs:float" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="subtractResponse">
+		<xs:sequence>
+			<xs:element name="result" type="xs:float" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

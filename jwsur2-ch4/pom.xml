@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>ch4</artifactId>
 	<packaging>war</packaging>
-	<name>ch1</name>
+	<name>ch4</name>
 	<description>Java Web Services: Up and Running, 2e, chapter 4, practice code</description>
 
 	<build>
@@ -41,7 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
-			<artifactId>jaxws-util</artifactId>
+			<artifactId>jaxws-handlers</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -56,11 +56,25 @@
 						<executions>
 							<execution>
 								<id>wsimport1</id>
+								<goals>
+									<goal>wsimport</goal>
+								</goals>
+								<phase>generate-sources</phase>
 								<configuration>
+									<bindingDirectory>src/main/resources/jaxws</bindingDirectory>
+									<bindingFiles>
+										<bindingFile>jaxws-bindings.xml</bindingFile>
+									</bindingFiles>
+									<!-- It turns out that the generated handler file is placed deep 
+										in the output dir; this puts that in the same place as the generated source -->
+									<destDir>${project.build.sourceDirectory}</destDir>
+									<!-- Turn off generated source compilation; Maven will do it anyway -->
+									<xnocompile>true</xnocompile>
 									<packageName>com.github.mkalin.jwsur2.ch4.rand.client.generated</packageName>
-									<wsdlUrls>
-										<wsdlUrl>http://localhost:8080/ch4/rand?wsdl</wsdlUrl>
-									</wsdlUrls>
+									<wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
+									<wsdlFiles>
+										<wsdlFile>rand.wsdl</wsdlFile>
+									</wsdlFiles>
 								</configuration>
 							</execution>
 						</executions>

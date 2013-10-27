@@ -99,7 +99,7 @@
 			</dependency>
 			<dependency>
 				<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
-				<artifactId>jaxws-util</artifactId>
+				<artifactId>jaxws-handlers</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
@@ -128,21 +128,11 @@
 					<groupId>org.jvnet.jax-ws-commons</groupId>
 					<artifactId>jaxws-maven-plugin</artifactId>
 					<version>2.3</version>
-					<executions>
-						<execution>
-							<id>wsimport-from-jdk</id>
-							<goals>
-								<goal>wsimport</goal>
-							</goals>
-							<phase>generate-sources</phase>
-							<inherited>true</inherited>
-							<configuration>
-								<executable>${wsimport.exec}</executable>
-								<sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
-								<verbose>true</verbose>
-							</configuration>
-						</execution>
-					</executions>
+					<configuration>
+						<executable>${wsimport.exec}</executable>
+						<sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
+						<verbose>true</verbose>
+					</configuration>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
@@ -222,7 +212,6 @@
 				<jetty.jvmArgs>-ea -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
 			</properties>
 		</profile>
-
 		<profile>
 			<id>jetty</id>
 			<activation>
@@ -232,7 +221,6 @@
 				<jetty.jvmArgs>-ea</jetty.jvmArgs>
 			</properties>
 		</profile>
-
 		<profile>
 			<id>osx</id>
 			<activation>
