@@ -13,6 +13,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Calculator</servlet-name>
-    <url-pattern>/calculator</url-pattern>
+    <url-pattern>/calculator-cf</url-pattern>
   </servlet-mapping>
 </web-app>

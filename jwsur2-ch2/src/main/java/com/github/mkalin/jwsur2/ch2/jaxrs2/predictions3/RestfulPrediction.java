@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+//Jetty Maven plugin seems to ignore this
 @ApplicationPath("/resourcesP")
 public class RestfulPrediction extends Application {
 	@Override

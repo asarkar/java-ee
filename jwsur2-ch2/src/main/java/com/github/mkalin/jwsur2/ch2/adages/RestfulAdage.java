@@ -8,6 +8,8 @@ import javax.ws.rs.core.Application;
 
 //The Application class's name should be unique if multiple
 //Applications are to be deployed into the same servlet container.
+
+// Jetty Maven plugin seems to ignore this
 @ApplicationPath("/resourcesA")
 public class RestfulAdage extends Application {
 	@Override

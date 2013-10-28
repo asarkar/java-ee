@@ -2,6 +2,6 @@
 <endpoints version="2.0"
 	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
 	<endpoint
-		implementation="name.abhijitsarkar.learning.webservices.jaxws.calculator.CalculatorImpl"
-		name="Calculator" url-pattern="/calculator" />
+		implementation="name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.CalculatorImpl"
+		name="Calculator" url-pattern="/calculator-cf" />
 </endpoints>

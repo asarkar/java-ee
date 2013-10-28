@@ -1,54 +1,94 @@
+<!-- <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> 
+	<modelVersion>4.0.0</modelVersion> <parent> <artifactId>maven-super-parent</artifactId> 
+	<groupId>edu.certification.abhijitsarkar.ocewsd</groupId> <version>1.0</version> 
+	<relativePath>../maven-super-parent</relativePath> </parent> <artifactId>jaxws-parent</artifactId> 
+	<packaging>pom</packaging> <name>jaxws-parent</name> <description>Maven parent 
+	project for all JAX-WS projects</description> <dependencies> <dependency> 
+	<groupId>edu.certification.abhijitsarkar.ocewsd</groupId> <artifactId>utility</artifactId> 
+	<version>1.0</version> </dependency> </dependencies> <dependencyManagement> 
+	<dependencies> <dependency> <groupId>javax</groupId> <artifactId>javaee-api</artifactId> 
+	<version>6.0</version> <scope>provided</scope> </dependency> <dependency> 
+	<groupId>javax</groupId> <artifactId>javaee-web-api</artifactId> <version>6.0</version> 
+	<scope>provided</scope> </dependency> <dependency> <groupId>com.sun.xml.ws</groupId> 
+	<artifactId>jaxws-rt</artifactId> <version>2.2.7</version> </dependency> 
+	<dependency> <groupId>com.sun.xml.parsers</groupId> <artifactId>jaxp-ri</artifactId> 
+	<version>1.4.5</version> <scope>runtime</scope> </dependency> <dependency> 
+	<groupId>edu.certification.abhijitsarkar.ocewsd</groupId> <artifactId>jaxws-utility</artifactId> 
+	<version>1.0</version> </dependency> </dependencies> </dependencyManagement> 
+	<build> <pluginManagement> <plugins> <plugin> <groupId>org.jvnet.jax-ws-commons</groupId> 
+	<artifactId>jaxws-maven-plugin</artifactId> <version>2.2</version> <configuration> 
+	<wsdlUrls> <wsdlUrl>${wsdlUrl}</wsdlUrl> </wsdlUrls> <sourceDestDir>${project.build.sourceDirectory}</sourceDestDir> 
+	<keep>true</keep> <verbose>true</verbose> <target>2.2</target> <encoding>${sourceEncoding}</encoding> 
+	</configuration> </plugin> This plugin's configuration is used to store Eclipse 
+	m2e settings only. It has no influence on the Maven build itself. <plugin> 
+	<groupId>org.eclipse.m2e</groupId> <artifactId>lifecycle-mapping</artifactId> 
+	<version>1.0.0</version> <configuration> <lifecycleMappingMetadata> <pluginExecutions> 
+	<pluginExecution> <pluginExecutionFilter> <groupId> org.jvnet.jax-ws-commons 
+	</groupId> <artifactId> jaxws-maven-plugin </artifactId> <versionRange> [2.2,) 
+	</versionRange> <goals> <goal>wsimport</goal> </goals> </pluginExecutionFilter> 
+	<action> <ignore></ignore> </action> </pluginExecution> </pluginExecutions> 
+	</lifecycleMappingMetadata> </configuration> </plugin> </plugins> </pluginManagement> 
+	<plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+	</plugin> </plugins> </build> <profiles> <profile> <id>glassfish</id> <build> 
+	<plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+	<configuration> <failOnMissingWebXml>false</failOnMissingWebXml> <warSourceIncludes> 
+	WEB-INF/glassfish*.xml </warSourceIncludes> </configuration> </plugin> </plugins> 
+	</build> </profile> <profile> <id>jboss</id> <dependencies> <dependency> 
+	<groupId>org.jboss.arquillian</groupId> <artifactId>arquillian-bom</artifactId> 
+	<version>1.0.0.Final</version> <type>pom</type> <scope>test</scope> </dependency> 
+	<dependency> <groupId>org.jboss.arquillian.junit</groupId> <artifactId>arquillian-junit-container</artifactId> 
+	<version>1.0.0.Final</version> <scope>test</scope> </dependency> <dependency> 
+	<groupId>org.jboss.as</groupId> <artifactId> jboss-as-arquillian-container-remote 
+	</artifactId> <version>7.1.1.Final</version> <scope>test</scope> </dependency> 
+	<dependency> <groupId>org.jboss.shrinkwrap.resolver</groupId> <artifactId>shrinkwrap-resolver-impl-maven</artifactId> 
+	<version>2.0.0-alpha-1</version> <scope>test</scope> </dependency> <dependency> 
+	<groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-web-6.0</artifactId> 
+	<version>3.0.0.Final</version> <type>pom</type> <scope>provided</scope> </dependency> 
+	</dependencies> <build> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+	<artifactId>maven-war-plugin</artifactId> <configuration> <failOnMissingWebXml>false</failOnMissingWebXml> 
+	<warSourceIncludes> WEB-INF/jboss*.xml </warSourceIncludes> </configuration> 
+	</plugin> </plugins> </build> </profile> </profiles> </project> -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>maven-super-parent</artifactId>
-		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
-		<version>1.0</version>
-		<relativePath>../maven-super-parent</relativePath>
+		<groupId>name.abhijitsarkar.learning.webservices</groupId>
+		<artifactId>webservices-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
 	<artifactId>jaxws-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>jaxws-parent</name>
-	<description>Maven parent project for all JAX-WS projects</description>
+	<description>This project is intended to manage the dependencies and plugins for JAX-WS Web Services practice code</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
-			<artifactId>utility</artifactId>
-			<version>1.0</version>
-		</dependency>
-	</dependencies>
+	<properties>
+		<jaxws.version>2.2.8</jaxws.version>
+		<javaee.version>6.0</javaee.version>
+		<wsimport.exec>${java.home}/bin/wsimport</wsimport.exec>
+	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>6.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
 				<artifactId>javaee-web-api</artifactId>
-				<version>6.0</version>
+				<version>${javaee.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.ws</groupId>
 				<artifactId>jaxws-rt</artifactId>
-				<version>2.2.7</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.parsers</groupId>
-				<artifactId>jaxp-ri</artifactId>
-				<version>1.4.5</version>
+				<version>${jaxws.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
-				<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
-				<artifactId>jaxws-utility</artifactId>
-				<version>1.0</version>
+				<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+				<artifactId>jaxws-handlers</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -59,16 +99,12 @@
 				<plugin>
 					<groupId>org.jvnet.jax-ws-commons</groupId>
 					<artifactId>jaxws-maven-plugin</artifactId>
-					<version>2.2</version>
+					<version>2.3</version>
 					<configuration>
-						<wsdlUrls>
-							<wsdlUrl>${wsdlUrl}</wsdlUrl>
-						</wsdlUrls>
+						<executable>${wsimport.exec}</executable>
 						<sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
-						<keep>true</keep>
 						<verbose>true</verbose>
-						<target>2.2</target>
-						<encoding>${sourceEncoding}</encoding>
+						<target>2.0</target>
 					</configuration>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
@@ -89,7 +125,7 @@
 											jaxws-maven-plugin
 										</artifactId>
 										<versionRange>
-											[2.2,)
+											[2.3,)
 										</versionRange>
 										<goals>
 											<goal>wsimport</goal>
@@ -105,83 +141,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-			</plugin>
-		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>glassfish</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warSourceIncludes>
-								WEB-INF/glassfish*.xml
-							</warSourceIncludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>jboss</id>
-			<dependencies>
-				<!-- <dependency> -->
-				<!-- <groupId>org.jboss.arquillian</groupId> -->
-				<!-- <artifactId>arquillian-bom</artifactId> -->
-				<!-- <version>1.0.0.Final</version> -->
-				<!-- <type>pom</type> -->
-				<!-- <scope>test</scope> -->
-				<!-- </dependency> -->
-				<dependency>
-					<groupId>org.jboss.arquillian.junit</groupId>
-					<artifactId>arquillian-junit-container</artifactId>
-					<version>1.0.0.Final</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.jboss.as</groupId>
-					<artifactId>
-				jboss-as-arquillian-container-remote
-					</artifactId>
-					<version>7.1.1.Final</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.jboss.shrinkwrap.resolver</groupId>
-					<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-					<version>2.0.0-alpha-1</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.jboss.spec</groupId>
-					<artifactId>jboss-javaee-web-6.0</artifactId>
-					<version>3.0.0.Final</version>
-					<type>pom</type>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warSourceIncludes>
-								WEB-INF/jboss*.xml
-							</warSourceIncludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
+	

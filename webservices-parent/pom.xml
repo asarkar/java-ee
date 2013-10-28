@@ -12,10 +12,8 @@
 		<project.build.sourceLevel>1.6</project.build.sourceLevel>
 		<project.build.targetLevel>1.6</project.build.targetLevel>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jetty.version>8.1.13.v20130916</jetty.version>
-		<jersey.version>2.3.1</jersey.version>
-		<jaxws.version>2.2.8</jaxws.version>
 		<javaee.version>6.0</javaee.version>
+		<jetty.version>8.1.13.v20130916</jetty.version>
 	</properties>
 
 	<dependencies>
@@ -36,39 +34,20 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.glassfish.jersey.core</groupId>
-				<artifactId>jersey-server</artifactId>
-				<version>${jersey.version}</version>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.8</version>
 			</dependency>
 			<dependency>
-				<groupId>org.glassfish.jersey.containers</groupId>
-				<artifactId>jersey-container-servlet-core</artifactId>
-				<version>${jersey.version}</version>
-				<scope>runtime</scope>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.3.1</version>
 			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-				<artifactId>jersey-test-framework-provider-jdk-http</artifactId>
-				<version>${jersey.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<!-- This must be after Jersey else throws weird exception at runtime -->
 			<dependency>
 				<groupId>javax</groupId>
 				<artifactId>javaee-web-api</artifactId>
 				<version>${javaee.version}</version>
 				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.ws</groupId>
-				<artifactId>jaxws-rt</artifactId>
-				<version>${jaxws.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
-				<artifactId>jaxws-handlers</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -79,6 +58,9 @@
 				<plugin>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>2.4</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.mortbay.jetty</groupId>
@@ -90,48 +72,9 @@
 						<jvmArgs>${jetty.jvmArgs}</jvmArgs>
 						<stopPort>4001</stopPort>
 						<stopKey>stop</stopKey>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.jvnet.jax-ws-commons</groupId>
-					<artifactId>jaxws-maven-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-						<executable>${wsimport.exec}</executable>
-						<sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
-						<verbose>true</verbose>
-					</configuration>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.jvnet.jax-ws-commons
-										</groupId>
-										<artifactId>
-											jaxws-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.3,)
-										</versionRange>
-										<goals>
-											<goal>wsimport</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
+						<webAppConfig>
+							<contextPath>/${project.artifactId}</contextPath>
+						</webAppConfig>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -175,12 +118,6 @@
 
 	<profiles>
 		<profile>
-			<id>jetty-debug</id>
-			<properties>
-				<jetty.jvmArgs>-ea -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
-			</properties>
-		</profile>
-		<profile>
 			<id>jetty</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -190,16 +127,13 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>osx</id>
-			<activation>
-				<os>
-					<family>!windows</family>
-				</os>
-			</activation>
+			<id>jetty-debug</id>
 			<properties>
-				<wsimport.exec>${java.home}/bin/wsimport</wsimport.exec>
+				<jetty.jvmArgs>-ea -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
 			</properties>
 		</profile>
 	</profiles>
+
+</project>
 
 </project>
