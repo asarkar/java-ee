@@ -45,19 +45,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NextN }
-     * 
-     */
-    public NextN createNextN() {
-        return new NextN();
-    }
-
-    /**
      * Create an instance of {@link Next1 }
      * 
      */
     public Next1 createNext1() {
         return new Next1();
+    }
+
+    /**
+     * Create an instance of {@link NextN }
+     * 
+     */
+    public NextN createNextN() {
+        return new NextN();
     }
 
     /**
@@ -79,12 +79,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link MyNextNResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link NextNResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://rand.ch4.jwsur2.mkalin.github.com/", name = "nextNResponse")
-    public JAXBElement<MyNextNResponse> createNextNResponse(MyNextNResponse value) {
-        return new JAXBElement<MyNextNResponse>(_NextNResponse_QNAME, MyNextNResponse.class, null, value);
+    public JAXBElement<NextNResponse> createNextNResponse(NextNResponse value) {
+        return new JAXBElement<NextNResponse>(_NextNResponse_QNAME, NextNResponse.class, null, value);
     }
 
     /**

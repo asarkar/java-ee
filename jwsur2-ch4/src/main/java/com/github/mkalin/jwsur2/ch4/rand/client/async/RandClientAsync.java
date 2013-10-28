@@ -21,12 +21,12 @@ public class RandClientAsync {
 		System.out.println("\nmain is exiting...");
 	}
 
-	static class MyHandler implements AsyncHandler<MyNextNResponse> {
-		public void handleResponse(Response<MyNextNResponse> future) {
+	static class MyHandler implements AsyncHandler<NextNResponse> {
+		public void handleResponse(Response<NextNResponse> future) {
 			try {
 				System.out.println("\nHandler is called...");
 
-				MyNextNResponse response = future.get();
+				NextNResponse response = future.get();
 				List<Integer> nums = response.getReturn();
 				for (Integer num : nums)
 					System.out.println(num);

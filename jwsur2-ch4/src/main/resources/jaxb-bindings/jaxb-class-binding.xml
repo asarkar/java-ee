@@ -4,7 +4,7 @@
 	schemaLocation="../xsd/rand.xsd" node="/xs:schema">
 	<jaxb:bindings node="//xs:complexType[@name='nextNResponse']">
 		<jaxb:class
-			ref="com.github.mkalin.jwsur2.ch4.rand.client.async.MyNextNResponse">
+			ref="com.github.mkalin.jwsur2.ch4.rand.client.async.NextNResponse">
 			<jaxb:javadoc>
 				![CDATA[The auto-generated class comes with a
 				java.util.List property which JAXB can't

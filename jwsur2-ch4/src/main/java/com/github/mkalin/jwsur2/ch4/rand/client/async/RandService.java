@@ -63,11 +63,11 @@ public interface RandService {
      * 
      * @param parameters
      * @return
-     *     returns javax.xml.ws.Response<com.github.mkalin.jwsur2.ch4.rand.client.async.MyNextNResponse>
+     *     returns javax.xml.ws.Response<com.github.mkalin.jwsur2.ch4.rand.client.async.NextNResponse>
      */
     @WebMethod(operationName = "nextN")
     @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
-    public Response<MyNextNResponse> nextNAsync(
+    public Response<NextNResponse> nextNAsync(
         @WebParam(name = "nextN", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", partName = "parameters")
         NextN parameters);
 
@@ -84,18 +84,18 @@ public interface RandService {
         @WebParam(name = "nextN", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", partName = "parameters")
         NextN parameters,
         @WebParam(name = "nextNResponse", targetNamespace = "", partName = "asyncHandler")
-        AsyncHandler<MyNextNResponse> asyncHandler);
+        AsyncHandler<NextNResponse> asyncHandler);
 
     /**
      * 
      * @param parameters
      * @return
-     *     returns com.github.mkalin.jwsur2.ch4.rand.client.async.MyNextNResponse
+     *     returns com.github.mkalin.jwsur2.ch4.rand.client.async.NextNResponse
      */
     @WebMethod
     @WebResult(name = "nextNResponse", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", partName = "parameters")
     @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
-    public MyNextNResponse nextN(
+    public NextNResponse nextN(
         @WebParam(name = "nextN", targetNamespace = "http://rand.ch4.jwsur2.mkalin.github.com/", partName = "parameters")
         NextN parameters);
 
