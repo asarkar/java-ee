@@ -5,6 +5,10 @@ import java.util.List;
 import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.Response;
 
+import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.NextN;
+import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.RandService;
+import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.RandServiceService;
+
 public class RandClientAsync {
 	public static void main(String[] args) {
 		RandServiceService service = new RandServiceService();

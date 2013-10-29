@@ -1,5 +1,10 @@
 package name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client;
 
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client.generated.AddDefaultBareRequest;
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client.generated.AddResponse;
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client.generated.Calculator;
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client.generated.CalculatorService;
+
 public class CalculatorClient {
 	private Calculator calculator = null;
 

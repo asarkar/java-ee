@@ -1,6 +1,7 @@
 package name.abhijitsarkar.learning.webservices.jaxws.handler;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -19,7 +20,10 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-public class SOAPMessageLoggingHandler implements SOAPHandler<SOAPMessageContext> {
+public class SOAPMessageLoggingHandler implements
+		SOAPHandler<SOAPMessageContext> {
+
+	private static final Transformer transformer = newTransformer();
 
 	public boolean handleMessage(SOAPMessageContext messageContext) {
 		boolean outbound = (Boolean) messageContext
@@ -41,17 +45,12 @@ public class SOAPMessageLoggingHandler implements SOAPHandler<SOAPMessageContext
 	}
 
 	private void prettyPrint(SOAPMessage soapMessage, boolean outbound) {
+		ByteArrayOutputStream streamOut = null;
 		try {
 			Source soapEnvelope = new DOMSource(soapMessage.getSOAPPart()
 					.getEnvelope());
 
-			Transformer tf = getTransformer();
-
-			if (tf == null) {
-				return;
-			}
-
-			ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
+			streamOut = new ByteArrayOutputStream();
 			StreamResult result = new StreamResult(streamOut);
 
 			if (outbound) {
@@ -60,7 +59,7 @@ public class SOAPMessageLoggingHandler implements SOAPHandler<SOAPMessageContext
 				System.out.println("Inbound (response) SOAP message");
 			}
 
-			transform(tf, soapEnvelope, result);
+			transform(soapEnvelope, result);
 
 			System.out.println("SOAPEnvelope: "
 					+ System.getProperty("line.separator")
@@ -71,20 +70,32 @@ public class SOAPMessageLoggingHandler implements SOAPHandler<SOAPMessageContext
 
 		} catch (SOAPException e) {
 			e.printStackTrace();
+		} finally {
+			if (streamOut != null) {
+				try {
+					streamOut.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
-	private void transform(Transformer tf, Source soap, StreamResult result) {
-		initTransformer(tf);
+	private void transform(Source soap, StreamResult result) {
+		if (transformer == null) {
+			return;
+		}
+
+		initTransformer();
 
 		try {
-			tf.transform(soap, result);
+			transformer.transform(soap, result);
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private Transformer getTransformer() {
+	private static Transformer newTransformer() {
 		TransformerFactory factory = TransformerFactory.newInstance();
 		try {
 			return factory.newTransformer();
@@ -94,9 +105,10 @@ public class SOAPMessageLoggingHandler implements SOAPHandler<SOAPMessageContext
 		return null;
 	}
 
-	private void initTransformer(Transformer tf) {
-		tf.reset();
-		tf.setOutputProperty(OutputKeys.INDENT, "yes");
-		tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+	private void initTransformer() {
+		transformer.reset();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(
+				"{http://xml.apache.org/xslt}indent-amount", "2");
 	}
 }

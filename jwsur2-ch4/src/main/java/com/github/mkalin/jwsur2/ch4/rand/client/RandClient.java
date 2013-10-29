@@ -2,6 +2,9 @@ package com.github.mkalin.jwsur2.ch4.rand.client;
 
 import java.util.List;
 
+import com.github.mkalin.jwsur2.ch4.rand.client.generated.RandService;
+import com.github.mkalin.jwsur2.ch4.rand.client.generated.RandServiceService;
+
 public class RandClient {
 	public static void main(String[] args) {
 		// setup

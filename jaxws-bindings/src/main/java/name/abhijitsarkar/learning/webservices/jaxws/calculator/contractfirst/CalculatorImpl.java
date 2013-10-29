@@ -2,7 +2,11 @@ package name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.Calculator", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/calculator-cf/", serviceName = "CalculatorService", portName = "Calculator")
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.generated.AddDefaultBareRequest;
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.generated.AddResponse;
+import name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.generated.Calculator;
+
+@WebService(endpointInterface = "name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.generated.Calculator", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/calculator-cf/", serviceName = "CalculatorService", portName = "Calculator")
 public class CalculatorImpl implements Calculator {
 
 	@Override

@@ -21,6 +21,10 @@
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>name.abhijitsarkar.util.logging</groupId>
+			<artifactId>logging-util</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

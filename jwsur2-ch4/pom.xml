@@ -49,7 +49,7 @@
 						<artifactId>jaxws-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>wsimport1</id>
+								<id>wsimport-rand-client</id>
 								<goals>
 									<goal>wsimport</goal>
 								</goals>
@@ -63,8 +63,7 @@
 										in the output dir; this puts that in the resources directory -->
 									<destDir>src/main/resources</destDir>
 									<!-- Turn off generated source compilation; Maven will do it anyway -->
-									<xnocompile>true</xnocompile>
-									<packageName>com.github.mkalin.jwsur2.ch4.rand.client</packageName>
+									<packageName>com.github.mkalin.jwsur2.ch4.rand.client.generated</packageName>
 									<staleFile>${project.build.directory}/jaxws/wsimport1/stale</staleFile>
 									<wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
 									<wsdlLocation>http://localhost:8080/ch4/rand?wsdl</wsdlLocation>
@@ -76,7 +75,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>wsimport2</id>
+								<id>wsimport-rand-client-async</id>
 								<goals>
 									<goal>wsimport</goal>
 								</goals>
@@ -95,8 +94,7 @@
 										in the output dir; this puts that in the resources directory -->
 									<destDir>src/main/resources</destDir>
 									<!-- Turn off generated source compilation; Maven will do it anyway -->
-									<xnocompile>true</xnocompile>
-									<packageName>com.github.mkalin.jwsur2.ch4.rand.client.async</packageName>
+									<packageName>com.github.mkalin.jwsur2.ch4.rand.client.async.generated</packageName>
 									<staleFile>${project.build.directory}/jaxws/wsimport2/stale</staleFile>
 									<wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
 									<wsdlLocation>http://localhost:8080/ch4/rand?wsdl</wsdlLocation>
