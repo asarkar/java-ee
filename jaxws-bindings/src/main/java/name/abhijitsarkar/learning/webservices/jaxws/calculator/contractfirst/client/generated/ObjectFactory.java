@@ -37,6 +37,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddResponse }
+     * 
+     */
+    public AddResponse createAddResponse() {
+        return new AddResponse();
+    }
+
+    /**
      * Create an instance of {@link SubtractDefaultWrapped }
      * 
      */
@@ -50,14 +58,6 @@ public class ObjectFactory {
      */
     public SubtractResponse createSubtractResponse() {
         return new SubtractResponse();
-    }
-
-    /**
-     * Create an instance of {@link AddResponse }
-     * 
-     */
-    public AddResponse createAddResponse() {
-        return new AddResponse();
     }
 
     /**

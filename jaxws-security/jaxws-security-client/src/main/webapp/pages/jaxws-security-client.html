@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>JAX-WS Security</title>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+    <script>dojoConfig = {async: true, parseOnLoad: false}</script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+  </head>
+  <body class="claro">
+    <div style="padding: 0.5em 1.0em;">
+      <span style="margin: 0.5em;"><h3>JAX-WS Security Client</h3></span>
+    </div>
+    <div style="padding: 0.5em;">
+      <span id="arg1Label" style="margin: 0.5em;"></span>
+      <div id="arg1"></div>
+    </div>
+    <div style="padding: 0.5em;">
+      <span id="arg2Label" style="margin: 0.5em;"></span>
+      <div id="arg2"></div>
+    </div>
+    <div style="padding: 0.5em;">
+      <span id="clientLabel" style="margin: 0.3em;"></span>
+      <div id="clientSelect"></div>
+    </div>
+    <div style="padding: 0.5em;">
+      <div id="submitButton"></div>
+    </div>
+    
+    <div style="padding: 0.5em;">
+      <span id="outputLabel" style="margin: 0.3em; display:block;"></span>
+      <div id="outputArea">Output</div>
+    </div>
+    
+    <script>
+      require(["dojo/parser", "dijit/form/NumberTextBox", "dijit/form/Select", "dijit/form/Button", "dijit/form/SimpleTextarea", "dijit/registry",
+               "dojo/data/ObjectStore", "dojo/store/Memory", "dojo/dom-construct", "dojo/dom-style", "dojo/request", "dojo/domReady!"],
+    		function(parser, NumberTextBox, Select, Button, SimpleTextarea, registry, ObjectStore, Memory, domConstruct, domStyle, request) {
+      	  parser.parse();
+      	  
+      	  // The widget variables surprisingly go out of scope (?) once 
+      	  // startup() is called on them. Need to understand startup() better.
+      	  var arg1 = new NumberTextBox({
+            name: "arg1",
+            value: "0",
+            constraints: { min: 0, max: 99, places: 0 },
+            invalidMessage: "Whole number only",
+            rangeMessage: "Values 0 through 99 only",
+            required: "true"
+          }, "arg1");
+      	  
+      	  domConstruct.create("label", { innerHTML: 'Arg1' }, "arg1Label", "first");
+      	  
+      	  domStyle.set(arg1.domNode, {
+            width: "6em"
+          });
+      	  
+      	  arg1.startup();
+      	  
+      	  var arg2 = new NumberTextBox({
+            name: "arg2",
+            value: "0",
+            constraints: { min: 0, max: 99, places: 0 },
+            invalidMessage: "Whole number only",
+            rangeMessage: "Values 0 through 99 only",
+            required: "true"
+          }, "arg2");
+          
+          domConstruct.create("label", { innerHTML: 'Arg2' }, "arg2Label", "first");
+          
+          domStyle.set(arg2.domNode, {
+            width: "6em"
+          });
+          
+          arg2.startup();
+      	  
+      	  var store = new Memory({
+      	    data: [
+      	      { id: "ut", label: "UT Client" }
+      	    ]
+      	  });
+  
+      	  var os = new ObjectStore({ objectStore: store });
+      	  
+      	  var clientSelect = new Select({
+      	    store: os
+      	  }, "clientSelect");
+      	  
+      	  domConstruct.create("label", { innerHTML: 'Client' }, "clientLabel", "first");
+      	  
+      	  domStyle.set(clientSelect.domNode, {
+            width: "6.5em"
+          });
+      	  
+      	  clientSelect.startup();
+  
+      	  var outputArea = new SimpleTextarea({
+            id: "output",
+            value: " ", // Empty value shows up as "Output"; strange!
+            rows: 4,
+            cols: 25,
+            readOnly: true
+          }, "outputArea");
+      	  
+      	  domStyle.set(outputArea.domNode, "resize", "none");
+      	  
+      	  domConstruct.create("label", { innerHTML: 'Output' }, "outputLabel", "first");
+      	  
+      	  outputArea.startup();
+      	  
+      	  var submitButton = new Button({
+            label: "Submit",
+            type: "submit"
+      	  }, "submitButton");
+      	  
+      	  submitButton.on("click", function(evt) {
+      		  var pathSegment = clientSelect.get("value");
+      		  
+    		    request.get("calculator/" + pathSegment, {
+    				  query: {
+    	          "arg1": arg1.get("value"),
+    	          "arg2": arg2.get("value")
+    	        },
+    	        handleAs: "json",
+    	        headers: {
+    	    	    "Content-Type": "application/json"
+    	        }
+    	      }).then(
+    	    	  function(response) {
+    	    		  myOutputArea = registry.byId("output");
+                domStyle.set(myOutputArea.domNode, "color", "black");
+                myOutputArea.set("value", response.toString());
+              },
+              function(error) {
+            	  myOutputArea = registry.byId("output");
+                domStyle.set(myOutputArea.domNode, "color", "red");
+                myOutputArea.set("value", error.message);
+             });
+          });
+      	  
+      	  submitButton.startup();
+      });
+    </script>
+  </body>
+</html>

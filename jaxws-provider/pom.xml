@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<artifactId>maven-super-parent</artifactId>
-		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
-		<version>1.0</version>
-		<relativePath>../maven-super-parent</relativePath>
-	</parent>
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <artifactId>jaxws-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-	<artifactId>jaxws-provider</artifactId>
-	<packaging>pom</packaging>
+  <artifactId>jaxws-provider</artifactId>
+  <packaging>war</packaging>
 
-	<name>jaxws-provider</name>
+  <name>jaxws-provider</name>
 
-	<modules>
-		<module>jaxws-provider-ear</module>
-		<module>jaxws-provider-ejb</module>
-	</modules>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+      <artifactId>jaxws-handlers</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.fastinfoset</groupId>
+      <artifactId>FastInfoset</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

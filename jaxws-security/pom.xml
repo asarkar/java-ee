@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <artifactId>jaxws-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <groupId>name.abhijitsarkar.learning.webservices.jaxws.security</groupId>
+  <artifactId>jaxws-security</artifactId>
+  <name>jaxws-security</name>
+  <packaging>pom</packaging>
+
+  <description>
+    Various JAX-WS security practice code. Tested on glassfish-4.0-b89. 
+    The following are needed in order for the services to work:
+	  
+    <![CDATA[
+    1) Starting code-first, copy the generated WSDL and rename to wsit-<fully-qualified-service-name>.xml. 
+      Put it directly under WEB-INF.
+    2) Change the policy section as needed. In this project, a username/password validator is configured.
+      Note that username/password can be validated by configuring the container realm too.       
+    3) Deploy the service and verify that the policy is included in the generated WSDL.
+    ]]>
+    
+    c.f. http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=java+web+services:    
+	</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.glassfish.maven.plugin</groupId>
+        <artifactId>maven-glassfish-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>${jaxws.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>name.abhijitsarkar.learning.webservices.jaxrs</groupId>
+        <artifactId>jaxrs-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <modules>
+    <module>calculator-ut</module>
+    <module>jaxws-security-client</module>
+  </modules>
+</project>

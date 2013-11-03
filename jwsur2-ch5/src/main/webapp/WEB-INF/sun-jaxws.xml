@@ -8,5 +8,5 @@
 	<endpoint implementation="com.github.mkalin.jwsur2.ch5.images.mtom.SkiImageService"
 		name="MTOM" url-pattern="/images/mtom" />
 	<endpoint implementation="com.github.mkalin.jwsur2.ch5.transportlevel.Echo"
-		name="MTOM" url-pattern="/echo" />
+		name="Echo" url-pattern="/echo" />
 </endpoints>

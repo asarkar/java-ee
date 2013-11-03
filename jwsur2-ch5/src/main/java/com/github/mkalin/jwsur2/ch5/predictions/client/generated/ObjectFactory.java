@@ -44,51 +44,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Delete }
-     * 
-     */
-    public Delete createDelete() {
-        return new Delete();
-    }
-
-    /**
-     * Create an instance of {@link Create }
-     * 
-     */
-    public Create createCreate() {
-        return new Create();
-    }
-
-    /**
-     * Create an instance of {@link CreateResponse }
-     * 
-     */
-    public CreateResponse createCreateResponse() {
-        return new CreateResponse();
-    }
-
-    /**
      * Create an instance of {@link GetAllResponse }
      * 
      */
     public GetAllResponse createGetAllResponse() {
         return new GetAllResponse();
-    }
-
-    /**
-     * Create an instance of {@link Prediction }
-     * 
-     */
-    public Prediction createPrediction() {
-        return new Prediction();
-    }
-
-    /**
-     * Create an instance of {@link GetAll }
-     * 
-     */
-    public GetAll createGetAll() {
-        return new GetAll();
     }
 
     /**
@@ -100,6 +60,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetOneResponse }
+     * 
+     */
+    public GetOneResponse createGetOneResponse() {
+        return new GetOneResponse();
+    }
+
+    /**
      * Create an instance of {@link VerbosityException }
      * 
      */
@@ -108,11 +76,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetOne }
+     * Create an instance of {@link EditResponse }
      * 
      */
-    public GetOne createGetOne() {
-        return new GetOne();
+    public EditResponse createEditResponse() {
+        return new EditResponse();
     }
 
     /**
@@ -124,19 +92,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetOneResponse }
+     * Create an instance of {@link Delete }
      * 
      */
-    public GetOneResponse createGetOneResponse() {
-        return new GetOneResponse();
+    public Delete createDelete() {
+        return new Delete();
     }
 
     /**
-     * Create an instance of {@link EditResponse }
+     * Create an instance of {@link CreateResponse }
      * 
      */
-    public EditResponse createEditResponse() {
-        return new EditResponse();
+    public CreateResponse createCreateResponse() {
+        return new CreateResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetAll }
+     * 
+     */
+    public GetAll createGetAll() {
+        return new GetAll();
+    }
+
+    /**
+     * Create an instance of {@link GetOne }
+     * 
+     */
+    public GetOne createGetOne() {
+        return new GetOne();
+    }
+
+    /**
+     * Create an instance of {@link Create }
+     * 
+     */
+    public Create createCreate() {
+        return new Create();
+    }
+
+    /**
+     * Create an instance of {@link Prediction }
+     * 
+     */
+    public Prediction createPrediction() {
+        return new Prediction();
     }
 
     /**

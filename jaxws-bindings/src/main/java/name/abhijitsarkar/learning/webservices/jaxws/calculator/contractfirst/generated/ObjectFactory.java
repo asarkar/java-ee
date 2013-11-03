@@ -37,22 +37,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SubtractResponse }
-     * 
-     */
-    public SubtractResponse createSubtractResponse() {
-        return new SubtractResponse();
-    }
-
-    /**
-     * Create an instance of {@link AddDefaultBareRequest }
-     * 
-     */
-    public AddDefaultBareRequest createAddDefaultBareRequest() {
-        return new AddDefaultBareRequest();
-    }
-
-    /**
      * Create an instance of {@link AddResponse }
      * 
      */
@@ -66,6 +50,22 @@ public class ObjectFactory {
      */
     public SubtractDefaultWrapped createSubtractDefaultWrapped() {
         return new SubtractDefaultWrapped();
+    }
+
+    /**
+     * Create an instance of {@link SubtractResponse }
+     * 
+     */
+    public SubtractResponse createSubtractResponse() {
+        return new SubtractResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddDefaultBareRequest }
+     * 
+     */
+    public AddDefaultBareRequest createAddDefaultBareRequest() {
+        return new AddDefaultBareRequest();
     }
 
     /**

@@ -37,14 +37,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetImages }
-     * 
-     */
-    public GetImages createGetImages() {
-        return new GetImages();
-    }
-
-    /**
      * Create an instance of {@link GetImagesResponse }
      * 
      */
@@ -58,6 +50,14 @@ public class ObjectFactory {
      */
     public GetImage createGetImage() {
         return new GetImage();
+    }
+
+    /**
+     * Create an instance of {@link GetImages }
+     * 
+     */
+    public GetImages createGetImages() {
+        return new GetImages();
     }
 
     /**

@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class NextNResponse {
 
-    @XmlElement(name = "return", type = Integer.class)
+    @XmlElement(name = "return", nillable = true)
     protected List<Integer> _return;
 
     /**

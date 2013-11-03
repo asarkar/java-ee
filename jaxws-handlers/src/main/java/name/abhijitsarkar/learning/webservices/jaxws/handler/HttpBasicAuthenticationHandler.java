@@ -13,29 +13,31 @@ import name.abhijitsarkar.util.logging.AppLogger;
 import org.apache.log4j.Logger;
 
 public class HttpBasicAuthenticationHandler extends AbstractSOAPHandler {
+	private static final Logger logger = AppLogger
+			.getInstance(HttpBasicAuthenticationHandler.class);
+
+	private final String username;
+	private final String password;
+
+	public HttpBasicAuthenticationHandler(String username, String password) {
+		if (username == null || username.length() == 0 || password == null
+				|| password.length() == 0) {
+			logger.error("Bad credentials supplied.");
+			throw new WebServiceException("Bad credentials supplied.");
+		}
+
+		this.username = username;
+		this.password = password;
+	}
 
 	@Override
 	public boolean handleMessage(SOAPMessageContext context) {
-		super.handleMessage(context);
-
 		boolean inbound = !((Boolean) context
 				.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY));
 
 		logger.debug("Inbound: " + inbound);
 
 		if (inbound) {
-			String soapAction = getSOAPAction();
-
-			if (soapAction == null || soapAction.trim().length() == 0) {
-				logger.error("Bad request: SOAP action not found.");
-				throw new WebServiceException(
-						"Bad request: SOAP action not found.");
-			}
-
-			if (!HTTP_BASIC_AUTHENTICATION.equals(soapAction)) {
-				return true;
-			}
-
 			@SuppressWarnings("unchecked")
 			Map<String, List<String>> requestHdrs = (Map<String, List<String>>) context
 					.get(MessageContext.HTTP_REQUEST_HEADERS);
@@ -59,10 +61,10 @@ public class HttpBasicAuthenticationHandler extends AbstractSOAPHandler {
 			}
 
 			logger.debug("Username: " + username.get(0));
-			logger.debug("Password: " + password.get(0));
+			logger.debug("Password: " + maskPassword(password.get(0)));
 
-			if (!THE_ONLY_VALID_USERNAME.equals(username.get(0))
-					|| !THE_ONLY_VALID_PASSWORD.equals(password.get(0))) {
+			if (!this.username.equals(username.get(0))
+					|| !this.password.equals(password.get(0))) {
 				logger.error("Authentication error:  credentials did not match.");
 				throw new WebServiceException(
 						"Authentication error:  credentials did not match.");
@@ -72,9 +74,7 @@ public class HttpBasicAuthenticationHandler extends AbstractSOAPHandler {
 		return true;
 	}
 
-	private static final String THE_ONLY_VALID_USERNAME = "asarkar";
-	private static final String THE_ONLY_VALID_PASSWORD = "abhijitsarkar";
-	private static final String HTTP_BASIC_AUTHENTICATION = "http-basic-auth";
-	private static final Logger logger = AppLogger
-			.getInstance(HttpBasicAuthenticationHandler.class);
+	private String maskPassword(String password) {
+		return password;
+	}
 }

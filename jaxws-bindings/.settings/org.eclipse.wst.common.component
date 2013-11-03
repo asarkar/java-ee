@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="1.5.0">
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="jwsur2-ch4">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <dependent-module archiveName="jaxws-handlers-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jaxws-handlers/jaxws-handlers">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -12,6 +12,6 @@
         </dependent-module>
         <property name="java-output-path" value="/jwsur2-ch4/target/classes"/>
         <property name="context-root" value="jaxws-bindings"/>
-        <property name="component.exclusion.patterns" value="**/client/**,WEB-INF/**/wsdl/**,WEB-INF/**/xsd/**,WEB-INF/*/jaxws/**"/>
+        <property name="component.exclusion.patterns" value="WEB-INF/**/wsdl/**,WEB-INF/**/xsd/**,WEB-INF/*/jaxws-bindings/**"/>
     </wb-module>
 </project-modules>

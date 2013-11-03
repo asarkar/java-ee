@@ -37,14 +37,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NextN }
-     * 
-     */
-    public NextN createNextN() {
-        return new NextN();
-    }
-
-    /**
      * Create an instance of {@link NextNResponse }
      * 
      */
@@ -58,6 +50,14 @@ public class ObjectFactory {
      */
     public Next1 createNext1() {
         return new Next1();
+    }
+
+    /**
+     * Create an instance of {@link NextN }
+     * 
+     */
+    public NextN createNextN() {
+        return new NextN();
     }
 
     /**

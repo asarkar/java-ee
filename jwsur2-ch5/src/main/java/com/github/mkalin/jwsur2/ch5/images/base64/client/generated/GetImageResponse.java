@@ -54,7 +54,7 @@ public class GetImageResponse {
      *     byte[]
      */
     public void setReturn(byte[] value) {
-        this._return = ((byte[]) value);
+        this._return = value;
     }
 
 }

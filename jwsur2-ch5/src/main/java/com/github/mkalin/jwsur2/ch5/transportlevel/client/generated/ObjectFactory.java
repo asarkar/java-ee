@@ -35,19 +35,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Echo_Type }
-     * 
-     */
-    public Echo_Type createEcho_Type() {
-        return new Echo_Type();
-    }
-
-    /**
      * Create an instance of {@link EchoResponse }
      * 
      */
     public EchoResponse createEchoResponse() {
         return new EchoResponse();
+    }
+
+    /**
+     * Create an instance of {@link Echo_Type }
+     * 
+     */
+    public Echo_Type createEcho_Type() {
+        return new Echo_Type();
     }
 
     /**
