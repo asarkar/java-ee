@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- The name and location of the file matters - very much! Naming convention is 
-  wsit-<fully-qualified-service-name>.xml. Location is in WEB-INF -->
+<!-- If not referred to in WEB-INF/sun-jaxws.xml, the name and location of the file 
+  matters - very much! Naming convention is wsit-<fully-qualified-service-name>.xml. 
+  Location is in WEB-INF. -->
 <definitions
   xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
   xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
@@ -35,6 +36,7 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
       style="document" />
     <operation name="add">
+      <!-- Attach policy at operation level -->
       <wsp:PolicyReference URI="#UsernameTokenPolicy" />
       <soap:operation soapAction="" />
       <input>
@@ -50,6 +52,8 @@
       <soap:address location="http://localhost:8080/calculator-ut/CalculatorUTService" />
     </port>
   </service>
+  <!-- Policy declaration for username token with plain text password, sent from 
+    client to server only. Note that this is in "normal" form -->
   <wsp:Policy wsu:Id="UsernameTokenPolicy"
     xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
     <wsp:ExactlyOne>
@@ -67,7 +71,8 @@
         <wsss:ValidatorConfiguration
           wspp:visibility="private" xmlns:wsss="http://schemas.sun.com/2006/03/wss/server"
           xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy">
-          <wsss:Validator name="usernameValidator" classname="name.abhijitsarkar.learning.webservices.jaxws.security.ut.CalculatorUTPasswordValidator" />
+          <wsss:Validator name="usernameValidator"
+            classname="name.abhijitsarkar.learning.webservices.jaxws.security.ut.CalculatorUTPasswordValidator" />
         </wsss:ValidatorConfiguration>
       </wsp:All>
     </wsp:ExactlyOne>

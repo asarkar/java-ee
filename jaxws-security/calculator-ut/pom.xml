@@ -11,7 +11,21 @@
   <artifactId>calculator-ut</artifactId>
   <packaging>war</packaging>
   <name>calculator-ut</name>
-  <description>Username Token</description>
+  <description>Username Token. The following are needed in order for the services to work:
+    
+    c.f. http://www.ibm.com/developerworks/java/library/j-jws10/index.html
+    
+    <![CDATA[
+    1) Starting code-first, copy the generated WSDL and rename to wsit-<fully-qualified-service-name>.xml. 
+      Put it directly under WEB-INF.
+      Starting contract-first, create the WSDL and provide the location in WEB-INF/sun-jaxws.xml file.
+    2) Add the WSIT extensions as needed. In this project, a username/password validator is configured.
+      If a validator is not configured, the container's authentication mechanism will be used.       
+    3) Deploy the service and verify that the policy is included in the generated WSDL.
+    ]]>
+    
+    c.f. http://www.ibm.com/developerworks/java/library/j-jws10/index.html 
+  </description>
 
   <dependencies>
     <dependency>

@@ -11,23 +11,24 @@
   <packaging>war</packaging>
 
   <description>
-   JAX-WS security client code.  The following are needed in order for the client to work:
+   JAX-WS security client code.  The following are needed in order for the client to work.
+   c.f. http://www.ibm.com/developerworks/java/library/j-jws10/index.html
     
     <![CDATA[
     1) Copy the WSDL used to generate the client side code artifacts 
       and rename to <wsdl-name>.xml. It is known as the service file.
       It may be placed anywhere in the project.
     2) Change the policy section to suit the client. Note that the namespaces
-      are different from the server. In this project, a username/password validator is configured.
-      Note that username/password can be hard-coded too as shown below:
+      are different from the server. In this project, a username/password validator is configured;
+      however, username/password can be hard-coded too as shown below:
       
       <sc:CallbackHandlerConfiguration wspp:visibility="private">
       <sc:CallbackHandler default="wsitUser" name="usernameHandler"/>
       <sc:CallbackHandler default="changeit" name="passwordHandler"/>
       </sc:CallbackHandlerConfiguration>
        
-   3) Create a file called wsit-client.xml and put in a META-INF such that the
-      parent directory of META-INF is in the runtime classpath.
+   3) Create a file called wsit-client.xml and put it in a root directory that's on the classpath 
+     or in a META-INF directory such that the parent directory of META-INF is on the classpath.
     4) Reference the service file from the wsit-client.
     5) This project uses CDI for Service lookup. Thus an empty beans.xml is 
       placed under WEB-INF.
@@ -46,6 +47,7 @@
     <profile>
       <id>wsimport</id>
       <build>
+        <defaultGoal>clean generate-sources</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.jvnet.jax-ws-commons</groupId>

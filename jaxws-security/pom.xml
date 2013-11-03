@@ -15,17 +15,6 @@
 
   <description>
     Various JAX-WS security practice code. Tested on glassfish-4.0-b89. 
-    The following are needed in order for the services to work:
-	  
-    <![CDATA[
-    1) Starting code-first, copy the generated WSDL and rename to wsit-<fully-qualified-service-name>.xml. 
-      Put it directly under WEB-INF.
-    2) Change the policy section as needed. In this project, a username/password validator is configured.
-      Note that username/password can be validated by configuring the container realm too.       
-    3) Deploy the service and verify that the policy is included in the generated WSDL.
-    ]]>
-    
-    c.f. http://www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=java+web+services:    
 	</description>
 
   <build>
