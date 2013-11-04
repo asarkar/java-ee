@@ -1,5 +1,5 @@
 
-package name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated;
+package name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -33,8 +33,8 @@ public interface CalculatorUT {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "add", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated.Add")
-    @ResponseWrapper(localName = "addResponse", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated.AddResponse")
+    @RequestWrapper(localName = "add", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.Add")
+    @ResponseWrapper(localName = "addResponse", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.AddResponse")
     @Action(input = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/addRequest", output = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/addResponse")
     public int add(
         @WebParam(name = "i", targetNamespace = "")

@@ -19,8 +19,10 @@
     1) Starting code-first, copy the generated WSDL and rename to wsit-<fully-qualified-service-name>.xml. 
       Put it directly under WEB-INF.
       Starting contract-first, create the WSDL and provide the location in WEB-INF/sun-jaxws.xml file.
+      
     2) Add the WSIT extensions as needed. In this project, a username/password validator is configured.
-      If a validator is not configured, the container's authentication mechanism will be used.       
+      If a validator is not configured, the container's authentication mechanism will be used.   
+          
     3) Deploy the service and verify that the policy is included in the generated WSDL.
     ]]>
     
@@ -29,8 +31,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.sun.xml.wss</groupId>
-      <artifactId>xws-security</artifactId>
+      <groupId>org.glassfish.metro</groupId>
+      <artifactId>webservices-osgi</artifactId>
     </dependency>
   </dependencies>
 

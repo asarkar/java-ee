@@ -1,4 +1,4 @@
-package name.abhijitsarkar.learning.webservices.jaxws.security.client;
+package name.abhijitsarkar.learning.webservices.jaxws.security.client.ut;
 
 import java.io.IOException;
 

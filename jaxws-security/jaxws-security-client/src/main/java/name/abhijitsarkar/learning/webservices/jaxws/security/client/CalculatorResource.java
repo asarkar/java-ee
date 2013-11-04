@@ -12,7 +12,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
-import name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated.CalculatorUTService;
+import name.abhijitsarkar.learning.webservices.jaxws.security.client.enc.generated.CalculatorEncService;
+import name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.CalculatorUTService;
 import name.abhijitsarkar.util.logging.AppLogger;
 
 import org.apache.log4j.Logger;
@@ -33,10 +34,18 @@ public class CalculatorResource {
 	@Inject
 	private CalculatorUTService calculatorUT;
 
+	@Inject
+	private CalculatorEncService calculatorEnc;
+
 	@PostConstruct
 	public void validate() {
 		if (calculatorUT == null) {
-			logger.error("Calculcator DI failed");
+			logger.error("Calculcator UT DI failed");
+			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+		}
+
+		if (calculatorEnc == null) {
+			logger.error("Calculcator Enc DI failed");
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -45,10 +54,24 @@ public class CalculatorResource {
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public int add(@QueryParam(value = "arg1") int i,
+	public int addUsingCalculatorUT(@QueryParam(value = "arg1") int i,
 			@QueryParam(value = "arg2") int j) {
 
 		int sum = calculatorUT.getCalculatorUT().add(i, j);
+
+		logger.info("Sum: " + sum);
+
+		return sum;
+	}
+
+	@Path("enc")
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public int addUsingCalculatorEnc(@QueryParam(value = "arg1") int i,
+			@QueryParam(value = "arg2") int j) {
+
+		int sum = calculatorEnc.getCalculatorEnc().add(i, j);
 
 		logger.info("Sum: " + sum);
 

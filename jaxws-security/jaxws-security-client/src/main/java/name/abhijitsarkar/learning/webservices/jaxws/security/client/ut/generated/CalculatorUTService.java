@@ -1,5 +1,5 @@
 
-package name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated;
+package name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated;
 
 import java.net.MalformedURLException;
 import java.net.URL;

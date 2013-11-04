@@ -25,9 +25,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @WebServiceProvider(portName = "JAXWSProvider", serviceName = "JAXWSProviderService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/provider/")
+// The SOAPMessage, minus attachments. Default mode is PAYLOAD in which the
+// Provider only has access to the message payload
 @ServiceMode(Service.Mode.MESSAGE)
 @BindingType(SOAPBinding.SOAP11HTTP_BINDING)
 @HandlerChain(file = "jaxws-handler-chains.xml")
+// A Provider can access the whole message by using generic type SOAPMessage
 public class JAXWSProviderService implements Provider<Source> {
 
 	@Override

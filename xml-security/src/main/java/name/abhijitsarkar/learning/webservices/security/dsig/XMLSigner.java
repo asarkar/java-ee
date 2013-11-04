@@ -19,9 +19,8 @@ public class XMLSigner {
 				.getResource("/" + KEYSTORE).getPath(), STORE_PASSWORD,
 				KEY_PASSWORD, ALIAS);
 
-		SignatureManager sigMgr = new SignatureManager(keyPair,
-				XMLSigner.class.getResource("/" + CERTIFICATE).getPath(),
-				referenceURI);
+		SignatureManager sigMgr = new SignatureManager(keyPair, XMLSigner.class
+				.getResource("/" + CERTIFICATE).getPath(), referenceURI);
 
 		sigMgr.sign(ipFile, opFile);
 
@@ -34,9 +33,8 @@ public class XMLSigner {
 				.getResource("/" + KEYSTORE).getPath(), STORE_PASSWORD,
 				KEY_PASSWORD, ALIAS);
 
-		SignatureManager sigMan = new SignatureManager(keyPair,
-				XMLSigner.class.getResource("/" + CERTIFICATE).getPath(),
-				null);
+		SignatureManager sigMan = new SignatureManager(keyPair, XMLSigner.class
+				.getResource("/" + CERTIFICATE).getPath(), null);
 
 		sigMan.validate(signedFile);
 	}

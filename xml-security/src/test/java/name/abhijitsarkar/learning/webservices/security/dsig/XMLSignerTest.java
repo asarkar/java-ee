@@ -2,9 +2,7 @@ package name.abhijitsarkar.learning.webservices.security.dsig;
 
 import java.io.File;
 
-import junit.framework.Assert;
-import name.abhijitsarkar.learning.webservices.security.dsig.XMLSigner;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class XMLSignerTest {

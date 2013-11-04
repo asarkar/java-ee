@@ -26,7 +26,7 @@ public class XMLEncryptor {
 
 	public void decrypt(String inputFile) throws Exception {
 		File ipFile = new File(inputFile);
-		
+
 		SecurityUtil.print(ipFile);
 
 		EncryptionManager encMgr = new EncryptionManager(

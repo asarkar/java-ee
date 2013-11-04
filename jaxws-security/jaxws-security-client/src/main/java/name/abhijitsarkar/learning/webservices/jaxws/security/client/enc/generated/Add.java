@@ -1,5 +1,5 @@
 
-package name.abhijitsarkar.learning.webservices.jaxws.security.ut.client.generated;
+package name.abhijitsarkar.learning.webservices.jaxws.security.client.enc.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
