@@ -1,1 +1,1 @@
-Java EE practice programs
+Java EE practice code
