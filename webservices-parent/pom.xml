@@ -68,25 +68,23 @@
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
         <configuration>
-          <executions>
-            <execution>
-              <id>validate</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireJavaVersion>
-                    <version>[7.0,]</version>
-                  </requireJavaVersion>
-                  <requireMavenVersion>
-                    <version>[3.0,]</version>
-                  </requireMavenVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
+          <rules>
+            <requireJavaVersion>
+              <version>[1.7,)</version>
+            </requireJavaVersion>
+            <requireMavenVersion>
+              <version>[3.0,)</version>
+            </requireMavenVersion>
+          </rules>
         </configuration>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
@@ -134,6 +132,11 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${jetty.version}</version>
+          <configuration>
+            <webAppConfig>
+              <contextPath>/${project.artifactId}</contextPath>
+            </webAppConfig>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.glassfish.maven.plugin</groupId>
@@ -188,23 +191,6 @@
 
   <profiles>
     <profile>
-      <id>jetty</id>
-      <build>
-        <defaultGoal>jetty:run</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <configuration>
-              <webAppConfig>
-                <contextPath>/${project.artifactId}</contextPath>
-              </webAppConfig>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>jetty-debug</id>
       <properties>
         <jetty.jvmArgs>-ea -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
@@ -221,9 +207,6 @@
               <jvmArgs>${jetty.jvmArgs}</jvmArgs>
               <stopPort>4001</stopPort>
               <stopKey>stop</stopKey>
-              <webAppConfig>
-                <contextPath>/${project.artifactId}</contextPath>
-              </webAppConfig>
             </configuration>
           </plugin>
         </plugins>
