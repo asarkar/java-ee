@@ -54,20 +54,28 @@
   </service>
   <!-- Policy declaration for username token with plain text password, sent from 
     client to server only. Note that this is in "normal" form -->
+    
+  <!-- Excellent article: http://www.ibm.com/developerworks/java/library/j-jws4/index.html -->
   <wsp:Policy wsu:Id="UsernameTokenPolicy"
     xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SupportingTokens>
           <wsp:Policy>
+            <!-- Always include the token from initiator (client) to recipient (server) -->
             <sp:UsernameToken
               sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
               <wsp:Policy>
+                <!-- Plain text username and password; it does not need to be mentioned 
+                  for plain text -->
+                <!-- http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0.pdf -->
                 <sp:WssUsernameToken10 />
               </wsp:Policy>
             </sp:UsernameToken>
           </wsp:Policy>
         </sp:SupportingTokens>
+        <!-- The server uses a callback handler to validate the password against 
+          the username; that means the server has access to the password too -->
         <wsss:ValidatorConfiguration
           wspp:visibility="private" xmlns:wsss="http://schemas.sun.com/2006/03/wss/server"
           xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy">

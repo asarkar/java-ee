@@ -12,7 +12,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
-import name.abhijitsarkar.learning.webservices.jaxws.security.client.enc.generated.CalculatorEncService;
+import name.abhijitsarkar.learning.webservices.jaxws.security.client.ssl.generated.CalculatorSSLService;
+import name.abhijitsarkar.learning.webservices.jaxws.security.client.sym.generated.CalculatorSymService;
 import name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.CalculatorUTService;
 import name.abhijitsarkar.util.logging.AppLogger;
 
@@ -35,7 +36,10 @@ public class CalculatorResource {
 	private CalculatorUTService calculatorUT;
 
 	@Inject
-	private CalculatorEncService calculatorEnc;
+	private CalculatorSymService calculatorSym;
+	
+	@Inject
+	private CalculatorSSLService calculatorSSL;
 
 	@PostConstruct
 	public void validate() {
@@ -44,8 +48,13 @@ public class CalculatorResource {
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
 
-		if (calculatorEnc == null) {
-			logger.error("Calculcator Enc DI failed");
+		if (calculatorSym == null) {
+			logger.error("Calculcator Sym DI failed");
+			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (calculatorSSL == null) {
+			logger.error("Calculcator SSL DI failed");
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -64,14 +73,28 @@ public class CalculatorResource {
 		return sum;
 	}
 
-	@Path("enc")
+	@Path("sym")
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public int addUsingCalculatorEnc(@QueryParam(value = "arg1") int i,
+	public int addUsingCalculatorSym(@QueryParam(value = "arg1") int i,
 			@QueryParam(value = "arg2") int j) {
 
-		int sum = calculatorEnc.getCalculatorEnc().add(i, j);
+		int sum = calculatorSym.getCalculatorSym().add(i, j);
+
+		logger.info("Sum: " + sum);
+
+		return sum;
+	}
+	
+	@Path("ssl")
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public int addUsingCalculatorSSL(@QueryParam(value = "arg1") int i,
+			@QueryParam(value = "arg2") int j) {
+
+		int sum = calculatorSSL.getCalculatorSSL().add(i, j);
 
 		logger.info("Sum: " + sum);
 

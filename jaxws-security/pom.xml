@@ -17,15 +17,6 @@
     Various JAX-WS security practice code. Tested on glassfish-4.0-b89. 
 	</description>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.glassfish.maven.plugin</groupId>
-        <artifactId>maven-glassfish-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>com.sun.xml.ws</groupId>
@@ -50,5 +41,6 @@
     <module>calculator-ut</module>
     <module>calculator-enc</module>
     <module>jaxws-security-client</module>
+    <module>calculator-ssl</module>
   </modules>
 </project>
