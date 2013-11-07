@@ -14,7 +14,9 @@
    JAX-WS security client code.  The following are needed in order for the client to work.
    c.f. http://www.ibm.com/developerworks/java/library/j-jws10/index.html
     <![CDATA[
-    Username token client:
+    =====================
+    Username token client
+    =====================
     
     1) Copy the WSDL used to generate the client side code artifacts 
       and rename to <wsdl-name>.xml. It is known as the service file.
@@ -38,7 +40,9 @@
       
     6) The REST resource is annotated accordingly for CDI to do the DI.
     
-    Symmetric binding client:
+    ========================
+    Symmetric binding client
+    ========================
     
     1) Copy the WSDL used to generate the client side code artifacts 
       and rename to <wsdl-name>.xml. It is known as the service file.
@@ -48,11 +52,11 @@
     
     The steps to generate the keypair are as follows:
     
-    keytool -genkeypair -alias calcenc -keyalg RSA -dname "CN=Abhijit Sarkar,O=home,C=us" -keypass password -keystore ./calcenc-client-store.jceks -storepass password -storetype JCEKS
+    keytool -genkeypair -alias calcsym-client -keyalg RSA -dname "CN=Abhijits-MacBook-Pro.local,O=home,C=us" -keypass password -keystore ./calcsym-client-store.jceks -storepass password -storetype JCEKS
 
-    keytool -exportcert -v -alias calcenc -file ./calcenc-client.cer -keystore calcenc-client-store.jceks -storepass password -storetype JCEKS
+    keytool -exportcert -v -alias calcsym-client -file ./calcsym-client.cer -keystore calcsym-client-store.jceks -storepass password -storetype JCEKS
 
-    keytool -importcert -alias calcenc-server -file ./calcenc-server.cer -keypass password -noprompt -trustcacerts -storetype JCEKS -keystore ./calcenc-client-store.jceks -storepass password
+    keytool -importcert -alias calcsym-server -file ./calcsym-server.cer -keypass password -noprompt -trustcacerts -storetype JCEKS -keystore ./calcsym-client-store.jceks -storepass password
     
     This page provides useful information about the algorithm suites.
     https://access.redhat.com/site/documentation/en-US/JBoss_Fuse/6.0/html/Web_Services_Security_Guide/files/MsgProtect-SOAP-SpecifyAlgorithmSuite.html
@@ -69,6 +73,12 @@
       server public key to secure the symmetric key.  
       
     6) The rest of the steps are the same as the username token client.
+    
+    ==========
+    SSL Client
+    ==========
+    
+    No special steps are necessary.
     
     ]]>
   </description>
@@ -110,20 +120,39 @@
                 </configuration>
               </execution>
               <execution>
-                <id>wsimport-calculator-enc-client</id>
+                <id>wsimport-calculator-sym-client</id>
                 <goals>
                   <goal>wsimport</goal>
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.security.client.enc.generated</packageName>
+                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.security.client.sym.generated</packageName>
                   <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
                   <wsdlFiles>
-                    <wsdlFile>calculator-enc.wsdl</wsdlFile>
+                    <wsdlFile>calculator-sym.wsdl</wsdlFile>
                   </wsdlFiles>
                   <!-- This determines @WebService.wsdlLocation and @WebServiceClient.wsdlLocation 
                     value. -->
-                  <wsdlLocation>http://localhost:8080/calculator-enc/CalculatorEncService?wsdl</wsdlLocation>
+                  <wsdlLocation>http://localhost:8080/calculator-sym/CalculatorSymService?wsdl</wsdlLocation>
+                  <!-- Turn off generated source compilation; Maven will do it anyway -->
+                  <xnocompile>true</xnocompile>
+                </configuration>
+              </execution>
+              <execution>
+                <id>wsimport-calculator-ssl-client</id>
+                <goals>
+                  <goal>wsimport</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.security.client.ssl.generated</packageName>
+                  <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
+                  <wsdlFiles>
+                    <wsdlFile>calculator-ssl.wsdl</wsdlFile>
+                  </wsdlFiles>
+                  <!-- This determines @WebService.wsdlLocation and @WebServiceClient.wsdlLocation 
+                    value. -->
+                  <wsdlLocation>https://localhost:8181/calculator-ssl/CalculatorSSLService?wsdl</wsdlLocation>
                   <!-- Turn off generated source compilation; Maven will do it anyway -->
                   <xnocompile>true</xnocompile>
                 </configuration>

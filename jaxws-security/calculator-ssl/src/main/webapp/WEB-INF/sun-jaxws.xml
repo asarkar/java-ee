@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <!-- The URL pattern here seems to be independent of web.xml -->
+  <!-- The wsdl-location seems to work only if directly within WEB-INF or -->
+  <!-- a sub directory thereof -->
+  <endpoint
+    implementation="name.abhijitsarkar.learning.webservices.jaxws.security.ssl.CalculatorSSL"
+    name="CalculatorSSL" url-pattern="/CalculatorSSLService" />
+</endpoints>

@@ -11,6 +11,7 @@
   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
   targetNamespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/"
   name="CalculatorUTService">
+  <!-- See the server wsit file/WSDL for explanation of the policy elements -->
   <wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
     wsu:Id="UsernameTokenPolicy">
     <sp:SupportingTokens>

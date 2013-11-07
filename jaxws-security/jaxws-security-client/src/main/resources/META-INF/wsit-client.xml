@@ -4,6 +4,6 @@
   name="jaxws-client-config">
   <import location="../service/calculator-ut.xml"
     namespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/" />
-  <import location="../service/calculator-enc.xml"
+  <import location="../service/calculator-sym.xml"
     namespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/" />
 </definitions>

@@ -20,12 +20,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaee.version>6.0</javaee.version>
     <jetty.version>9.0.6.v20130930</jetty.version>
-    <glassfish.installDirectory>${user.home}/Applications/glassfish-4.0-b89/glassfish</glassfish.installDirectory>
+    <glassfish.installDirectory>${user.home}/Applications/glassfish-4.0-b89</glassfish.installDirectory>
+    <glassfish.domainName>domain1</glassfish.domainName>
     <glassfish.adminUser>admin</glassfish.adminUser>
     <glassfish.adminPassword>admin</glassfish.adminPassword>
     <glassfish.adminPort>4848</glassfish.adminPort>
     <glassfish.httpPort>8080</glassfish.httpPort>
-    <glassfish.httpsPort>8080</glassfish.httpsPort>
   </properties>
 
   <dependencies>
@@ -139,51 +139,50 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.glassfish.maven.plugin</groupId>
-          <artifactId>maven-glassfish-plugin</artifactId>
-          <version>2.1</version>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>1.4.5</version>
           <configuration>
-            <autoCreate>false</autoCreate>
-            <adminPassword>${glassfish.adminPassword}</adminPassword>
-            <echo>true</echo>
-            <domain>
-              <adminPort>${glassfish.adminPort}</adminPort>
-              <httpPort>${glassfish.httpPort}</httpPort>
-              <httpsPort>${glassfish.httpsPort}</httpsPort>
-              <jvmOptions>
-                <option>-version:1.7</option>
-              </jvmOptions>
-              <name>domain1</name>
-            </domain>
-            <components>
-              <component>
-                <name>${project.artifactId}</name>
-                <artifact>${project.build.directory}/${project.build.finalName}.${project.packaging}</artifact>
-              </component>
-            </components>
-            <glassfishDirectory>${glassfish.installDirectory}</glassfishDirectory>
-            <user>${glassfish.adminUser}</user>
+            <container>
+              <containerId>glassfish4x</containerId>
+              <!-- This is really the root directory; inside, there's another glassfish 
+                directory -->
+              <home>${glassfish.installDirectory}</home>
+              <type>installed</type>
+              <output>${glassfish.installDirectory}/glassfish/domains/${glassfish.domainName}/logs/server.log</output>
+              <append>true</append>
+              <!-- Fail if not started/stopped within 30 sec -->
+              <timeout>30000</timeout>
+            </container>
+            <configuration>
+              <type>existing</type>
+              <!-- This is really the domain directory; it must exist else Cargo 
+                will try to download GlassFish! Took me 2 days and looking through cargo src code 
+                to find out. Go to hell Cargo documentation team! -->
+              <home>${glassfish.installDirectory}/glassfish/domains</home>
+              <properties>
+                <cargo.glassfish.admin.port>${glassfish.adminPort}</cargo.glassfish.admin.port>
+                <cargo.servlet.port>${glassfish.httpPort}</cargo.servlet.port>
+                <cargo.glassfish.domain.name>${glassfish.domainName}</cargo.glassfish.domain.name>
+                <cargo.glassfish.domain.debug>true</cargo.glassfish.domain.debug>
+                <cargo.remote.username>${glassfish.adminUser}</cargo.remote.username>
+                <cargo.remote.password>${glassfish.adminPassword}</cargo.remote.password>
+                <cargo.java.home>${java.home}/..</cargo.java.home>
+                <cargo.logging>high</cargo.logging>
+                <!-- Maven sets java.home property to JRE but we want JDK -->
+              </properties>
+            </configuration>
+            <deployables>
+              <deployable>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>${project.artifactId}</artifactId>
+                <type>${project.packaging}</type>
+                <properties>
+                  <context>/${project.artifactId}</context>
+                </properties>
+              </deployable>
+            </deployables>
           </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>au.net.ocean.maven.plugin</groupId>
-              <artifactId>maven-plugin</artifactId>
-              <version>1.1</version>
-              <scope>compile</scope>
-              <exclusions>
-                <exclusion>
-                  <groupId>org.apache.maven</groupId>
-                  <artifactId>maven-plugin-api</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-            <dependency>
-              <groupId>org.apache.maven</groupId>
-              <artifactId>maven-plugin-api</artifactId>
-              <version>3.0.4</version>
-              <scope>compile</scope>
-            </dependency>
-          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -208,70 +207,6 @@
               <stopPort>4001</stopPort>
               <stopKey>stop</stopKey>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>glassfish-deploy</id>
-      <build>
-        <defaultGoal>integration-test</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.glassfish.maven.plugin</groupId>
-            <artifactId>maven-glassfish-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>deploy</id>
-                <goals>
-                  <goal>deploy</goal>
-                </goals>
-                <phase>integration-test</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>glassfish-redeploy</id>
-      <build>
-        <defaultGoal>integration-test</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.glassfish.maven.plugin</groupId>
-            <artifactId>maven-glassfish-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>redeploy</id>
-                <goals>
-                  <goal>undeploy</goal>
-                  <goal>deploy</goal>
-                </goals>
-                <phase>integration-test</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>glassfish-undeploy</id>
-      <build>
-        <defaultGoal>integration-test</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.glassfish.maven.plugin</groupId>
-            <artifactId>maven-glassfish-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>undeploy</id>
-                <goals>
-                  <goal>undeploy</goal>
-                </goals>
-                <phase>integration-test</phase>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
