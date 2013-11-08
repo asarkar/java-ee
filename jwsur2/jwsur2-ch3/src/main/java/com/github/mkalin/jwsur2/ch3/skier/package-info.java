@@ -1,0 +1,2 @@
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://github.com/mkalin/jwsur2/ch3/skier", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package com.github.mkalin.jwsur2.ch3.skier;
