@@ -4,12 +4,6 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="jaxws-handlers-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jaxws-handlers/jaxws-handlers">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="logging-util-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/logging-util/logging-util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/calculator-ut/target/classes"/>
         <property name="context-root" value="calculator-ut"/>
         <property name="component.exclusion.patterns" value="WEB-INF/**/wsdl/**,WEB-INF/**/xsd/**,WEB-INF/*/jaxws-bindings/**"/>
