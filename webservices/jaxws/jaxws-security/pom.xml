@@ -18,10 +18,11 @@
 	</description>
 
   <dependencies>
+    <!-- Don't package jaxws-rt, webservices-rt contains full JAX-WS implementation -->
     <dependency>
       <groupId>com.sun.xml.ws</groupId>
       <artifactId>jaxws-rt</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.metro</groupId>

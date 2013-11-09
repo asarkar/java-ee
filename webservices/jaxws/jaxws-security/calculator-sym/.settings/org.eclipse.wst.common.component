@@ -7,9 +7,6 @@
         <dependent-module archiveName="jaxws-handlers-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jaxws-handlers/jaxws-handlers">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="logging-util-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/logging-util/logging-util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/calculator-sym/target/classes"/>
         <property name="component.exclusion.patterns"/>
         <property name="component.inclusion.patterns"/>
