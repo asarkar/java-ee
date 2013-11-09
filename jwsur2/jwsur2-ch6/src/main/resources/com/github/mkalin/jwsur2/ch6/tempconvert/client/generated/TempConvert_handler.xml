@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
+  <javaee:handler-chain>
+    <javaee:handler>
+      <javaee:handler-name>
+						SOAPMessageLoggingHandler
+					</javaee:handler-name>
+      <javaee:handler-class>
+						name.abhijitsarkar.learning.webservices.jaxws.handler.SOAPMessageLoggingHandler
+					</javaee:handler-class>
+    </javaee:handler>
+  </javaee:handler-chain>
+</javaee:handler-chains>

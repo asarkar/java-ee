@@ -10,7 +10,7 @@
   <groupId>com.github.mkalin.jwsur2</groupId>
   <artifactId>ch3</artifactId>
   <packaging>war</packaging>
-  <name>ch1</name>
+  <name>ch3</name>
   <description>Java Web Services: Up and Running, 2e, chapter 3, practice code</description>
 
   <build>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. 
+  RI's version is JAX-WS RI 2.2.5-b05 . -->
+<xs:schema xmlns:tns="http://tempconvert.ch6.jwsur2.mkalin.github.com/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+  targetNamespace="http://tempconvert.ch6.jwsur2.mkalin.github.com/">
+
+  <xs:element name="c2f" type="tns:c2f" />
+
+  <xs:element name="c2fResponse" type="tns:c2fResponse" />
+
+  <xs:element name="f2c" type="tns:f2c" />
+
+  <xs:element name="f2cResponse" type="tns:f2cResponse" />
+
+  <xs:complexType name="f2c">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="f2cResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="c2f">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="c2fResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

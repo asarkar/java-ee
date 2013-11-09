@@ -1,0 +1,6 @@
+<!-- Copyright 2004 Sun Microsystems, Inc. All rights reserved. SUN PROPRIETARY/CONFIDENTIAL. 
+  Use is subject to license terms. -->
+<xwss:SecurityConfiguration xmlns:xwss="http://java.sun.com/xml/ns/xwss/config"
+  dumpMessages="true">
+  <xwss:UsernameToken digestPassword="false" />
+</xwss:SecurityConfiguration>

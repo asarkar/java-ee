@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
+  <javaee:handler-chain>
+    <javaee:handler>
+      <javaee:handler-name>
+        ServiceHandler
+      </javaee:handler-name>
+      <javaee:handler-class>com.github.mkalin.jwsur2.ch6.wssecurity.ServiceHandler</javaee:handler-class>
+    </javaee:handler>
+  </javaee:handler-chain>
+</javaee:handler-chains>
