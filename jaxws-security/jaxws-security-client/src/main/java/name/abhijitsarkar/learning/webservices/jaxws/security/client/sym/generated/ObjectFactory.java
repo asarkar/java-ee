@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AddResponse_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "addResponse");
-    private final static QName _Add_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "add");
+    private final static QName _Add_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", "add");
+    private final static QName _AddResponse_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", "addResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: name.abhijitsarkar.learning.webservices.jaxws.security.client.sym.generated
@@ -51,21 +51,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AddResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", name = "addResponse")
-    public JAXBElement<AddResponse> createAddResponse(AddResponse value) {
-        return new JAXBElement<AddResponse>(_AddResponse_QNAME, AddResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Add }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", name = "add")
+    @XmlElementDecl(namespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", name = "add")
     public JAXBElement<Add> createAdd(Add value) {
         return new JAXBElement<Add>(_Add_QNAME, Add.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", name = "addResponse")
+    public JAXBElement<AddResponse> createAddResponse(AddResponse value) {
+        return new JAXBElement<AddResponse>(_AddResponse_QNAME, AddResponse.class, null, value);
     }
 
 }

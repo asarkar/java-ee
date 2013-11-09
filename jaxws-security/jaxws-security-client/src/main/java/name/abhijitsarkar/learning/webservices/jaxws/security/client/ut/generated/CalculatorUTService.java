@@ -17,14 +17,14 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "CalculatorUTService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", wsdlLocation = "http://localhost:8080/calculator-ut/CalculatorUTService?wsdl")
+@WebServiceClient(name = "CalculatorUTService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", wsdlLocation = "http://localhost:8080/calculator-ut/CalculatorUTService?wsdl")
 public class CalculatorUTService
     extends Service
 {
 
     private final static URL CALCULATORUTSERVICE_WSDL_LOCATION;
     private final static WebServiceException CALCULATORUTSERVICE_EXCEPTION;
-    private final static QName CALCULATORUTSERVICE_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorUTService");
+    private final static QName CALCULATORUTSERVICE_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", "CalculatorUTService");
 
     static {
         URL url = null;
@@ -69,7 +69,7 @@ public class CalculatorUTService
      */
     @WebEndpoint(name = "CalculatorUT")
     public CalculatorUT getCalculatorUT() {
-        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorUT"), CalculatorUT.class);
+        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", "CalculatorUT"), CalculatorUT.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class CalculatorUTService
      */
     @WebEndpoint(name = "CalculatorUT")
     public CalculatorUT getCalculatorUT(WebServiceFeature... features) {
-        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorUT"), CalculatorUT.class, features);
+        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", "CalculatorUT"), CalculatorUT.class, features);
     }
 
     private static URL __getWsdlLocation() {

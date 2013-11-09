@@ -46,7 +46,7 @@
     </dependency>
     <dependency>
       <groupId>org.glassfish.metro</groupId>
-      <artifactId>webservices-osgi</artifactId>
+      <artifactId>webservices-rt</artifactId>
       <scope>compile</scope>
     </dependency>
   </dependencies>

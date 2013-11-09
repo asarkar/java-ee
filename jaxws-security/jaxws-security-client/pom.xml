@@ -74,12 +74,6 @@
       
     6) The rest of the steps are the same as the username token client.
     
-    ==========
-    SSL Client
-    ==========
-    
-    No special steps are necessary.
-    
     ]]>
   </description>
 
@@ -87,8 +81,40 @@
     <dependency>
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <contextHandlers>
+            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+              <war>../calculator-ut/target/calculator-ut-${project.version}.war</war>
+              <contextPath>/calculator-ut</contextPath>
+            </contextHandler>
+            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+              <war>../calculator-sym/target/calculator-sym-${project.version}.war</war>
+              <contextPath>/calculator-sym</contextPath>
+            </contextHandler>
+          </contextHandlers>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>
@@ -134,25 +160,6 @@
                   <!-- This determines @WebService.wsdlLocation and @WebServiceClient.wsdlLocation 
                     value. -->
                   <wsdlLocation>http://localhost:8080/calculator-sym/CalculatorSymService?wsdl</wsdlLocation>
-                  <!-- Turn off generated source compilation; Maven will do it anyway -->
-                  <xnocompile>true</xnocompile>
-                </configuration>
-              </execution>
-              <execution>
-                <id>wsimport-calculator-ssl-client</id>
-                <goals>
-                  <goal>wsimport</goal>
-                </goals>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.security.client.ssl.generated</packageName>
-                  <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
-                  <wsdlFiles>
-                    <wsdlFile>calculator-ssl.wsdl</wsdlFile>
-                  </wsdlFiles>
-                  <!-- This determines @WebService.wsdlLocation and @WebServiceClient.wsdlLocation 
-                    value. -->
-                  <wsdlLocation>https://localhost:8181/calculator-ssl/CalculatorSSLService?wsdl</wsdlLocation>
                   <!-- Turn off generated source compilation; Maven will do it anyway -->
                   <xnocompile>true</xnocompile>
                 </configuration>

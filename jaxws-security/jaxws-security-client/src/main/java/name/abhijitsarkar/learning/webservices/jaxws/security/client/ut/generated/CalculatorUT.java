@@ -6,7 +6,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.ws.Action;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -17,7 +16,7 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "CalculatorUT", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/")
+@WebService(name = "CalculatorUT", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/")
 @XmlSeeAlso({
     ObjectFactory.class
 })
@@ -33,9 +32,8 @@ public interface CalculatorUT {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "add", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.Add")
-    @ResponseWrapper(localName = "addResponse", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.AddResponse")
-    @Action(input = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/addRequest", output = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/addResponse")
+    @RequestWrapper(localName = "add", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.Add")
+    @ResponseWrapper(localName = "addResponse", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/", className = "name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.generated.AddResponse")
     public int add(
         @WebParam(name = "i", targetNamespace = "")
         int i,

@@ -17,14 +17,14 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "CalculatorSymService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/", wsdlLocation = "http://localhost:8080/calculator-sym/CalculatorSymService?wsdl")
+@WebServiceClient(name = "CalculatorSymService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", wsdlLocation = "http://localhost:8080/calculator-sym/CalculatorSymService?wsdl")
 public class CalculatorSymService
     extends Service
 {
 
     private final static URL CALCULATORSYMSERVICE_WSDL_LOCATION;
     private final static WebServiceException CALCULATORSYMSERVICE_EXCEPTION;
-    private final static QName CALCULATORSYMSERVICE_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorSymService");
+    private final static QName CALCULATORSYMSERVICE_QNAME = new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", "CalculatorSymService");
 
     static {
         URL url = null;
@@ -69,7 +69,7 @@ public class CalculatorSymService
      */
     @WebEndpoint(name = "CalculatorSym")
     public CalculatorSym getCalculatorSym() {
-        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorSym"), CalculatorSym.class);
+        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", "CalculatorSym"), CalculatorSym.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class CalculatorSymService
      */
     @WebEndpoint(name = "CalculatorSym")
     public CalculatorSym getCalculatorSym(WebServiceFeature... features) {
-        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/", "CalculatorSym"), CalculatorSym.class, features);
+        return super.getPort(new QName("http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/", "CalculatorSym"), CalculatorSym.class, features);
     }
 
     private static URL __getWsdlLocation() {

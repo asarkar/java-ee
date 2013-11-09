@@ -5,7 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@WebService(portName = "CalculatorSym", name = "CalculatorSym", serviceName = "CalculatorSymService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/")
+@WebService(portName = "CalculatorSym", name = "CalculatorSym", serviceName = "CalculatorSymService", targetNamespace = "http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorSym/")
 @HandlerChain(file = "jaxws-handler-chains.xml")
 public class CalculatorSym {
 

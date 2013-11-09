@@ -29,11 +29,4 @@
     c.f. http://www.ibm.com/developerworks/java/library/j-jws10/index.html 
   </description>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.glassfish.metro</groupId>
-      <artifactId>webservices-osgi</artifactId>
-    </dependency>
-  </dependencies>
-
 </project>

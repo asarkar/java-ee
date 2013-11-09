@@ -21,7 +21,12 @@
     <dependency>
       <groupId>com.sun.xml.ws</groupId>
       <artifactId>jaxws-rt</artifactId>
-      <scope>provided</scope>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.metro</groupId>
+      <artifactId>webservices-rt</artifactId>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
@@ -39,8 +44,7 @@
 
   <modules>
     <module>calculator-ut</module>
-    <module>calculator-enc</module>
+    <module>calculator-sym</module>
     <module>jaxws-security-client</module>
-    <module>calculator-ssl</module>
   </modules>
 </project>
