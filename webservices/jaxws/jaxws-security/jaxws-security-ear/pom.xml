@@ -10,6 +10,11 @@
   <artifactId>jaxws-security-ear</artifactId>
   <packaging>ear</packaging>
   <name>jaxws-security-ear</name>
+  
+  <description>
+    Run with MAVEN_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=256m" mvn ...
+    to avoid OOMError
+  </description>
 
   <dependencies>
     <dependency>
