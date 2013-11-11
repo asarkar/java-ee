@@ -88,6 +88,19 @@
       <artifactId>jersey-container-servlet-core</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>calculator-ejb</artifactId>
+      <version>${project.version}</version>
+      <type>ejb-client</type>
+    </dependency>
+    <!-- Required for EJB standalone client -->
+    <dependency>
+      <groupId>org.glassfish.main.appclient</groupId>
+      <artifactId>gf-client</artifactId>
+      <version>4.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <profiles>

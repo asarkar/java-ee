@@ -20,7 +20,8 @@
             <clientExclude>**/*EJB.class</clientExclude>
           </clientExcludes>
           <clientIncludes>
-            <clientInclude>**/*EJBSEI.class</clientInclude>
+            <clientInclude>**/*EJBLocal.class</clientInclude>
+            <clientInclude>**/*EJBRemote.class</clientInclude>
           </clientIncludes>
           <generateClient>true</generateClient>
         </configuration>

@@ -4,7 +4,7 @@ DTD GlassFish Application Server 3.1 EJB 3.1//EN"
 <glassfish-ejb-jar>
   <display-name>CalculatorEJB Application</display-name>
   <security-role-mapping>
-    <role-name>bigshot</role-name>
+    <role-name>celebrity</role-name>
     <group-name>bigshot</group-name>
   </security-role-mapping>
   <enterprise-beans>

@@ -1,34 +1,50 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<artifactId>jaxws-parent</artifactId>
-		<groupId>edu.certification.abhijitsarkar.ocewsd</groupId>
-		<version>1.0</version>
-		<relativePath>../jaxws-parent</relativePath>
-	</parent>
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <artifactId>jaxws-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-	<artifactId>jaxws-addressing</artifactId>
-	<packaging>war</packaging>
+  <artifactId>jaxws-addressing</artifactId>
+  <packaging>war</packaging>
 
-	<name>jaxws-addressing</name>
+  <name>jaxws-addressing</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+  <profiles>
+    <profile>
+      <id>wsimport</id>
+      <build>
+        <defaultGoal>clean generate-sources</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.jvnet.jax-ws-commons</groupId>
+            <artifactId>jaxws-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>wsimport-amazon-client</id>
+                <goals>
+                  <goal>wsimport</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.addressing.client.generated</packageName>
+                  <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
+                  <wsdlFiles>
+                    <wsdlFile>calculator-addr.wsdl</wsdlFile>
+                  </wsdlFiles>
+                  <wsdlLocation>http://localhost:8080/jaxws-addressing/CalculatorAddrService?wsdl</wsdlLocation>
+                  <!-- Turn off generated source compilation; Maven will do it anyway -->
+                  <xnocompile>true</xnocompile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

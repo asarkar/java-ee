@@ -14,13 +14,13 @@
         <dependent-module archiveName="jaxws-security-client-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/jaxws-security-client/jaxws-security-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jaxws-handlers-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/jaxws-handlers/jaxws-handlers">
+        <dependent-module archiveName="jaxws-handlers-0.0.1-SNAPSHOT.jar" deploy-path="/lib/" handle="module:/resource/jaxws-handlers/jaxws-handlers">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="logging-util-1.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/name/abhijitsarkar/util/logging/logging-util/1.0/logging-util-1.0.jar">
+        <dependent-module archiveName="logging-util-1.0.jar" deploy-path="/lib/" handle="module:/classpath/var/M2_REPO/name/abhijitsarkar/util/logging/logging-util/1.0/logging-util-1.0.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="log4j-1.2.17.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar">
+        <dependent-module archiveName="log4j-1.2.17.jar" deploy-path="/lib/" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
