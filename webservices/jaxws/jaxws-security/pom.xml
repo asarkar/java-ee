@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.glassfish.metro</groupId>
       <artifactId>webservices-rt</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -46,6 +46,8 @@
   <modules>
     <module>calculator-ut</module>
     <module>calculator-sym</module>
+    <module>calculator-ejb</module>
     <module>jaxws-security-client</module>
+    <module>jaxws-security-ear</module>
   </modules>
 </project>

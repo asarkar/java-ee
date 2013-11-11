@@ -8,7 +8,7 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
-public class CalculatorCallbackHandler implements CallbackHandler {
+public class CalculatorUTCallbackHandler implements CallbackHandler {
 
 	@Override
 	public void handle(Callback[] callbacks) throws IOException,

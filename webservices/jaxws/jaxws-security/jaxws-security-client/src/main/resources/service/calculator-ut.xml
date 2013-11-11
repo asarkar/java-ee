@@ -20,10 +20,10 @@
         <sc:CallbackHandlerConfiguration
           wspp:visibility="private">
           <sc:CallbackHandler
-            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorCallbackHandler"
+            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
             name="usernameHandler" />
           <sc:CallbackHandler
-            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorCallbackHandler"
+            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
             name="passwordHandler" />
         </sc:CallbackHandlerConfiguration>
       </wsp:All>

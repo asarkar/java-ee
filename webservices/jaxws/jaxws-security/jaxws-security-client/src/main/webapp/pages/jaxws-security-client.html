@@ -78,6 +78,7 @@
       	    data: [
       	      { id: "ut", label: "UT Client" },
       	      { id: "sym", label: "Sym Client" },
+      	      { id: "ejb", label: "EJB Client" },
       	    ]
       	  });
   
@@ -135,7 +136,7 @@
               function(error) {
             	  myOutputArea = registry.byId("output");
                 domStyle.set(myOutputArea.domNode, "color", "red");
-                myOutputArea.set("value", error.message);
+                myOutputArea.set("value", "An error has occured; see the server log for details.");
              });
           });
       	  
