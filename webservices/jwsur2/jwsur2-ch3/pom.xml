@@ -13,17 +13,6 @@
   <name>ch3</name>
   <description>Java Web Services: Up and Running, 2e, chapter 3, practice code</description>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>commons-codec</groupId>

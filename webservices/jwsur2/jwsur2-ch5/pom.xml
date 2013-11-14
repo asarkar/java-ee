@@ -13,17 +13,6 @@
   <name>ch5</name>
   <description>Java Web Services: Up and Running, 2e, chapter 5, practice code</description>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -33,10 +22,6 @@
       <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
       <artifactId>jaxws-handlers</artifactId>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
     </dependency>
   </dependencies>
 

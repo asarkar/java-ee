@@ -1,33 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>name.abhijitsarkar.learning.webservices</groupId>
-		<artifactId>webservices-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	
-	<groupId>com.github.mkalin.jwsur2</groupId>
-	<artifactId>ch1</artifactId>
-	<packaging>war</packaging>
-	<name>ch1</name>
-	<description>Java Web Services: Up and Running, 2e, chapter 1, practice code</description>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices</groupId>
+    <artifactId>webservices-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-	<dependencies>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-		</dependency>
-	</dependencies>
+  <groupId>com.github.mkalin.jwsur2</groupId>
+  <artifactId>ch1</artifactId>
+  <packaging>war</packaging>
+  <name>ch1</name>
+  <description>Java Web Services: Up and Running, 2e, chapter 1, practice code</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+    </dependency>
+  </dependencies>
 </project>
