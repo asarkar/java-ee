@@ -1,4 +1,4 @@
-package name.abhijitsarkar.learning.webservices.jaxrs.content.bind;
+package name.abhijitsarkar.learning.webservices.jaxrs.content.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;

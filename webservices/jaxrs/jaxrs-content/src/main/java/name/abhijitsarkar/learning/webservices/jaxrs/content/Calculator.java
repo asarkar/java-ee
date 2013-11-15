@@ -6,9 +6,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import name.abhijitsarkar.learning.webservices.jaxrs.content.bind.Sum;
+import name.abhijitsarkar.learning.webservices.jaxrs.content.domain.Sum;
 
-@Path("/calc")
+@Path("calc")
 public class Calculator {
 
 	@GET

@@ -26,6 +26,7 @@
     <glassfish.adminPassword>admin</glassfish.adminPassword>
     <glassfish.adminPort>4848</glassfish.adminPort>
     <glassfish.httpPort>8080</glassfish.httpPort>
+    <jetty.jvmArgs>-ea -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
   </properties>
 
   <dependencies>
@@ -140,6 +141,15 @@
             <webAppConfig>
               <contextPath>/${project.artifactId}</contextPath>
             </webAppConfig>
+            <!-- Following are only used in debug mode.
+                 Jetty must be started by run-forked goal in order for the JVM 
+                debug arguments to take effect -->
+            <jvmArgs>${jetty.jvmArgs}</jvmArgs>
+            <stopPort>4001</stopPort>
+            <stopKey>stop</stopKey>
+            <!-- Very important - run-forked ignores the webAppConfig and hence the 
+              context path; this is supposedly the default but does not work -->
+            <contextPath>/${project.artifactId}</contextPath>
           </configuration>
         </plugin>
         <plugin>
@@ -203,31 +213,5 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <profiles>
-    <profile>
-      <id>jetty-debug</id>
-      <properties>
-        <jetty.jvmArgs>-ea -Xdebug
-          -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4000</jetty.jvmArgs>
-      </properties>
-      <build>
-        <defaultGoal>jetty:run-forked</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <configuration>
-              <!-- Jetty must be started by run-forked goal in order for the JVM 
-                debug arguments to take effect -->
-              <jvmArgs>${jetty.jvmArgs}</jvmArgs>
-              <stopPort>4001</stopPort>
-              <stopKey>stop</stopKey>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

@@ -63,6 +63,7 @@
         <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
         <version>${jersey.version}</version>
         <scope>test</scope>
+        <optional>true</optional>
       </dependency>
     </dependencies>
   </dependencyManagement>
