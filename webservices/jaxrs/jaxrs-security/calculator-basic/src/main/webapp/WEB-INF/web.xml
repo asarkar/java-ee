@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+  <display-name>JAX-RS security practice code</display-name>
+
+  <servlet>
+    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.basic.config.CalculatorBasicApplication</servlet-name>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.basic.config.CalculatorBasicApplication</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Calculator Basic</web-resource-name>
+      <url-pattern>/*</url-pattern>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <!-- No auth-constraint means everyone is allowed access. Blank auth-constraint 
+      means no one is allowed access. * auth-constraint means only roles defined in thie 
+      web app are allowed access. -->
+    <auth-constraint>
+      <role-name>celebrity</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>file</realm-name>
+  </login-config>
+
+  <security-role>
+    <role-name>celebrity</role-name>
+  </security-role>
+
+</web-app>

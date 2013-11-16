@@ -152,27 +152,28 @@
             <contextPath>/${project.artifactId}</contextPath>
           </configuration>
         </plugin>
-        <plugin>
+        <!-- Unused but working -->
+        <!-- <plugin>
           <groupId>org.codehaus.cargo</groupId>
           <artifactId>cargo-maven2-plugin</artifactId>
           <version>1.4.5</version>
           <configuration>
             <container>
               <containerId>glassfish4x</containerId>
-              <!-- This is really the root directory; inside, there's another glassfish 
-                directory -->
+              This is really the root directory; inside, there's another glassfish 
+                directory
               <home>${glassfish.installDirectory}</home>
               <type>installed</type>
               <output>${glassfish.installDirectory}/glassfish/domains/${glassfish.domainName}/logs/server.log</output>
               <append>true</append>
-              <!-- Fail if not started/stopped within 30 sec -->
+              Fail if not started/stopped within 30 sec
               <timeout>30000</timeout>
             </container>
             <configuration>
               <type>existing</type>
-              <!-- This is really the domain directory; it must exist else Cargo 
+              This is really the domain directory; it must exist else Cargo 
                 will try to download GlassFish! Took me 2 days and looking through cargo src code 
-                to find out. Go to hell Cargo documentation team! -->
+                to find out. Go to hell Cargo documentation team!
               <home>${glassfish.installDirectory}/glassfish/domains</home>
               <properties>
                 <cargo.glassfish.admin.port>${glassfish.adminPort}</cargo.glassfish.admin.port>
@@ -183,7 +184,7 @@
                 <cargo.remote.password>${glassfish.adminPassword}</cargo.remote.password>
                 <cargo.java.home>${java.home}/..</cargo.java.home>
                 <cargo.logging>high</cargo.logging>
-                <!-- Maven sets java.home property to JRE but we want JDK -->
+                Maven sets java.home property to JRE but we want JDK
               </properties>
             </configuration>
             <deployables>
@@ -197,7 +198,8 @@
               </deployable>
             </deployables>
           </configuration>
-        </plugin>
+        </plugin> -->
+        
         <plugin>
           <groupId>org.glassfish.embedded</groupId>
           <artifactId>maven-embedded-glassfish-plugin</artifactId>

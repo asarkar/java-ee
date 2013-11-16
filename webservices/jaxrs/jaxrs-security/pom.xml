@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices.jaxrs</groupId>
+    <artifactId>jaxrs-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <groupId>name.abhijitsarkar.learning.webservices.jaxrs.security</groupId>
+  <artifactId>jaxrs-security</artifactId>
+  <name>jaxrs-security</name>
+  <packaging>pom</packaging>
+
+  <description>
+    Various JAX-RS security practice code.
+	</description>
+
+  <dependencies>
+    <!-- Don't package jersey, GlassFish contains full JAX-RS implementation -->
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- There's no easy way to exclude dependencies inherited from parent so set 
+      them to provided scope to prevent being packaged -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>name.abhijitsarkar.util.logging</groupId>
+      <artifactId>logging-util</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <modules>
+    <module>calculator-basic</module>
+    <module>jaxrs-security-client</module>
+    <module>jaxrs-security-ear</module>
+  </modules>
+</project>
