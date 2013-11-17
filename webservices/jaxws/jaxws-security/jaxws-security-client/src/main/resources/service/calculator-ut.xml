@@ -8,9 +8,9 @@
   xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy"
   xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
   xmlns:sc="http://schemas.sun.com/2006/03/wss/client" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy"
-  xmlns:tns="http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/"
+  xmlns:tns="http://abhijitsarkar.name/webservices/jaxws/security/CalculatorUT/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/"
-  targetNamespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/"
+  targetNamespace="http://abhijitsarkar.name/webservices/jaxws/security/CalculatorUT/"
   name="CalculatorUTService">
   <!-- See the server wsit file/WSDL for explanation of the policy elements -->
   <wsp:Policy xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
@@ -20,10 +20,10 @@
         <sc:CallbackHandlerConfiguration
           wspp:visibility="private">
           <sc:CallbackHandler
-            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
+            classname="name.abhijitsarkar.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
             name="usernameHandler" />
           <sc:CallbackHandler
-            classname="name.abhijitsarkar.learning.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
+            classname="name.abhijitsarkar.webservices.jaxws.security.client.ut.CalculatorUTCallbackHandler"
             name="passwordHandler" />
         </sc:CallbackHandlerConfiguration>
       </wsp:All>
@@ -32,7 +32,7 @@
   <types>
     <xsd:schema>
       <xsd:import
-        namespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorUT/"
+        namespace="http://abhijitsarkar.name/webservices/jaxws/security/CalculatorUT/"
         schemaLocation="../xsd/calculator-ut.xsd" />
     </xsd:schema>
   </types>

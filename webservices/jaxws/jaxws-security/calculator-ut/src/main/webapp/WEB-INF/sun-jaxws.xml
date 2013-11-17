@@ -2,6 +2,6 @@
 <endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
   <!-- The URL pattern here seems to be independent of anything in web.xml -->
   <endpoint
-    implementation="name.abhijitsarkar.learning.webservices.jaxws.security.ut.CalculatorUT"
+    implementation="name.abhijitsarkar.webservices.jaxws.security.ut.CalculatorUT"
     name="CalculatorUT" url-pattern="/CalculatorUTService" />
 </endpoints>

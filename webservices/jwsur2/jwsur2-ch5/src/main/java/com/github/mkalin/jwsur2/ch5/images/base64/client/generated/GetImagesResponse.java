@@ -3,7 +3,6 @@ package com.github.mkalin.jwsur2.ch5.images.base64.client.generated;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

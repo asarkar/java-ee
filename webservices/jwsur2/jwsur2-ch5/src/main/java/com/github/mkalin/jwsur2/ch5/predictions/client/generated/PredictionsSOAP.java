@@ -2,7 +2,6 @@
 package com.github.mkalin.jwsur2.ch5.predictions.client.generated;
 
 import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;

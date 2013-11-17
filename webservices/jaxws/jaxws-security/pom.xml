@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
     <artifactId>jaxws-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>name.abhijitsarkar.learning.webservices.jaxws.security</groupId>
+  <groupId>name.abhijitsarkar.webservices.jaxws.security</groupId>
   <artifactId>jaxws-security</artifactId>
   <name>jaxws-security</name>
   <packaging>pom</packaging>
@@ -34,7 +34,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>name.abhijitsarkar.learning.webservices.jaxrs</groupId>
+        <groupId>name.abhijitsarkar.webservices.jaxrs</groupId>
         <artifactId>jaxrs-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <scope>import</scope>

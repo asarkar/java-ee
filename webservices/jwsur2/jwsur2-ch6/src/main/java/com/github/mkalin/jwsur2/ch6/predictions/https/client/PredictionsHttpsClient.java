@@ -13,6 +13,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
+// This client is against a version of the 
 public class PredictionsHttpsClient {
 	private static final String endpoint = "https://localhost:8443/ch6/predictions2";
 	private static final String truststore = "/META-INF/test.keystore";

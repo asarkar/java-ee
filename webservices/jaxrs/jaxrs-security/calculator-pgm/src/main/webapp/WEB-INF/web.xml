@@ -5,10 +5,10 @@
   <display-name>JAX-RS security practice code</display-name>
 
   <servlet>
-    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.pgm.config.JAXRSPgmSecurityApplication</servlet-name>
+    <servlet-name>name.abhijitsarkar.webservices.jaxrs.security.pgm.config.JAXRSPgmSecurityApplication</servlet-name>
   </servlet>
   <servlet-mapping>
-    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.pgm.config.JAXRSPgmSecurityApplication</servlet-name>
+    <servlet-name>name.abhijitsarkar.webservices.jaxrs.security.pgm.config.JAXRSPgmSecurityApplication</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 

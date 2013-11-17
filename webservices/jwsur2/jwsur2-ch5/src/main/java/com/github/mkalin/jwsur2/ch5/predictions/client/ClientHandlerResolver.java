@@ -25,7 +25,7 @@ import javax.xml.ws.handler.PortInfo;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import name.abhijitsarkar.learning.webservices.jaxws.handler.SOAPMessageLoggingHandler;
+import name.abhijitsarkar.webservices.jaxws.handler.SOAPMessageLoggingHandler;
 
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Element;

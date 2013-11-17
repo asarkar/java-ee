@@ -4,6 +4,6 @@
   <!-- The wsdl-location seems to work only if directly within WEB-INF or -->
   <!-- a sub directory thereof -->
   <endpoint
-    implementation="name.abhijitsarkar.learning.webservices.jaxws.addressing.CalculatorAddr"
+    implementation="name.abhijitsarkar.webservices.jaxws.addressing.CalculatorAddr"
     name="CalculatorAddr" url-pattern="/CalculatorAddrService" />
 </endpoints>

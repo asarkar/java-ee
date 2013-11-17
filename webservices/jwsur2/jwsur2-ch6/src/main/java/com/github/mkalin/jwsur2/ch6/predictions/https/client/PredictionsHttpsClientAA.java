@@ -16,7 +16,7 @@ import javax.net.ssl.TrustManagerFactory;
 import org.apache.commons.codec.binary.Base64;
 
 public class PredictionsHttpsClientAA {
-	private static final String endpoint = "https://localhost:8443/ch6/predictions2";
+	private static final String endpoint = "https://localhost:8443/ch6/predictions3";
 	private static final String truststore = "/META-INF/test.keystore";
 
 	public static void main(String[] args) {

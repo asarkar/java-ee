@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
     <artifactId>jaxws-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -16,7 +16,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+      <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
       <artifactId>jaxws-handlers</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -46,7 +46,7 @@
                   <!-- It turns out that the generated handler file is placed deep 
                     in the output dir; this puts that in the resources directory -->
                   <destDir>src/main/resources</destDir>
-                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.aws.client.generated</packageName>
+                  <packageName>name.abhijitsarkar.webservices.jaxws.aws.client.generated</packageName>
                   <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
                   <wsdlLocation>http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl</wsdlLocation>
                   <!-- Turn off generated source compilation; Maven will do it anyway -->

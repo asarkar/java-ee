@@ -2,9 +2,9 @@
   RI's version is Metro/2.3 (tags/2.3-7528; 2013-04-29T19:34:10+0000) JAXWS-RI/2.2.8 
   JAXWS/2.2 svn-revision#unknown. -->
 <xs:schema
-  xmlns:tns="http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorEJB/"
+  xmlns:tns="http://abhijitsarkar.name/webservices/jaxws/security/CalculatorEJB/"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
-  targetNamespace="http://abhijitsarkar.name/learning/webservices/jaxws/security/CalculatorEJB/">
+  targetNamespace="http://abhijitsarkar.name/webservices/jaxws/security/CalculatorEJB/">
 
   <xs:element name="add" type="tns:add" />
 

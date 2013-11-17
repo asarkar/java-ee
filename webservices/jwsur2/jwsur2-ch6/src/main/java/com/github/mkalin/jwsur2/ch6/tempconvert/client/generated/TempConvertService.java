@@ -3,7 +3,6 @@ package com.github.mkalin.jwsur2.ch6.tempconvert.client.generated;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -19,7 +18,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "TempConvertService", targetNamespace = "http://tempconvert.ch6.jwsur2.mkalin.github.com/", wsdlLocation = "file:/Users/Abhijit/Repositories/git/java-ee/jwsur2/jwsur2-ch6/src/main/resources/tempconvert.wsdl")
+@WebServiceClient(name = "TempConvertService", targetNamespace = "http://tempconvert.ch6.jwsur2.mkalin.github.com/", wsdlLocation = "file:/Users/Abhijit/Repositories/git/java-ee/webservices/jwsur2/jwsur2-ch6/src/main/resources/tempconvert.wsdl")
 @HandlerChain(file = "TempConvertService_handler.xml")
 public class TempConvertService
     extends Service
@@ -33,7 +32,7 @@ public class TempConvertService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/Users/Abhijit/Repositories/git/java-ee/jwsur2/jwsur2-ch6/src/main/resources/tempconvert.wsdl");
+            url = new URL("file:/Users/Abhijit/Repositories/git/java-ee/webservices/jwsur2/jwsur2-ch6/src/main/resources/tempconvert.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

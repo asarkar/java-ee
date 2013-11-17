@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
     <artifactId>jaxws-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -42,7 +42,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.generated</packageName>
+                  <packageName>name.abhijitsarkar.webservices.jaxws.calculator.contractfirst.generated</packageName>
                   <staleFile>${project.build.directory}/jaxws/wsimport-server/stale</staleFile>
                   <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
                   <wsdlFiles>
@@ -70,7 +70,7 @@
                   <!-- It turns out that the generated handler file is placed deep 
                     in the output dir; this puts that in the resources directory -->
                   <destDir>src/main/resources</destDir>
-                  <packageName>name.abhijitsarkar.learning.webservices.jaxws.calculator.contractfirst.client.generated</packageName>
+                  <packageName>name.abhijitsarkar.webservices.jaxws.calculator.contractfirst.client.generated</packageName>
                   <!-- The stale file determines whether a WSDL has been processed 
                     or not. As the server code is also generated from the same WSDL, this needs to be 
                     different from the one used by the server else client code generation is skipped -->

@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
     <artifactId>jaxws-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -14,6 +14,25 @@
   <description>Java Web Services: Up and Running, 2e, chapter 6, practice code</description>
 
   <build>
+    <!-- Prevent filtering on binary keystore file -->
+    <resources>
+      <resource>
+        <directory>src/main/resources/META-INF</directory>
+        <includes>
+          <include>test.keystore</include>
+        </includes>
+        <filtering>false</filtering>
+        <targetPath>${project.build.outputDirectory}/META-INF</targetPath>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>**/test.keystore</exclude>
+        </excludes>
+        <targetPath>${project.build.outputDirectory}</targetPath>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
@@ -36,7 +55,7 @@
       <artifactId>commons-codec</artifactId>
     </dependency>
     <dependency>
-      <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+      <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
       <artifactId>jaxws-handlers</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -54,7 +73,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>name.abhijitsarkar.learning.webservices.jaxrs</groupId>
+        <groupId>name.abhijitsarkar.webservices.jaxrs</groupId>
         <artifactId>jaxrs-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <scope>import</scope>

@@ -3,7 +3,6 @@ package com.github.mkalin.jwsur2.ch4.rand.client.async.generated;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;

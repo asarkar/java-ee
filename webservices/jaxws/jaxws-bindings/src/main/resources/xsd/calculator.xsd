@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <xs:schema
-	xmlns:tns="http://abhijitsarkar.name/learning/webservices/jaxws/calculator-cf/"
+	xmlns:tns="http://abhijitsarkar.name/webservices/jaxws/calculator-cf/"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
-	targetNamespace="http://abhijitsarkar.name/learning/webservices/jaxws/calculator-cf/">
+	targetNamespace="http://abhijitsarkar.name/webservices/jaxws/calculator-cf/">
 
 	<xs:element name="addDefaultBareRequest" type="tns:addDefaultBareRequest" />
 

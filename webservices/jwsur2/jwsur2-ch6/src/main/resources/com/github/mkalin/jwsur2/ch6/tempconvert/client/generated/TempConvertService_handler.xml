@@ -5,7 +5,7 @@
 						SOAPMessageLoggingHandler
 					</javaee:handler-name>
       <javaee:handler-class>
-						name.abhijitsarkar.learning.webservices.jaxws.handler.SOAPMessageLoggingHandler
+						name.abhijitsarkar.webservices.jaxws.handler.SOAPMessageLoggingHandler
 					</javaee:handler-class>
     </javaee:handler>
   </javaee:handler-chain>

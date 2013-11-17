@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxrs.security</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxrs.security</groupId>
     <artifactId>jaxrs-security</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -10,12 +10,19 @@
   <name>jaxrs-security-client</name>
 
   <description>
-   JAX-RS security client code.  The following are needed in order for the client to work.
+   JAX-RS security client code.
+   
     ===========================
     Declarative authentication client
     ===========================
     See web.xml and resource for details. Excellent article here:
     http://pic.dhe.ibm.com/infocenter/wasinfo/v8r5/index.jsp?topic=%2Fcom.ibm.websphere.nd.multiplatform.doc%2Fae%2Ftwbs_jaxrs_impl_securejaxrs_webcont.html
+    
+    ===========================
+    Programmatic authentication client with EJB resource
+    ===========================
+    Deploying a JAX-RS resource as an EJB jar module didn't work and is not mentioned in the spec either. Deploying as a war module
+    seems to work fine, security too.
   </description>
 
   <dependencies>

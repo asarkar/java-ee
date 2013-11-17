@@ -16,7 +16,7 @@ import com.github.mkalin.jwsur2.ch6.tempconvert.client.generated.TempConvert;
 import com.github.mkalin.jwsur2.ch6.tempconvert.client.generated.TempConvertService;
 
 public class TempConvertClient2 {
-	private static final String endpoint = "https://localhost:8443/ch6/tc";
+	private static final String endpoint = "https://localhost:8443/ch6/jaxws/tc";
 
 	static {
 		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -47,7 +47,7 @@ public class TempConvertClient2 {
 
 	public static void main(String args[]) throws Exception {
 		if (args.length < 2) {
-			System.err.println("Usage: TempConvertClient <uname> <passwd>");
+			System.err.println("Usage: TempConvertClient <uname> <passwd>. moe/MoeMoeMoe should work :)");
 			return;
 		}
 		String uname = args[0];

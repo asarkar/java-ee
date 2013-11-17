@@ -7,7 +7,7 @@
     <version>1.0</version>
   </parent>
 
-  <groupId>name.abhijitsarkar.learning.webservices</groupId>
+  <groupId>name.abhijitsarkar.webservices</groupId>
   <artifactId>webservices-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>

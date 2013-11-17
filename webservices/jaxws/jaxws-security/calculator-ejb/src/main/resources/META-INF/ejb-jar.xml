@@ -7,7 +7,7 @@
   <enterprise-beans>
     <session>
       <ejb-name>CalculatorEJB</ejb-name>
-      <ejb-class>name.abhijitsarkar.learning.webservices.jaxws.security.ejb.CalculatorEJB</ejb-class>
+      <ejb-class>name.abhijitsarkar.webservices.jaxws.security.ejb.CalculatorEJB</ejb-class>
       <security-role-ref>
         <role-name>celebrity</role-name>
       </security-role-ref>

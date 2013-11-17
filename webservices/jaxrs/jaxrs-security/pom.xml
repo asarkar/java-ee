@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxrs</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxrs</groupId>
     <artifactId>jaxrs-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>name.abhijitsarkar.learning.webservices.jaxrs.security</groupId>
+  <groupId>name.abhijitsarkar.webservices.jaxrs.security</groupId>
   <artifactId>jaxrs-security</artifactId>
   <name>jaxrs-security</name>
   <packaging>pom</packaging>

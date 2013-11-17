@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices</groupId>
+    <groupId>name.abhijitsarkar.webservices</groupId>
     <artifactId>webservices-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+  <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
   <artifactId>jaxws-parent</artifactId>
   <packaging>pom</packaging>
   <name>jaxws-parent</name>
@@ -29,7 +29,7 @@
       <artifactId>jaxws-rt</artifactId>
     </dependency>
     <dependency>
-      <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+      <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
       <artifactId>jaxws-handlers</artifactId>
     </dependency>
     <dependency>
@@ -59,7 +59,7 @@
         <version>${jaxws.version}</version>
       </dependency>
       <dependency>
-        <groupId>name.abhijitsarkar.learning.webservices.jaxws</groupId>
+        <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
         <artifactId>jaxws-handlers</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <scope>runtime</scope>

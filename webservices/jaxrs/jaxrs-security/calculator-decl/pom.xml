@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>name.abhijitsarkar.learning.webservices.jaxrs.security</groupId>
+    <groupId>name.abhijitsarkar.webservices.jaxrs.security</groupId>
     <artifactId>jaxrs-security</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>

@@ -2,7 +2,6 @@
 package com.github.mkalin.jwsur2.ch4.rand.client.generated;
 
 import java.util.List;
-
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
