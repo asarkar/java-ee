@@ -5,25 +5,24 @@
   <display-name>JAX-RS security practice code</display-name>
 
   <servlet>
-    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.basic.config.CalculatorBasicApplication</servlet-name>
+    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.decl.config.JAXRSDeclSecurityApplication</servlet-name>
   </servlet>
-
   <servlet-mapping>
-    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.basic.config.CalculatorBasicApplication</servlet-name>
+    <servlet-name>name.abhijitsarkar.learning.webservices.jaxrs.security.decl.config.JAXRSDeclSecurityApplication</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
+  <!-- <security-constraint> element must be present; the web container checks for 
+    security before JAX-RS does and without a <security-constraint>, the proper security 
+    context is not set. -->
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>Calculator Basic</web-resource-name>
+      <web-resource-name>Calculator Decl</web-resource-name>
       <url-pattern>/*</url-pattern>
       <http-method>GET</http-method>
     </web-resource-collection>
-    <!-- No auth-constraint means everyone is allowed access. Blank auth-constraint 
-      means no one is allowed access. * auth-constraint means only roles defined in thie 
-      web app are allowed access. -->
     <auth-constraint>
-      <role-name>celebrity</role-name>
+      <role-name>*</role-name>
     </auth-constraint>
   </security-constraint>
 
@@ -32,8 +31,7 @@
     <realm-name>file</realm-name>
   </login-config>
 
-  <security-role>
-    <role-name>celebrity</role-name>
-  </security-role>
+  <!-- Either this or @DeclareRoles must be present -->
+  <!-- <security-role> <role-name>celebrity</role-name> </security-role> -->
 
 </web-app>

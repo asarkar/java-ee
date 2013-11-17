@@ -8,9 +8,9 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>calculator-basic</artifactId>
+  <artifactId>calculator-decl</artifactId>
   <packaging>war</packaging>
-  <name>calculator-basic</name>
-  <description>Basic authentication</description>
+  <name>calculator-decl</name>
+  <description>Basic authentication through declaration in web.xml or annotations</description>
 
 </project>

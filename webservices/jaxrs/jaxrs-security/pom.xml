@@ -45,7 +45,7 @@
   </dependencies>
 
   <modules>
-    <module>calculator-basic</module>
+    <module>calculator-decl</module>
     <module>jaxrs-security-client</module>
     <module>jaxrs-security-ear</module>
   </modules>

@@ -2,7 +2,7 @@
     <wb-module deploy-name="jaxrs-security-ear-0.0.1-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
-        <dependent-module archiveName="calculator-basic-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/calculator-basic/calculator-basic">
+        <dependent-module archiveName="calculator-decl-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/calculator-decl/calculator-decl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jackson-jaxrs-json-provider-2.2.3.jar" deploy-path="/lib/" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.2.3/jackson-jaxrs-json-provider-2.2.3.jar">

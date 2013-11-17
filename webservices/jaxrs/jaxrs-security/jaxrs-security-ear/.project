@@ -3,6 +3,7 @@
 	<name>jaxrs-security-ear</name>
 	<comment></comment>
 	<projects>
+		<project>calculator-decl</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

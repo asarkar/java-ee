@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>calculator-basic</artifactId>
+      <artifactId>calculator-decl</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
@@ -36,8 +36,8 @@
           <modules>
             <webModule>
               <groupId>${project.groupId}</groupId>
-              <artifactId>calculator-basic</artifactId>
-              <contextRoot>/calc-basic</contextRoot>
+              <artifactId>calculator-decl</artifactId>
+              <contextRoot>/calc-decl</contextRoot>
             </webModule>
           </modules>
         </configuration>

@@ -1,4 +1,4 @@
-package name.abhijitsarkar.learning.webservices.jaxws.security.client;
+package name.abhijitsarkar.learning.webservices.jaxws.security.decl.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -8,10 +8,10 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.DatatypeConverter;
 
-public class BasicAuthHdrAppender implements ClientRequestFilter {
+public class HttpBasicAuthFilter implements ClientRequestFilter {
 	private final String token;
 
-	public BasicAuthHdrAppender(String username, String password) {
+	public HttpBasicAuthFilter(String username, String password) {
 		this.token = username + ":" + password;
 	}
 
@@ -22,7 +22,7 @@ public class BasicAuthHdrAppender implements ClientRequestFilter {
 		headers.putSingle("Authorization", base64EncCipher);
 	}
 
-	private String getAuthToken() throws UnsupportedEncodingException {
+	public String getAuthToken() throws UnsupportedEncodingException {
 		return "Basic "
 				+ DatatypeConverter.printBase64Binary(token.getBytes("UTF-8"));
 	}
