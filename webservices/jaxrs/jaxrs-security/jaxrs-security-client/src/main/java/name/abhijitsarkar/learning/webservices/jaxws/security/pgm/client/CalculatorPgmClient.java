@@ -1,4 +1,4 @@
-package name.abhijitsarkar.learning.webservices.jaxws.security.decl.client;
+package name.abhijitsarkar.learning.webservices.jaxws.security.pgm.client;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -8,9 +8,9 @@ import javax.ws.rs.core.MediaType;
 
 import name.abhijitsarkar.learning.webservices.jaxws.security.client.HttpBasicAuthFilter;
 
-public class CalculatorDeclClient {
+public class CalculatorPgmClient {
 
-	private static final String CALC_RESOURCE_URI = "http://localhost:8080/calc-decl/";
+	private static final String CALC_RESOURCE_URI = "http://localhost:8080/calc-pgm/";
 
 	private static Client client = ClientBuilder.newClient();
 
@@ -19,9 +19,8 @@ public class CalculatorDeclClient {
 	}
 
 	public static void main(String[] args) {
-		CalculatorDeclClient cClient = new CalculatorDeclClient();
+		CalculatorPgmClient cClient = new CalculatorPgmClient();
 		cClient.request(MediaType.APPLICATION_JSON, "add", 2, 3);
-		cClient.request(MediaType.APPLICATION_JSON, "subtract", 5, 3);
 
 		client.close();
 	}

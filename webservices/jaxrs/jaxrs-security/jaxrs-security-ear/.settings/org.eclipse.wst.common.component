@@ -5,6 +5,9 @@
         <dependent-module archiveName="calculator-decl-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/calculator-decl/calculator-decl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="calculator-pgm-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/calculator-pgm/calculator-pgm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="jackson-jaxrs-json-provider-2.2.3.jar" deploy-path="/lib/" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.2.3/jackson-jaxrs-json-provider-2.2.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import name.abhijitsarkar.learning.webservices.jaxrs.security.decl.Calculator;
+import name.abhijitsarkar.learning.webservices.jaxrs.security.decl.CalculatorDecl;
 
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
@@ -14,7 +14,7 @@ public class JAXRSDeclSecurityApplication extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<Class<?>>(super.getClasses());
-		classes.add(Calculator.class);
+		classes.add(CalculatorDecl.class);
 		// Register Jersey DynamicFeature to enable annotation-based security
 		classes.add(RolesAllowedDynamicFeature.class);
 

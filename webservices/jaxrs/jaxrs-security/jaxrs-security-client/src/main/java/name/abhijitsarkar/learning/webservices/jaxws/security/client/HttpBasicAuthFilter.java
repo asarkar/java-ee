@@ -1,4 +1,4 @@
-package name.abhijitsarkar.learning.webservices.jaxws.security.decl.client;
+package name.abhijitsarkar.learning.webservices.jaxws.security.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

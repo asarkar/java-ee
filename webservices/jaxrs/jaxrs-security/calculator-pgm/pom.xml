@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>name.abhijitsarkar.learning.webservices.jaxrs.security</groupId>
+    <artifactId>jaxrs-security</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>calculator-pgm</artifactId>
+  <packaging>war</packaging>
+  <name>calculator-pgm</name>
+
+  <description>
+    Apparently, JAX-RS app can only be assembled as a war module. The spec is unclear about this.
+    See https://java.net/jira/browse/JAX_RS_SPEC-278
+  </description>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

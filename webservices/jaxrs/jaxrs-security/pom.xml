@@ -46,6 +46,7 @@
 
   <modules>
     <module>calculator-decl</module>
+    <module>calculator-pgm</module>
     <module>jaxrs-security-client</module>
     <module>jaxrs-security-ear</module>
   </modules>

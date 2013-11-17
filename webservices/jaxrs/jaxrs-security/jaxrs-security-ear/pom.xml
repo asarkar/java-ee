@@ -23,6 +23,12 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>calculator-pgm</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
   </dependencies>
 
   <build>
@@ -38,6 +44,11 @@
               <groupId>${project.groupId}</groupId>
               <artifactId>calculator-decl</artifactId>
               <contextRoot>/calc-decl</contextRoot>
+            </webModule>
+            <webModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>calculator-pgm</artifactId>
+              <contextRoot>/calc-pgm</contextRoot>
             </webModule>
           </modules>
         </configuration>

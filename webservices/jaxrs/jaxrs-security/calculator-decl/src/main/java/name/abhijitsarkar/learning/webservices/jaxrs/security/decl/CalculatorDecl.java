@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 // Either this or web.xml <security-role> must be present
 @DeclareRoles("celebrity")
-public class Calculator {
+public class CalculatorDecl {
 
 	@RolesAllowed("celebrity")
 	@GET
