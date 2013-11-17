@@ -16,9 +16,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
-import javax.xml.ws.soap.SOAPBinding;
 
 @WebService
 // MTOM overrides SOAPBinding

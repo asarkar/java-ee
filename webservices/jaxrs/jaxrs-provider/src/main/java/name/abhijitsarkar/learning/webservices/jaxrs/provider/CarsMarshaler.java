@@ -1,6 +1,5 @@
 package name.abhijitsarkar.learning.webservices.jaxrs.provider;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -26,8 +25,6 @@ import name.abhijitsarkar.learning.webservices.jaxrs.provider.util.ProviderUtil;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 // A Java EE container can scan and register classes annotated with @Provider; Servlet containers like Jetty can't so
 // Providers need to be registered with the Application class.

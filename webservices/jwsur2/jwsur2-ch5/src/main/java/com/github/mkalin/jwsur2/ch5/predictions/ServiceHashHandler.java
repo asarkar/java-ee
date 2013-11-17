@@ -1,10 +1,7 @@
 package com.github.mkalin.jwsur2.ch5.predictions;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Set;
-import java.util.TimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -24,8 +21,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class ServiceHashHandler implements SOAPHandler<SOAPMessageContext> {
-	private byte[] secretBytes;
-
 	public ServiceHashHandler() {
 	}
 
@@ -111,14 +106,6 @@ public class ServiceHashHandler implements SOAPHandler<SOAPMessageContext> {
 		} catch (Exception e) {
 			throw new RuntimeException("NoSuchAlgorithmException thrown.", e);
 		}
-	}
-
-	private String getTimestamp() {
-		Calendar calendar = Calendar.getInstance();
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss'Z'");
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return dateFormat.format(calendar.getTime());
 	}
 
 	private byte[] getBytes(String str) {

@@ -1,6 +1,5 @@
 package name.abhijitsarkar.learning.webservices.jaxrs.provider.client;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -24,8 +23,6 @@ import name.abhijitsarkar.learning.webservices.jaxrs.provider.util.ProviderUtil;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 // A Java EE container can scan and register classes annotated with @Provider or they can be registered with the 
 // Application class; For a standalone client, the Provider needs to be registered with the client framework.

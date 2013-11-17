@@ -22,7 +22,6 @@ public class Adages {
 
 	public static String toPlain() {
 		String retval = "";
-		int i = 1;
 		for (Adage adage : adages)
 			retval += adage.toString() + "\n";
 		return retval;

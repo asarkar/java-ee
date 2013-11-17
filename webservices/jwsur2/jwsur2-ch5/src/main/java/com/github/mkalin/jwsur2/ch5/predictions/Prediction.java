@@ -3,6 +3,8 @@ package com.github.mkalin.jwsur2.ch5.predictions;
 import java.io.Serializable;
 
 public class Prediction implements Serializable, Comparable<Prediction> {
+	private static final long serialVersionUID = 5203973771881326503L;
+	
 	private String who; // person
 	private String what; // his/her prediction
 	private int id; // identifier used as lookup-key

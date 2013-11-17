@@ -1,8 +1,5 @@
 package com.github.mkalin.jwsur2.ch6.wssecurity.client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 
@@ -14,16 +11,6 @@ import com.sun.xml.wss.impl.callback.UsernameCallback;
 // username and password. For production, the hard-wirings
 // would be removed.
 public class Prompter implements CallbackHandler {
-	private String readLine() {
-		String line = null;
-		try {
-			line = new BufferedReader(new InputStreamReader(System.in))
-					.readLine();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return line;
-	}
 
 	// Prompt for and read the username and the password.
 	public void handle(Callback[] callbacks) {
