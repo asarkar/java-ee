@@ -33,12 +33,12 @@
        
     3) Create a file called wsit-client.xml and put it in a root directory that's on the classpath 
      or in a META-INF directory such that the parent directory of META-INF is on the classpath.
+     
     4) Reference the service file from the wsit-client.
     
-    5) This project uses CDI for Service lookup. Thus an empty beans.xml is 
-      placed under WEB-INF.
-      
-    6) The REST resource is annotated accordingly for CDI to do the DI.
+    5. Generate code from the WSDL.
+    
+    6. Inject the generated Service classes in the client using @WebServiceRef annotations.
     
     ========================
     Symmetric binding client
