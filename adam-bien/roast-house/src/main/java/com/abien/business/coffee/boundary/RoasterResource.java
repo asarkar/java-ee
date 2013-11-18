@@ -23,12 +23,16 @@ public class RoasterResource {
 
 	@POST
 	public void roast(@Suspended AsyncResponse ar, Bean bean) {
+		System.out.println("Roaster is tired, going to sleep...");
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException ex) {
 			Logger.getLogger(RoasterResource.class.getName()).log(Level.SEVERE,
 					null, ex);
 		}
+		
+		System.out.println("Roaster back to roasting...");
+		
 		bean.setType(RoastType.DARK);
 		bean.setName(id);
 		bean.setBlend(bean.getBlend() + ": The dark side of the bean");

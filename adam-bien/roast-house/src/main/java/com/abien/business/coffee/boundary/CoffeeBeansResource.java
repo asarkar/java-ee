@@ -37,12 +37,14 @@ public class CoffeeBeansResource {
 
 	@GET
 	public Collection<Bean> allBeans() {
+		System.out.println("Returning all beans...");
 		return bc.values();
 	}
 
 	@GET
 	@Path("{id}")
 	public Bean bean(@PathParam("id") String id) {
+		System.out.println("Returning bean for id: " + id);
 		return bc.get(id);
 	}
 
@@ -51,6 +53,7 @@ public class CoffeeBeansResource {
 		if (bean != null) {
 			bc.put(bean.getName(), bean);
 		}
+		System.out.println("Added bean with name: " + bean.getName());
 		final URI id = URI.create(bean.getName());
 		return Response.created(id).build();
 	}
@@ -58,11 +61,13 @@ public class CoffeeBeansResource {
 	@DELETE
 	@Path("{id}")
 	public void remove(@PathParam("id") String id) {
+		System.out.println("Removing bean with id: " + id);
 		bc.remove(id);
 	}
 
 	@Path("/roaster/{id}")
 	public RoasterResource roaster() {
+		System.out.println("Calling roaster...");
 		return this.rc.initResource(new RoasterResource());
 	}
 }
