@@ -3,7 +3,6 @@ package name.abhijitsarkar.webservices.jaxrs.provider.config;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import name.abhijitsarkar.webservices.jaxrs.provider.CarsMarshaler;
@@ -12,7 +11,6 @@ import name.abhijitsarkar.webservices.jaxrs.provider.client.OriginalAcceptHdrRes
 import name.abhijitsarkar.webservices.jaxrs.provider.resource.Calculator;
 import name.abhijitsarkar.webservices.jaxrs.provider.resource.CarDealer;
 
-@ApplicationPath("/")
 public class JAXRSProviderApplication extends Application {
 
 	@Override

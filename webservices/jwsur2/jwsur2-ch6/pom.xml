@@ -11,7 +11,10 @@
   <artifactId>ch6</artifactId>
   <packaging>war</packaging>
   <name>ch6</name>
-  <description>Java Web Services: Up and Running, 2e, chapter 6, practice code</description>
+  <description>
+    Java Web Services: Up and Running, 2e, ISBN-10: 1449365116, ISBN-13: 978-1449365110, chapter 6, modified practice code.
+    Original code can be found here: https://github.com/mkalin/jwsur2
+   </description>
 
   <build>
     <!-- Prevent filtering on binary keystore file -->

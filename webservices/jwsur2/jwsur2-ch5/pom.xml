@@ -11,7 +11,10 @@
   <artifactId>ch5</artifactId>
   <packaging>war</packaging>
   <name>ch5</name>
-  <description>Java Web Services: Up and Running, 2e, chapter 5, practice code</description>
+  <description>
+    Java Web Services: Up and Running, 2e, ISBN-10: 1449365116, ISBN-13: 978-1449365110, chapter 5, modified practice code.
+    Original code can be found here: https://github.com/mkalin/jwsur2
+  </description>
 
   <dependencies>
     <dependency>

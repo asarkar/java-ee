@@ -11,7 +11,10 @@
   <artifactId>ch2</artifactId>
   <packaging>war</packaging>
   <name>ch2</name>
-  <description>Java Web Services: Up and Running, 2e, chapter 2, practice code</description>
+  <description>
+    Java Web Services: Up and Running, 2e, ISBN-10: 1449365116, ISBN-13: 978-1449365110, chapter 2, modified practice code
+    Original code can be found here: https://github.com/mkalin/jwsur2
+  </description>
 
   <dependencies>
     <!-- jersey-server depedency must be present for jersey-test-framework to work -->
