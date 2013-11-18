@@ -8,14 +8,13 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 
 import javax.annotation.Priority;
-import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 public class MustBeCelebrityFeature implements DynamicFeature {
@@ -46,9 +45,8 @@ public class MustBeCelebrityFeature implements DynamicFeature {
 				return;
 			}
 
-			throw new NotAuthorizedException(secContext.getUserPrincipal()
-					+ " is not authorized for this operation.",
-					Response.Status.UNAUTHORIZED);
+			throw new ForbiddenException(secContext.getUserPrincipal()
+					+ " is not authorized for this operation.");
 		}
 	}
 
