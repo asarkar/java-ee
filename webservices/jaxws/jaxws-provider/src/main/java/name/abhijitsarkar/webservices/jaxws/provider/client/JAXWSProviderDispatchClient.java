@@ -9,9 +9,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
+import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
@@ -25,8 +28,9 @@ public class JAXWSProviderDispatchClient {
 	public static void main(String[] args) {
 		JAXWSProviderDispatchClient client = new JAXWSProviderDispatchClient();
 
-		client.invokeAdd(1, 2);
-		client.invokeSubtract(3, 2);
+		client.invokeAdd1(1, 2);
+		client.invokeAdd2(1, 2);
+		client.invokeSubtract1(3, 2);
 		client.invokeException(0, 0);
 	}
 
@@ -52,9 +56,8 @@ public class JAXWSProviderDispatchClient {
 		reqCtx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
 	}
 
-	// This method uses low level XML operations to construct the message
-	@SuppressWarnings("unchecked")
-	public void invokeAdd(int i, int j) {
+	// Invoke add using one style of SAAJ API
+	public void invokeAdd1(int i, int j) {
 		int sum = 0;
 
 		/** Create SOAPMessage request. **/
@@ -64,7 +67,7 @@ public class JAXWSProviderDispatchClient {
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
 
-			// Obtain the SOAPEnvelope and header and body elements.
+			// Obtain the SOAP body.
 			SOAPBody body = request.getSOAPBody();
 
 			// Construct the message payload.
@@ -81,6 +84,50 @@ public class JAXWSProviderDispatchClient {
 
 			/** Process the response. **/
 			body = response.getSOAPBody();
+			@SuppressWarnings("unchecked")
+			Iterator<SOAPElement> it = body.getChildElements(new QName(
+					NAMESPACE_URI, "result"));
+
+			sum = Integer.valueOf(it.next().getTextContent());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Sum of " + i + " and " + j + " is " + sum);
+	}
+
+	// Invoke add using a different style of SAAJ API, specifically how the SOAP
+	// body is obtained and added to the message
+	public void invokeAdd2(int i, int j) {
+		int sum = 0;
+
+		/** Create SOAPMessage request. **/
+		try {
+			MessageFactory mf = MessageFactory
+					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
+			// Create a message.
+			SOAPMessage request = mf.createMessage();
+
+			// Obtain the SOAP body from envelope.
+			SOAPEnvelope soapEnv = request.getSOAPPart().getEnvelope();
+
+			Name bodyName = soapEnv.createName("add", "ns", NAMESPACE_URI);
+			SOAPBody body = soapEnv.getBody();
+			SOAPBodyElement bodyElement = body.addBodyElement(bodyName);
+
+			// Construct the message payload.
+			SOAPElement arg0 = bodyElement.addChildElement("arg0");
+			arg0.addTextNode(Integer.toString(i));
+			SOAPElement arg1 = bodyElement.addChildElement("arg1");
+			arg1.addTextNode(Integer.toString(j));
+			request.saveChanges();
+
+			/** Invoke the service endpoint. **/
+			SOAPMessage response = dispatch.invoke(request);
+
+			/** Process the response. **/
+			body = response.getSOAPBody();
+			@SuppressWarnings("unchecked")
 			Iterator<SOAPElement> it = body.getChildElements(new QName(
 					NAMESPACE_URI, "result"));
 
@@ -93,7 +140,7 @@ public class JAXWSProviderDispatchClient {
 	}
 
 	// This method uses JAXB to construct the message
-	public void invokeSubtract(int i, int j) {
+	public void invokeSubtract1(int i, int j) {
 		int diff = 0;
 
 		try {
@@ -133,7 +180,7 @@ public class JAXWSProviderDispatchClient {
 
 		System.out.println("Difference of " + i + " and " + j + " is " + diff);
 	}
-
+	
 	public void invokeException(int i, int j) {
 		/** Create SOAPMessage request. **/
 		try {
