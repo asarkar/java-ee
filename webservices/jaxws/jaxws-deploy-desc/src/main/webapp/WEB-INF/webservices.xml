@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webservices xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/javaee_web_services_1_3.xsd"
+  version="1.3">
+  <webservice-description>
+    <description>
+      port-component name must match the SIB name because GlassFish uses this name as 
+      key to override/merge rest of the annotation attributes. In case there are no explicit 
+      annotation attributes, the name is derived as the simple name of the SIB. See the different WSDLs in
+      src/main/resources.
+      
+      https://java.net/jira/browse/GLASSFISH-19559
+    </description>
+    <!-- Must be unique in this document -->
+    <webservice-description-name>Calculator Service</webservice-description-name>
+    <!-- The following namespace is only used for the binding and service elements' 
+      target namespace. The port ends up getting it's namespace derived from the package 
+      name and hence 2 WSDL files are generated, each with a different target namespace -->
+    <port-component xmlns:dd="http://abhijitsarkar.name/webservices/jaxws/deploy-desc/">
+      <port-component-name>CalculatorImpl</port-component-name>
+      <!-- @WebService.serviceName -->
+      <wsdl-service>dd:CalculatorService</wsdl-service>
+      <!-- @WebService.portName -->
+      <wsdl-port>dd:CalculatorPort</wsdl-port>
+      <!-- @WebService.endpointInterface -->
+      <service-endpoint-interface>name.abhijitsarkar.webservices.jaxws.deploydesc.Calculator</service-endpoint-interface>
+
+      <service-impl-bean>
+        <!-- Must link to a physical web.xml Servlet definition -->
+        <servlet-link>Calculator</servlet-link>
+      </service-impl-bean>
+    </port-component>
+
+  </webservice-description>
+</webservices>
