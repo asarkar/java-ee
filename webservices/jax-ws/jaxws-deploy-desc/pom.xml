@@ -27,6 +27,7 @@
 
   <build>
     <plugins>
+      <!-- Jetty ignores webservices.xml so use GlassFish -->
       <plugin>
         <groupId>org.glassfish.embedded</groupId>
         <artifactId>maven-embedded-glassfish-plugin</artifactId>
