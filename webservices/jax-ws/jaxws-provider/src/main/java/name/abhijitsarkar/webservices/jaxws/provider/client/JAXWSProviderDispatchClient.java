@@ -1,6 +1,6 @@
 package name.abhijitsarkar.webservices.jaxws.provider.client;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class JAXWSProviderDispatchClient {
 		client.invokeException(0, 0);
 	}
 
-	public JAXWSProviderDispatchClient() {
+	private JAXWSProviderDispatchClient() {
 		/** Create a service and add at least one port to it. **/
 		Service service = Service.create(serviceName);
 		service.setHandlerResolver(new JAXWSProviderClientHandlerResolver());
@@ -45,19 +45,19 @@ public class JAXWSProviderDispatchClient {
 				Service.Mode.MESSAGE);
 
 		// BindingProvider provider = (BindingProvider) dispatch;
-		//
+
 		// Map<String, Object> reqCtx = provider.getRequestContext();
 
 		Map<String, Object> headers = new HashMap<String, Object>();
-		headers.put("Content-Type", Arrays.asList(new String[] { "text/xml" }));
-		headers.put("Accept", Arrays.asList(new String[] { "text/xml" }));
-		//
+		headers.put("Content-Type", Collections.singletonList("text/xml"));
+		headers.put("Accept", Collections.singletonList("text/xml"));
+
 		Map<String, Object> reqCtx = dispatch.getRequestContext();
 		reqCtx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
 	}
 
 	// Invoke add using one style of SAAJ API
-	public void invokeAdd1(int i, int j) {
+	private void invokeAdd1(int i, int j) {
 		int sum = 0;
 
 		/** Create SOAPMessage request. **/
@@ -66,6 +66,8 @@ public class JAXWSProviderDispatchClient {
 					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
+
+			addOperationHdr("add");
 
 			// Obtain the SOAP body.
 			SOAPBody body = request.getSOAPBody();
@@ -98,7 +100,7 @@ public class JAXWSProviderDispatchClient {
 
 	// Invoke add using a different style of SAAJ API, specifically how the SOAP
 	// body is obtained and added to the message
-	public void invokeAdd2(int i, int j) {
+	private void invokeAdd2(int i, int j) {
 		int sum = 0;
 
 		/** Create SOAPMessage request. **/
@@ -107,6 +109,8 @@ public class JAXWSProviderDispatchClient {
 					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
+
+			addOperationHdr("add");
 
 			// Obtain the SOAP body from envelope.
 			SOAPEnvelope soapEnv = request.getSOAPPart().getEnvelope();
@@ -140,7 +144,7 @@ public class JAXWSProviderDispatchClient {
 	}
 
 	// This method uses JAXB to construct the message
-	public void invokeSubtract1(int i, int j) {
+	private void invokeSubtract1(int i, int j) {
 		int diff = 0;
 
 		try {
@@ -161,6 +165,8 @@ public class JAXWSProviderDispatchClient {
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
 
+			addOperationHdr("subtract");
+
 			// Obtain the body element.
 			SOAPBody body = request.getSOAPBody();
 
@@ -180,8 +186,8 @@ public class JAXWSProviderDispatchClient {
 
 		System.out.println("Difference of " + i + " and " + j + " is " + diff);
 	}
-	
-	public void invokeException(int i, int j) {
+
+	private void invokeException(int i, int j) {
 		/** Create SOAPMessage request. **/
 		try {
 			MessageFactory mf = MessageFactory
@@ -189,11 +195,13 @@ public class JAXWSProviderDispatchClient {
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
 
+			// "multiply" isn't supported so it'll throw an exception
+			addOperationHdr("multiply");
+
 			// Obtain the SOAPEnvelope and header and body elements.
 			SOAPBody body = request.getSOAPBody();
 
-			// Construct the message payload. "multiply" isn't supported so
-			// it'll throw an exception
+			// Construct the message payload.
 			SOAPElement operation = body.addChildElement("multiply", "ns",
 					NAMESPACE_URI);
 			SOAPElement arg0 = operation.addChildElement("arg0");
@@ -207,6 +215,17 @@ public class JAXWSProviderDispatchClient {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addOperationHdr(String opName) {
+		Map<String, Object> reqCtx = dispatch.getRequestContext();
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> reqHeaders = (Map<String, Object>) reqCtx
+				.get(MessageContext.HTTP_REQUEST_HEADERS);
+		reqHeaders.put("operation", Collections.singletonList(opName));
+
+		reqCtx.put(MessageContext.HTTP_REQUEST_HEADERS, reqHeaders);
 	}
 
 	private static final String ENDPOINT_URL = "http://localhost:8080/jaxws-provider/";
