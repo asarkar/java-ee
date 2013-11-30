@@ -7,19 +7,20 @@ import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.Response;
 
 import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.NextN;
+import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.ObjectFactory;
 import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.RandService;
 import com.github.mkalin.jwsur2.ch4.rand.client.async.generated.RandServiceService;
 
-public class RandClientAsync {
+public class RandAsyncClient {
 	private final RandService port;
 
-	public RandClientAsync() {
+	public RandAsyncClient() {
 		RandServiceService service = new RandServiceService();
 		port = service.getRandServicePort();
 	}
 
 	public static void main(String[] args) {
-		RandClientAsync asyncClient = new RandClientAsync();
+		RandAsyncClient asyncClient = new RandAsyncClient();
 
 		asyncClient.requestAndPoll();
 		asyncClient.requestAndRegister();
@@ -64,7 +65,8 @@ public class RandClientAsync {
 	}
 
 	private NextN nextN(int i) {
-		NextN nextN = new NextN();
+		ObjectFactory objFactory = new ObjectFactory();
+		NextN nextN = objFactory.createNextN();
 		nextN.setArg0(i);
 
 		return nextN;
