@@ -172,8 +172,8 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 					return anOp;
 				}
 			}
-			throw new IllegalArgumentException(
-					"No operation found with the value: " + value);
+			throw new IllegalArgumentException("Unsupported operation: "
+					+ value);
 		}
 	}
 }
