@@ -3,13 +3,13 @@ package name.abhijitsarkar.webservices.jaxws.provider.client;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "subtract", namespace = "http://abhijitsarkar.name/webservices/jaxws/provider/")
-public class SubtractRequest {
-	public SubtractRequest() {
+@XmlRootElement(name = "operation", namespace = "http://abhijitsarkar.name/webservices/jaxws/provider/")
+public class OperationRequest {
+	public OperationRequest() {
 
 	}
 
-	public SubtractRequest(int arg0, int arg1) {
+	public OperationRequest(int arg0, int arg1) {
 		this.arg0 = arg0;
 		this.arg1 = arg1;
 	}

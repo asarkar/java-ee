@@ -1,17 +1,21 @@
 package name.abhijitsarkar.webservices.jaxws.provider;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
+import javax.xml.soap.AttachmentPart;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.ws.BindingType;
@@ -46,7 +50,7 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 
 			args = getArgs(soapBody);
 
-			operation = getOperation();
+			operation = getOperation(soapMsg);
 		} catch (SOAPException e) {
 			String errorMsg = "A problem occurred while parsing the SOAPMessage";
 			throw new JAXWSProviderServiceFault(errorMsg,
@@ -92,7 +96,41 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 		return new int[] { firstArg, secondArg };
 	}
 
-	private Operation getOperation() {
+	/*
+	 * The method tries to find the operation in the following order: 1. It
+	 * looks in the HTTP headers. 2. It then looks in the SOAP headers. 3.
+	 * Finally, it looks in the SOAP attachments.
+	 * 
+	 * If it couldn't find a requested operation, it throws an exception.
+	 */
+	@SuppressWarnings("unchecked")
+	private Operation getOperation(SOAPMessage soapMsg) throws SOAPException {
+		String op = getOperationFromHTTPHdr();
+
+		if (op == null) {
+			System.out
+					.println("Operation not found in HTTP headers...trying SOAP headers");
+
+			op = getOperationFromSOAPHdr(soapMsg.getSOAPHeader());
+
+			if (op == null) {
+				System.out
+						.println("Operation not found in SOAP headers...trying SOAP attachments");
+
+				op = getOperationFromSOAPAttachment(soapMsg.getAttachments());
+
+				if (op == null) {
+					String errorMsg = "Invalid request, operation not found.";
+					throw new JAXWSProviderServiceFault(errorMsg,
+							new IllegalArgumentException(errorMsg));
+				}
+			}
+		}
+
+		return Operation.findByValue(op);
+	}
+
+	private String getOperationFromHTTPHdr() {
 		MessageContext msgCtx = ctx.getMessageContext();
 
 		@SuppressWarnings("unchecked")
@@ -102,16 +140,48 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 		List<String> opHdr = requestHdrs.get("operation");
 
 		if (opHdr != null && opHdr.size() > 0) {
-			String op = opHdr.get(0);
+			System.out.println("Found operation in HTTP header");
 
-			if (op != null) {
-				return Operation.findByValue(op);
+			return opHdr.get(0);
+		}
+
+		return null;
+	}
+
+	private String getOperationFromSOAPHdr(SOAPHeader soapHeader) {
+		@SuppressWarnings("unchecked")
+		Iterator<SOAPHeaderElement> it = soapHeader.examineAllHeaderElements();
+
+		SOAPHeaderElement opHdr = null;
+
+		while (it.hasNext()) {
+			opHdr = it.next();
+
+			if ("operation".equals(opHdr.getLocalName())) {
+				System.out.println("Found operation in SOAP header");
+
+				return opHdr.getTextContent();
 			}
 		}
 
-		String errorMsg = "Invalid request, operation not found.";
-		throw new JAXWSProviderServiceFault(errorMsg,
-				new IllegalArgumentException(errorMsg));
+		return null;
+	}
+
+	private String getOperationFromSOAPAttachment(Iterator<AttachmentPart> it)
+			throws SOAPException {
+		AttachmentPart opAttachment = null;
+
+		while (it.hasNext()) {
+			opAttachment = it.next();
+
+			if ("<operation>".equals(opAttachment.getContentId())) {
+				System.out.println("Found operation in SOAP attachment");
+
+				return opAttachment.getContent().toString();
+			}
+		}
+
+		return null;
 	}
 
 	private int computeResult(Operation operation, int firstArg, int secondArg) {

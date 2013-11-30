@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.soap.AttachmentPart;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
@@ -16,11 +17,14 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.SOAPBinding;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.w3c.dom.Document;
 
@@ -71,15 +75,107 @@ public class JAXWSProviderDispatchClient {
 	public static void main(String[] args) {
 		JAXWSProviderDispatchClient client = new JAXWSProviderDispatchClient();
 
-		client.invokeAdd1(1, 2);
-		client.invokeAdd2(1, 2);
 		client.invokeSubtract1(3, 2);
 		client.invokeException(0, 0);
+		client.invokeAdd1(1, 2);
+		client.invokeAdd2(1, 2);
+	}
+
+	// This method uses JAXB to construct the message
+	private void invokeSubtract1(int i, int j) {
+		int diff = 0;
+
+		try {
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory
+					.newInstance();
+			builderFactory.setNamespaceAware(true);
+			Document doc = builderFactory.newDocumentBuilder().newDocument();
+
+			OperationRequest operationRequest = new OperationRequest(i, j);
+
+			JAXBContext context = JAXBContext.newInstance(
+					OperationRequest.class, OperationResponse.class);
+
+			context.createMarshaller().marshal(operationRequest, doc);
+
+			MessageFactory mf = MessageFactory
+					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
+			SOAPMessage request = mf.createMessage();
+
+			// Specify operation in a SOAP header
+			addOperationSOAPHdr("subtract", request);
+
+			SOAPBody body = request.getSOAPBody();
+
+			body.addDocument(doc);
+
+			SOAPMessage response = dispatch.invoke(request);
+
+			OperationResponse operationResponse = context
+					.createUnmarshaller()
+					.unmarshal(response.getSOAPBody().getFirstChild(),
+							OperationResponse.class).getValue();
+
+			diff = operationResponse.getResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Difference of " + i + " and " + j + " is " + diff);
+	}
+
+	private void addOperationSOAPHdr(String operationName, SOAPMessage request)
+			throws SOAPException {
+		SOAPHeader opHdr = request.getSOAPHeader();
+		QName opHdrQName = new QName(NAMESPACE_URI, "operation", "ns");
+		SOAPHeaderElement opHdrElem = opHdr.addHeaderElement(opHdrQName);
+		opHdrElem.setTextContent(operationName);
+	}
+
+	private void invokeException(int firstArg, int secondArg) {
+		/*
+		 * Operation multiply is not supported so the invocation throws an
+		 * exception. The operation is specified in a SOAP attachment.
+		 */
+
+		try {
+			invokeWithOperationInSOAPAtachment("multiply", firstArg, secondArg);
+		} catch (SOAPFaultException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private SOAPMessage invokeWithOperationInSOAPAtachment(
+			String operationName, int firstArg, int secondArg) {
+		SOAPMessage request = null;
+		try {
+			request = createRequestMessage();
+
+			addOperationSOAPAttachment(operationName, request);
+
+			SOAPBodyElement operation = getOperation(request);
+			populateOperationArgs(operation, firstArg, secondArg);
+		} catch (SOAPException e) {
+			e.printStackTrace();
+		}
+
+		return dispatch.invoke(request);
+	}
+
+	private void addOperationSOAPAttachment(String operationName,
+			SOAPMessage request) {
+		AttachmentPart opAttachment = request.createAttachmentPart(
+				operationName, "text/plain");
+		// Content id becomes <operation> when it reaches the server
+		opAttachment.setContentId("operation");
+
+		request.addAttachmentPart(opAttachment);
 	}
 
 	// Invoke add using one style of SAAJ API
 	private void invokeAdd1(int firstArg, int secondArg) {
-		SOAPMessage response = invoke("add", firstArg, secondArg);
+		SOAPMessage response = invokeWithOperationInHTTPHdr("add", firstArg,
+				secondArg);
 
 		int sum = getResult(response);
 
@@ -99,7 +195,8 @@ public class JAXWSProviderDispatchClient {
 			// Create a message.
 			SOAPMessage request = mf.createMessage();
 
-			addOperationHdr("add");
+			// Specify operation in a HTTP header
+			addOperationHTTPHdr("add");
 
 			// Obtain the SOAP body from SOAPEnvelope.
 			SOAPEnvelope soapEnv = request.getSOAPPart().getEnvelope();
@@ -126,57 +223,10 @@ public class JAXWSProviderDispatchClient {
 				+ sum);
 	}
 
-	// This method uses JAXB to construct the message
-	private void invokeSubtract1(int i, int j) {
-		int diff = 0;
+	private SOAPMessage invokeWithOperationInHTTPHdr(String operationName,
+			int firstArg, int secondArg) {
+		addOperationHTTPHdr(operationName);
 
-		try {
-			DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-					.newInstance();
-			builderFactory.setNamespaceAware(true);
-			Document doc = builderFactory.newDocumentBuilder().newDocument();
-
-			SubtractRequest subtractRequest = new SubtractRequest(i, j);
-
-			JAXBContext context = JAXBContext.newInstance(
-					SubtractRequest.class, SubtractResponse.class);
-
-			context.createMarshaller().marshal(subtractRequest, doc);
-
-			MessageFactory mf = MessageFactory
-					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
-			SOAPMessage request = mf.createMessage();
-
-			addOperationHdr("subtract");
-
-			SOAPBody body = request.getSOAPBody();
-
-			body.addDocument(doc);
-
-			SOAPMessage response = dispatch.invoke(request);
-
-			SubtractResponse subtractResponse = context
-					.createUnmarshaller()
-					.unmarshal(response.getSOAPBody().getFirstChild(),
-							SubtractResponse.class).getValue();
-
-			diff = subtractResponse.getResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("Difference of " + i + " and " + j + " is " + diff);
-	}
-
-	private void invokeException(int firstArg, int secondArg) {
-		// Operation multiply is not supported so the invocation throws an
-		// exception
-		invoke("multiply", firstArg, secondArg);
-	}
-
-	private SOAPMessage invoke(String operationName, int firstArg, int secondArg) {
-		addOperationHdr(operationName);
-		
 		SOAPMessage request = null;
 		try {
 			request = createRequestMessage();
@@ -190,7 +240,7 @@ public class JAXWSProviderDispatchClient {
 		return dispatch.invoke(request);
 	}
 
-	private void addOperationHdr(String opName) {
+	private void addOperationHTTPHdr(String opName) {
 		Map<String, Object> reqCtx = dispatch.getRequestContext();
 
 		Map<String, Object> reqHeaders = new HashMap<String, Object>();
@@ -198,11 +248,11 @@ public class JAXWSProviderDispatchClient {
 
 		reqCtx.put(MessageContext.HTTP_REQUEST_HEADERS, reqHeaders);
 	}
-	
+
 	private SOAPMessage createRequestMessage() throws SOAPException {
 		MessageFactory mf = MessageFactory
 				.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
-		
+
 		return mf.createMessage();
 	}
 

@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 @XmlType(name = "result", namespace = "http://abhijitsarkar.name/webservices/jaxws/provider/")
-public class SubtractResponse {
-	public SubtractResponse() {
+public class OperationResponse {
+	public OperationResponse() {
 
 	}
 
-	public SubtractResponse(int difference) {
+	public OperationResponse(int difference) {
 		this.difference = difference;
 	}
 
