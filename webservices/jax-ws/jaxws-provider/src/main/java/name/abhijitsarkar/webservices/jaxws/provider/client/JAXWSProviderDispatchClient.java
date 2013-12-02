@@ -135,7 +135,7 @@ public class JAXWSProviderDispatchClient {
 	private void invokeException(int firstArg, int secondArg) {
 		/*
 		 * Operation multiply is not supported so the invocation throws an
-		 * exception. The operation is specified in a SOAP attachment.
+		 * SOAPFaultException. The operation is specified in a SOAP attachment.
 		 */
 
 		try {

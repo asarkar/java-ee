@@ -8,12 +8,15 @@ import javax.annotation.Resource;
 import javax.jws.HandlerChain;
 import javax.xml.namespace.QName;
 import javax.xml.soap.AttachmentPart;
+import javax.xml.soap.Detail;
+import javax.xml.soap.DetailEntry;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
@@ -23,9 +26,11 @@ import javax.xml.ws.Provider;
 import javax.xml.ws.Service;
 import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.SOAPBinding;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.w3c.dom.Node;
 
@@ -53,8 +58,7 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 			operation = getOperation(soapMsg);
 		} catch (SOAPException e) {
 			String errorMsg = "A problem occurred while parsing the SOAPMessage";
-			throw new JAXWSProviderServiceFault(errorMsg,
-					new IllegalArgumentException(errorMsg));
+			throw new SOAPFaultException(newSOAPFault(errorMsg));
 		}
 
 		int result = computeResult(operation, args[0], args[1]);
@@ -69,16 +73,14 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 
 		if (firstArgNode == null) {
 			String errorMsg = "Invalid request, expected two arguments, received none.";
-			throw new JAXWSProviderServiceFault(errorMsg,
-					new IllegalArgumentException(errorMsg));
+			throw new SOAPFaultException(newSOAPFault(errorMsg));
 		}
 
 		Node secondArgNode = firstArgNode.getNextSibling();
 
 		if (secondArgNode == null) {
 			String errorMsg = "Invalid request, expected two arguments, received one.";
-			throw new JAXWSProviderServiceFault(errorMsg,
-					new IllegalArgumentException(errorMsg));
+			throw new SOAPFaultException(newSOAPFault(errorMsg));
 		}
 
 		int firstArg = 0;
@@ -89,8 +91,7 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 			secondArg = Integer.valueOf(secondArgNode.getTextContent());
 		} catch (NumberFormatException e) {
 			String errorMsg = "Invalid request, expected two numbers.";
-			throw new JAXWSProviderServiceFault(errorMsg,
-					new IllegalArgumentException(errorMsg));
+			throw new SOAPFaultException(newSOAPFault(errorMsg));
 		}
 
 		return new int[] { firstArg, secondArg };
@@ -121,13 +122,16 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 
 				if (op == null) {
 					String errorMsg = "Invalid request, operation not found.";
-					throw new JAXWSProviderServiceFault(errorMsg,
-							new IllegalArgumentException(errorMsg));
+					throw new SOAPFaultException(newSOAPFault(errorMsg));
 				}
 			}
 		}
 
-		return Operation.findByValue(op);
+		try {
+			return Operation.findByValue(op);
+		} catch (IllegalArgumentException e) {
+			throw new SOAPFaultException(newSOAPFault(e.getMessage()));
+		}
 	}
 
 	private String getOperationFromHTTPHdr() {
@@ -192,8 +196,7 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 			return firstArg - secondArg;
 		default:
 			String errorMsg = "Invalid request, only add and subtract operations are supported.";
-			throw new JAXWSProviderServiceFault(errorMsg,
-					new IllegalArgumentException(errorMsg));
+			throw new SOAPFaultException(newSOAPFault(errorMsg));
 		}
 	}
 
@@ -222,7 +225,7 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 
 			return msg;
 		} catch (Exception e) {
-			throw new JAXWSProviderServiceFault(e.getMessage(), e);
+			throw new WebServiceException(e.getMessage(), e);
 		}
 	}
 
@@ -244,6 +247,34 @@ public class JAXWSProviderService implements Provider<SOAPMessage> {
 			}
 			throw new IllegalArgumentException("Unsupported operation: "
 					+ value);
+		}
+	}
+
+	private SOAPFault newSOAPFault(String errorMsg) {
+		try {
+			MessageFactory mf = MessageFactory
+					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
+
+			SOAPMessage msg = mf.createMessage();
+
+			SOAPFault fault = msg.getSOAPBody().addFault();
+
+			QName faultName = new QName(SOAPConstants.URI_NS_SOAP_ENVELOPE,
+					"Client");
+			fault.setFaultCode(faultName);
+			fault.setFaultString(errorMsg);
+
+			Detail detail = fault.addDetail();
+
+			QName entryName = new QName(
+					"http://abhijitsarkar.name/webservices/jaxws/provider/",
+					"error", "ns");
+			DetailEntry entry = detail.addDetailEntry(entryName);
+			entry.addTextNode(errorMsg);
+
+			return fault;
+		} catch (Exception e) {
+			throw new WebServiceException(e.getMessage(), e);
 		}
 	}
 }
