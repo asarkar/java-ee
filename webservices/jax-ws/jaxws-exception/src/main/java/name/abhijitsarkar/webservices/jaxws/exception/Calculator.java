@@ -17,10 +17,12 @@ public class Calculator {
 
 			DivisionByZero divisionByZero = new DivisionByZero(errorMsg);
 			/*
-			 * Mapped exception: If the client is a dynamic proxy type, then
-			 * it'll see the in the form of the generated exception class. If
-			 * the client is a dispatch type, it'll see the exception in the
-			 * form of a ProtocolException subclass, which in this case is
+			 * Mapped exception: The exception is wrapped in a
+			 * SOAPFaultException, where the service exception becomes the
+			 * detail. If the client is a dynamic proxy type, then it'll see the
+			 * in the form of the generated exception class. If the client is a
+			 * dispatch type, it'll see the exception in the form of a
+			 * ProtocolException subclass, which in this case is
 			 * SOAPFaultException class.
 			 */
 			throw new DivisionByZeroException(errorMsg, divisionByZero);

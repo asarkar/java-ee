@@ -26,4 +26,11 @@ public class SOAPMessageLoggingHandler extends AbstractSOAPHandler {
 
 		return true;
 	}
+	
+	@Override
+	public boolean handleFault(SOAPMessageContext messageContext) {
+		handlerUtil.prettyPrintSOAPMessage(messageContext.getMessage());
+
+		return true;
+	}
 }

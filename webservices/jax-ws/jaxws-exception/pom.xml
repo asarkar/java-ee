@@ -16,7 +16,8 @@
 
   <description>
     If the service is implemented as @WebService, it can throw service exceptions (ones mapped in the WSDL) 
-    or unmapped exceptions (RuntimeException or it's subclass). If the service is implemented as @WebServiceProvider, 
+    or unmapped exceptions (RuntimeException or it's subclass). Service exceptions are wrapped in a
+    SOAPFaultException and the service exception becomes the detail. If the service is implemented as @WebServiceProvider, 
     it should only throw RuntimeException or it's subclass because in absence of a WSDL, 
     it's clients will have no knowledge of any checked exceptions even if it throws one. 
     It may also not throw any exception and just set the body of the response to a SOAPFault,
