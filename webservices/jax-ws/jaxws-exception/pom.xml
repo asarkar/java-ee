@@ -14,6 +14,22 @@
 
   <name>jaxws-exception</name>
 
+  <description>
+    If the service is implemented as @WebService, it can throw service exceptions (ones mapped in the WSDL) 
+    or unmapped exceptions (RuntimeException or it's subclass). If the service is implemented as @WebServiceProvider, 
+    it should only throw RuntimeException or it's subclass because in absence of a WSDL, 
+    it's clients will have no knowledge of any checked exceptions even if it throws one. 
+    It may also not throw any exception and just set the body of the response to a SOAPFault,
+    but in IMHO, it's a good programming practice to throw exceptions explicitly 
+    rather than leaving it up to the client to check for faults.
+  
+    On the client side, if the client is a dynamic proxy type, the only service it can call is one implemented as @WebService. 
+    A dynamic proxy client will see service exceptions in the form of the generated exception class 
+    and unmapped exceptions as a ProtocolException subclass, which almost always is SOAPFaultException class. 
+    If the client is a dispatch type, regardless of how the service is implemented, 
+    it'll see the exception in the form of a ProtocolException subclass, which almost always is SOAPFaultException class.  
+  </description>
+
   <dependencies>
     <dependency>
       <groupId>name.abhijitsarkar.webservices.jaxws</groupId>
