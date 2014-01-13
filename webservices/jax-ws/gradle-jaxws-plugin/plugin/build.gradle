@@ -1,0 +1,29 @@
+apply plugin: "groovy"
+apply plugin: "maven"
+
+sourceCompatibility = 1.7
+group = "name.abhijitsarkar.webservices.jaxws.tools"
+version = "1.0-SNAPSHOT"
+archivesBaseName = "gradle-jaxws-plugin"
+
+jar {
+	manifest {
+		attributes "Implementation-Title": "Gradle JAXWS Plugin", "Implementation-Version": version
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+project.ext { cxfVersion = "2.7.8" }
+
+dependencies {
+	compile(
+			gradleApi(),
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-frontend-jaxws", version: cxfVersion],
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-databinding-jaxb", version: cxfVersion]
+			)
+	testCompile group:"junit", name:"junit", version:"4.11"
+}

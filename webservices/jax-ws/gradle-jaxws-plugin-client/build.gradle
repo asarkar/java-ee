@@ -1,0 +1,59 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.7
+group = "name.abhijitsarkar.webservices.jaxws.tools"
+version = "1.0"
+archivesBaseName = "gradle-jaxws-plugin-client"
+
+jar {
+	manifest {
+		attributes "Implementation-Title": "Gradle JAXWS Plugin Client", "Implementation-Version": version
+	}
+}
+
+project.ext {
+	cxfVersion = "2.7.8"
+	jaxbVersion = "2.2.7"
+}
+
+buildscript {
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
+	dependencies {
+		classpath(
+				[group: "name.abhijitsarkar.webservices.jaxws.tools", name: "gradle-jaxws-plugin", version: "1.0-SNAPSHOT"]
+				)
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+	compile(
+			[group: "org.apache.cxf", name: "cxf-rt-frontend-jaxws", version: cxfVersion],
+			[group: "org.apache.cxf", name: "cxf-rt-transports-http", version: cxfVersion],
+			[group: "javax.xml.bind", name: "jaxb-api", version: jaxbVersion],
+			[group: "com.sun.xml.bind", name: "jaxb-impl", version: jaxbVersion]
+			)
+	runtime (
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-frontend-jaxws", version: cxfVersion],
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-databinding-jaxb", version: cxfVersion]
+			)
+	testCompile group:"junit", name:"junit", version:"4.11"
+}
+
+apply plugin: "jaxws"
+
+jaxWsPlugin {
+	wsdlDir = new File(project.rootDir, "src/main/resources").absolutePath
+	wsdlFiles = [
+		"AWSECommerceService.wsdl"
+	]
+}
+
+defaultTasks "clean", "wsimport", "test"
