@@ -22,8 +22,7 @@ project.ext { cxfVersion = "2.7.8" }
 dependencies {
 	compile(
 			gradleApi(),
-			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-frontend-jaxws", version: cxfVersion],
-			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-databinding-jaxb", version: cxfVersion]
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-core", version: cxfVersion],
 			)
 	testCompile group:"junit", name:"junit", version:"4.11"
 }

@@ -9,14 +9,23 @@ class JAXWSPlugin implements Plugin<Project> {
 	public void apply(Project project) {
 		project.extensions.create("jaxWsPlugin", JAXWSPluginExtension, project)
 
-		project.task("wsimport", type: WSImportTask) {
-			WSDLToJavaClass = WSDLToJava.class
-			classpath = project.sourceSets.main.runtimeClasspath
-			args = createArgsList(project.jaxWsPlugin)
+		project.task("wsimport", type: WSImportTask) << {
+			delegate.WSDLToJavaClass = WSDLToJava.class
+			delegate.classpath = project.sourceSets.main.runtimeClasspath
+			delegate.args = createArgsList(project.jaxWsPlugin)
 
-			doFirst {
-				project.jaxWsPlugin.initParams()
-			}
+			delegate.wsdlDir = project.jaxWsPlugin.wsdlDir
+			delegate.wsdlFiles = project.jaxWsPlugin.wsdlFiles
+			delegate.wsdlUrls = project.jaxWsPlugin.wsdlUrls
+			
+			delegate.initWsdlUrls()
+
+//			println "apply - project.jaxWsPlugin.class: " + project.jaxWsPlugin.class.name
+			println "apply - delegate.class: " + delegate.class.name
+			println "apply - args: " + delegate.args
+			println "apply - wsdlDir: " + delegate.wsdlDir
+			println "apply - wsdlFiles: " + delegate.wsdlFiles
+			println "apply - wsdlUrls: " + delegate.wsdlUrls
 		}
 	}
 

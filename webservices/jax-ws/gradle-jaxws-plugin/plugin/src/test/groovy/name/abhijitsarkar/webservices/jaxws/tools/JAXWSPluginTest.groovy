@@ -2,12 +2,14 @@ package name.abhijitsarkar.webservices.jaxws.tools;
 
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
+import org.junit.Before
 import org.junit.Test
 
 class JAXWSPluginTest {
-	private final Project project
+	private Project project
 
-	JAXWSPluginTest() {
+	@Before
+	public void setUp() {
 		ProjectBuilder projectBuilder = ProjectBuilder.builder()
 		projectBuilder.withName("jaxws-plugin")
 		projectBuilder.withProjectDir(new File("."))
@@ -19,32 +21,12 @@ class JAXWSPluginTest {
 	}
 
 	@Test
-	public void testWsimportTaskAdded() {
-		assert project.tasks.findByName("wsimport")
+	public void testWsimportPluginAdded() {
+		assert project.plugins.hasPlugin(JAXWSPlugin.class)
 	}
 
 	@Test
-	public void testConfigureParams() {
-		project.jaxWsPlugin {
-			wsdlDir = new File(project.rootDir, "src/test/resources").absolutePath
-			wsdlFiles = [
-				"AWSECommerceService.wsdl"
-			]
-
-			initParams()
-		}
-
-		testInitWsdlUrls(project.jaxWsPlugin)
-	}
-
-	private void testInitWsdlUrls(JAXWSPluginExtension extn) {
-		String wsdlFile = new File(project.rootDir, "src/test/resources").toURI().toURL().toString() +
-				"AWSECommerceService.wsdl"
-
-		List<String> wsdlUrls = extn.getWsdlUrls()
-
-		assert wsdlUrls != null
-		assert wsdlUrls.size() == 1
-		assert wsdlUrls[0].toString() == wsdlFile
+	public void testWsimportTaskAdded() {
+		assert project.tasks.findByName("wsimport") != null
 	}
 }
