@@ -1,99 +1,86 @@
 package name.abhijitsarkar.webservices.jaxws.tools;
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.Task
-import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskAction
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class WSImportTask extends DefaultTask {
+	private static final Logger logger = LoggerFactory.getLogger("WSImportTask")
+
 	Class<?> WSDLToJavaClass
 	FileCollection classpath
-	List<String> args = new ArrayList<>()
+	List<String> args
 	String wsdlDir
 	String[] wsdlFiles
-	List<String> wsdlUrls = new ArrayList<>()
+	List<String> wsdlUrls
 
-	WSImportTask() {
+	public WSImportTask() {
 		description "Generates Java artifacts from WSDL."
 	}
 
-//	@Override
-//	Task configure(Closure c) {
-//		c.delegate = this;
-//		c.call();
-//
-//		initWsdlUrls();
-//	}
-
-	void initWsdlUrls() {
-		if (wsdlUrls != null && wsdlUrls.size() > 0) {
-			return;
-		}
-
-		if (wsdlFiles != null && wsdlFiles.size() != 0) {
-			initWsdlUrlsBasedOnWsdlFiles()
-		} else {
-			initWsdlUrlsByFilteringOnWsdlDir()
-		}
+	public Class<?> getWSDLToJavaClass() {
+		return WSDLToJavaClass
 	}
 
-	private void initWsdlUrlsBasedOnWsdlFiles() {
-		wsdlFiles.each {
-			project.logger.debug("Adding " + it + " to wsdlUrls.")
-
-			wsdlUrls.add(WSImportTask.getURLAsString(new File(wsdlDir, it)))
-		}
+	public setWSDLToJavaClass(Class<?> WSDLToJavaClass) {
+		this.WSDLToJavaClass = WSDLToJavaClass
 	}
 
-	private void initWsdlUrlsByFilteringOnWsdlDir() {
-		assert wsdlDir != null, "One of wsdlDir or wsdlFiles must be specified."
-
-		project.logger.debug("No wsdlFiles specified...wsdlDir is scanned for all .wsdl files.")
-
-		final ConfigurableFileTree wsdlRootDir = project.fileTree(wsdlDir)
-
-		wsdlRootDir.include("**/*.wsdl")
-
-		wsdlRootDir.visit {
-			project.logger.debug("Adding " + it + " to wsdlUrls.")
-
-			wsdlUrls.add(WSImportTask.getURLAsString(it.file))
-		}
+	public FileCollection getClasspath() {
+		return classpath
 	}
 
-	private static String getURLAsString(File f) {
-		f.toURI().toURL().toString()
+	public setClasspath(FileCollection classpath) {
+		this.classpath = classpath
+	}
+
+	public List<String> getArgs() {
+		return args
+	}
+
+	public void setArgs(List<String> args) {
+		this.args = args
+	}
+
+	public String getWsdlDir() {
+		return wsdlDir
+	}
+
+	public void setWsdlDir(String wsdlDir) {
+		this.wsdlDir = wsdlDir
+	}
+
+	public String[] getWsdlFiles() {
+		return wsdlFiles
+	}
+
+	public void setWsdlFiles(String[] wsdlFiles) {
+		this.wsdlFiles = wsdlFiles
+	}
+
+	public List<String> getWsdlUrls() {
+		return wsdlUrls
+	}
+
+	public void setWsdlUrls(List<String> wsdlUrls) {
+		this.wsdlUrls = wsdlUrls
 	}
 
 	@TaskAction
 	public void wsimport() {
-//		printDebugInfo();
-
-		wsdlUrls.each { String wsdlUrl ->
+		getWsdlUrls().each { String wsdlUrl ->
 			project.javaexec {
-				setMain(WSDLToJavaClass.name)
-				setClasspath(classpath)
+				delegate.main = this.getWSDLToJavaClass().name
+				delegate.classpath = this.getClasspath()
 
-				List<String> argsPlusWsdlUrl = args.plus(wsdlUrl)
+				List<String> argsPlusWsdlUrl = this.getArgs().plus(wsdlUrl)
 
-				project.logger.info("argsPlusWsdlUrl: " + argsPlusWsdlUrl)
-				//				project.logger.debug("classpath: " + classpath.getAsPath())
+				logger.info("argsPlusWsdlUrl: " + argsPlusWsdlUrl)
 
-				setArgs(argsPlusWsdlUrl)
+				delegate.args = argsPlusWsdlUrl
 			}
 		}
-	}
-
-	private printDebugInfo() {
-		project.logger.debug("WSDLToJavaClass: " + WSDLToJavaClass.name)
-//		project.logger.debug("classpath: \n")
-//		classpath.each {
-//			project.logger.debug(it + " ")
-//		}
-		project.logger.debug("args: " + args)
-		project.logger.debug("wsdlDir: " + wsdlDir)
-		project.logger.debug("wsdlFiles: " + wsdlFiles)
-		project.logger.debug("wsdlUrls: " + wsdlUrls)
 	}
 }

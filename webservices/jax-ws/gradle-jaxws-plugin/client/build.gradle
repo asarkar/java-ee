@@ -13,8 +13,8 @@ jar {
 }
 
 project.ext {
+	jaxWsPluginVersion = "1.0-SNAPSHOT"
 	cxfVersion = "2.7.8"
-	jaxbVersion = "2.2.7"
 }
 
 buildscript {
@@ -24,8 +24,7 @@ buildscript {
 	}
 	dependencies {
 		classpath(
-				[group: "name.abhijitsarkar.webservices.jaxws.tools", name: "gradle-jaxws-plugin", version: "1.0-SNAPSHOT"],
-				[group: "org.apache.cxf", name: "cxf-tools-wsdlto-core", version: "2.7.8"]
+				[group: "name.abhijitsarkar.webservices.jaxws.tools", name: "gradle-jaxws-plugin", version: "1.0-SNAPSHOT"]
 				)
 	}
 }
@@ -36,19 +35,10 @@ repositories {
 }
 
 dependencies {
-	compile(
-			[group: "org.apache.cxf", name: "cxf-rt-frontend-jaxws", version: cxfVersion],
-			[group: "org.apache.cxf", name: "cxf-rt-transports-http", version: cxfVersion],
-			[group: "javax.xml.bind", name: "jaxb-api", version: jaxbVersion],
-			[group: "com.sun.xml.bind", name: "jaxb-impl", version: jaxbVersion]
-			)
 	runtime (
-			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-core", version: cxfVersion]
-			)
-	testCompile(
-			gradleApi(),
-			[group:"junit", name:"junit", version:"4.11"],
-			[group:"org.codehaus.groovy", name:"groovy", version:"2.2.0"]
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-core", version: cxfVersion],
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-databinding-jaxb", version: cxfVersion],
+			[group: "org.apache.cxf", name: "cxf-tools-wsdlto-frontend-jaxws", version: cxfVersion]
 			)
 }
 
@@ -59,6 +49,7 @@ jaxWsPlugin {
 	wsdlFiles = [
 		"AWSECommerceService.wsdl"
 	]
+	packageName = "a.b.c"
 	sourceDestDir = new File(project.buildDir, "classes/test").absolutePath
 }
 

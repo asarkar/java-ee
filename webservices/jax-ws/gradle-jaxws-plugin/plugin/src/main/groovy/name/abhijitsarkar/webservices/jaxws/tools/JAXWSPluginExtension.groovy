@@ -1,11 +1,18 @@
 package name.abhijitsarkar.webservices.jaxws.tools;
 
+import org.apache.cxf.tools.wsdlto.WSDLToJava
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Optional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class JAXWSPluginExtension {
-	final Project project
+	private final Project project
+	private static final Logger logger = LoggerFactory.getLogger("JAXWSPluginExtension")
 
+	@Optional Class<?> WSDLToJavaClass = WSDLToJava.class
 	@Optional String wsdlDir = new File(project.rootDir, "src/main/resources").absolutePath
 	@Optional String[] wsdlFiles
 	@Optional String sourceDestDir = project.buildDir.absolutePath
@@ -21,43 +28,116 @@ class JAXWSPluginExtension {
 		this.project = project
 	}
 
-	public String getWsdlDir() {
-		return wsdlDir
+	Class<?> getWSDLToJavaClass() {
+		WSDLToJavaClass
 	}
 
-	public String[] getWsdlFiles() {
-		return wsdlFiles
+	FileCollection getClasspath() {
+		project.sourceSets.main.runtimeClasspath
 	}
 
-	public String getSourceDestDir() {
-		return sourceDestDir
+	String getWsdlDir() {
+		wsdlDir
 	}
 
-	public String getPackageName() {
-		return packageName
+	String[] getWsdlFiles() {
+		wsdlFiles
 	}
 
-	public String getStaleFile() {
-		return staleFile
+	String getSourceDestDir() {
+		sourceDestDir
 	}
 
-	public float getTarget() {
-		return target
+	String getPackageName() {
+		packageName
 	}
 
-	public boolean isVerbose() {
-		return verbose
+	String getStaleFile() {
+		staleFile
 	}
 
-	public String getWsdlLocation() {
-		return wsdlLocation
+	float getTarget() {
+		target
 	}
 
-	public List<String> getWsdlUrls() {
-		return wsdlUrls
+	boolean isVerbose() {
+		verbose
 	}
 
-	public String getEncoding() {
-		return encoding
+	String getWsdlLocation() {
+		wsdlLocation
+	}
+
+	String getEncoding() {
+		encoding
+	}
+
+	List<String> createArgsList() {
+		List<String> args = new ArrayList<String>()
+
+		args.add("-d")
+		args.add(sourceDestDir)
+
+		if (packageName != null) {
+			args.add("-p")
+			args.add(packageName)
+		}
+
+		if (verbose) {
+			args.add("-verbose")
+		}
+
+		args
+	}
+
+	List<String> initWsdlUrls() {
+		if (wsdlUrls != null && wsdlUrls.size() > 0) {
+			wsdlUrls;
+		}
+
+		if (wsdlFiles != null && wsdlFiles.size() > 0) {
+			initWsdlUrlsBasedOnWsdlFiles()
+		} else {
+			initWsdlUrlsByFilteringOnWsdlDir()
+		}
+	}
+
+	private List<String> initWsdlUrlsBasedOnWsdlFiles() {
+		List<String> tempUrls
+
+		wsdlFiles.each { wsdlURL ->
+			logger.debug("Adding " + wsdlURL + " to wsdlUrls.")
+
+			logger.debug("wsdlFiles: " + wsdlFiles.toString())
+			logger.debug("wsdlUrls: " + wsdlUrls.toString())
+
+			wsdlUrls.add(JAXWSPluginExtension.getURLAsString(new File(wsdlDir, wsdlURL)))
+		}
+
+		wsdlUrls
+	}
+
+	private List<String> initWsdlUrlsByFilteringOnWsdlDir() {
+		assert wsdlDir != null, "One of wsdlDir or wsdlFiles must be specified."
+
+		logger.debug("No wsdlFiles specified...wsdlDir is scanned for all .wsdl files.")
+
+		final ConfigurableFileTree wsdlRootDir = project.fileTree(wsdlDir)
+
+		wsdlRootDir.include("**/*.wsdl")
+
+		List<String> tempUrls
+
+		wsdlRootDir.visit { wsdlURL ->
+			logger.debug("Adding " + wsdlURL + " to wsdlUrls.")
+
+			wsdlUrls.add(JAXWSPluginExtension.getURLAsString(wsdlURL.file))
+		}
+
+		wsdlUrls
+	}
+
+	private static String getURLAsString(File f) {
+		f.toURI().toURL().toString()
 	}
 }
