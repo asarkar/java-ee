@@ -103,8 +103,6 @@ class JAXWSPluginExtension {
 	}
 
 	private List<String> initWsdlUrlsBasedOnWsdlFiles() {
-		List<String> tempUrls
-
 		wsdlFiles.each { wsdlURL ->
 			logger.debug("Adding " + wsdlURL + " to wsdlUrls.")
 
@@ -125,8 +123,6 @@ class JAXWSPluginExtension {
 		final ConfigurableFileTree wsdlRootDir = project.fileTree(wsdlDir)
 
 		wsdlRootDir.include("**/*.wsdl")
-
-		List<String> tempUrls
 
 		wsdlRootDir.visit { wsdlURL ->
 			logger.debug("Adding " + wsdlURL + " to wsdlUrls.")
