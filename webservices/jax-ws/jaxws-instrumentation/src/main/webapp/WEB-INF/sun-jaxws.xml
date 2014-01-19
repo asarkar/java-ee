@@ -3,5 +3,5 @@
 	xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
 	<!-- The URL pattern here seems to be independent of web.xml -->
 	<endpoint implementation="name.abhijitsarkar.webservices.jaxws.instrumentation.Calculator"
-		name="Calculator" url-pattern="/CalculatorService" />
+		name="Calculator" url-pattern="/service/CalculatorService" />
 </endpoints>

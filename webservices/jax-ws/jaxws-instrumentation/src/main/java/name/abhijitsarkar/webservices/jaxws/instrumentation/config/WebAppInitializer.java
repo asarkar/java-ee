@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.sun.xml.ws.transport.http.servlet.WSServlet;
@@ -11,9 +12,6 @@ import com.sun.xml.ws.transport.http.servlet.WSServletContextListener;
 
 public class WebAppInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
-
-	private static final String activeSpringProfiles = System
-			.getProperty("spring.profiles.active");
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
@@ -40,24 +38,21 @@ public class WebAppInitializer extends
 	protected void registerContextLoaderListener(ServletContext servletContext) {
 		super.registerContextLoaderListener(servletContext);
 
-		if (WebAppInitializer.isProfileActive("metro")) {
-			registerJaxWsContextListener(servletContext);
+		registerJAXWSContextListener(servletContext);
+	}
+
+	private void registerJAXWSContextListener(ServletContext servletContext) {
+		switch (JAXWSEngine.getActiveJAXWSEngine()) {
+		case METRO:
+			servletContext.addListener(new WSServletContextListener());
+			break;
+		case CXF:
+			// CXF looks for a file /WEB-INF/cxf-servlet.xml by default or
+			// whatever file path is set against the key "config-location"
+			break;
+		default:
+			throw new RuntimeException("No JAX-WS engine found.");
 		}
-	}
-
-	private static boolean isProfileActive(String profileName) {
-		final boolean isProfileActive = activeSpringProfiles != null
-				&& activeSpringProfiles.contains(profileName);
-
-		System.out.println("Spring profile \"" + profileName + "\" is"
-				+ (isProfileActive ? " " : " NOT ") + "active");
-
-		return isProfileActive;
-	}
-
-	private void registerJaxWsContextListener(ServletContext servletContext) {
-		// Register JAX-WS context listener
-		servletContext.addListener(new WSServletContextListener());
 	}
 
 	@Override
@@ -70,15 +65,22 @@ public class WebAppInitializer extends
 			throws ServletException {
 		super.onStartup(servletContext);
 
-		if (WebAppInitializer.isProfileActive("metro")) {
-			registerJaxWsServlet(servletContext);
-		}
+		registerJAXWSServlet(servletContext);
 	}
 
-	private void registerJaxWsServlet(ServletContext servletContext) {
-		// Register and map the JAX-WS servlet
-		ServletRegistration.Dynamic jaxWs = servletContext.addServlet("jax-ws",
-				new WSServlet());
-		jaxWs.addMapping("/calculator/*");
+	private void registerJAXWSServlet(ServletContext servletContext) {
+		ServletRegistration.Dynamic jaxWsServlet = null;
+
+		switch (JAXWSEngine.getActiveJAXWSEngine()) {
+		case METRO:
+			jaxWsServlet = servletContext.addServlet("metro", new WSServlet());
+			break;
+		case CXF:
+			jaxWsServlet = servletContext.addServlet("cxf", new CXFServlet());
+			break;
+		default:
+			throw new RuntimeException("No JAX-WS engine found.");
+		}
+		jaxWsServlet.addMapping("/service/*");
 	}
 }

@@ -21,7 +21,7 @@ import org.springframework.context.annotation.FilterType;
 @Configuration
 @ComponentScan(basePackages = "name.abhijitsarkar.webservices.jaxws.instrumentation.config", excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DispatcherConfig.class))
 public class AppConfig {
-	private static final String ENDPOINT_URL = "http://localhost:8080/jaxws-instrumentation/CalculatorService";
+	private static final String ENDPOINT_URL = "http://localhost:8080/jaxws-instrumentation/service/CalculatorService";
 	private static final String NAMESPACE_URI = "http://instrumentation.jaxws.webservices.abhijitsarkar.name/";
 	private static final String SERVICE_NAME = "CalculatorService";
 	private static final String PORT_NAME = "CalculatorPort";
