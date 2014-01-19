@@ -1,6 +1,5 @@
 package name.abhijitsarkar.webservices.jaxws.instrumentation.client;
 
-import name.abhijitsarkar.webservices.jaxws.instrumentation.client.CalculatorClient;
 import name.abhijitsarkar.webservices.jaxws.instrumentation.config.AppConfig;
 
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class CalculatorClientTest {
 	public void testInvokeAdd() {
 		for (int i = 0, j = 100; i < 100; i++, j--) {
 			System.out.println("Sum of " + i + " and " + j + " is "
-					+ client.invokeAdd(i, j));
+					+ client.invokeAdd(new AddRequest(i, j)));
 
 			try {
 				// Sleep for 10 sec so that we can monitor via JConsole

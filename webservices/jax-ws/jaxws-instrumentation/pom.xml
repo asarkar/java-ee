@@ -12,6 +12,24 @@
   <packaging>war</packaging>
   <name>jaxws-instrumentation</name>
 
+  <description>
+  <![CDATA[
+  This project demonstrates how to enable JMX MBeans to manage/monitor a JAX-WS service or client. Client monitoring
+  is only supported by Metro, not CXF. This project is configured to use either of the two JAX-WS frameworks and 
+  deploy to any of embedded Jetty, standalone Tomcat or standalone Glassfish. In addition to the Maven goals/phases, 
+  it expects a 'jaxws.engine' JVM parameter and a server profile to be specified on the command line. 
+  For example, in order to use Metro and deploy to Tomcat, one would execute the following command:
+  > mvn clean package -Djaxws.engine=metro -P tomcat
+  
+  Note that none of the servers come with JMX monitoring enabled and the method to enable it varies from server to 
+  server. For Jetty, jetty-jmx.xml needs to be modified (a working version can be found in src/main/config). 
+  For Tomcat 7 and Glassfish 4, some JVM properties need to be set before the server startup. For Tomcat, 
+  those properties may be set in a setenv.sh file in $CATALINA_HOME/bin directory, and for Glassfish, either through
+  'asadmin' tool or by manually editing the domain.xml under the <domain-name>/config directory. The properties that
+  need set can be found under the Tomcat plugin configuration section in this file.
+  ]]>
+  </description>
+
   <properties>
     <spring.version>4.0.0.RELEASE</spring.version>
     <cxf.version>2.7.8</cxf.version>
@@ -201,13 +219,10 @@
           <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
-              <packagingExcludes>WEB-INF/cxf-servlet.xml</packagingExcludes>
+              <packagingExcludes>WEB-INF/cxf-servlet.xml,WEB-INF/classes/**/CXFConfig.class</packagingExcludes>
             </configuration>
           </plugin>
         </plugins>
-        <!-- <pluginManagement> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
-          <artifactId>maven-compiler-plugin</artifactId> <configuration> <excludes> <exclude>**/CXFJMXConfig.java</exclude> 
-          </excludes> </configuration> </plugin> </plugins> </pluginManagement> -->
       </build>
     </profile>
     <profile>

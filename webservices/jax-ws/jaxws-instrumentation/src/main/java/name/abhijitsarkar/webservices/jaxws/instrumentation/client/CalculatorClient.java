@@ -1,88 +1,65 @@
 package name.abhijitsarkar.webservices.jaxws.instrumentation.client;
 
-import java.util.Iterator;
-
+import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
-import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPConstants;
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 
+import org.w3c.dom.Document;
+
 public class CalculatorClient {
 	private final Dispatch<SOAPMessage> dispatch;
-	private String namespaceUri;
 
-	public CalculatorClient(Service service, QName portQName,
-			String namespaceUri) {
+	public CalculatorClient(Service service, QName portQName) {
 		/** Create a Dispatch instance from a service. **/
 		dispatch = service.createDispatch(portQName, SOAPMessage.class,
 				Service.Mode.MESSAGE);
-		this.namespaceUri = namespaceUri;
 	}
 
-	// TODO: Use JAXB
-	int invokeAdd(int firstArg, int secondArg) {
+	// Note: When Metro client monitoring is enabled, it is the application's
+	// responsibility to close the port proxy by casting it to Closeable and
+	// invoking close() on it. There's no way to get a port without a SEI so
+	// dispatch clients could cause resource leak if Metro client monitoring is
+	// enabled.
+	int invokeAdd(AddRequest addRequest) {
 		int sum = 0;
 
-		/** Create SOAPMessage request. **/
 		try {
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory
+					.newInstance();
+			builderFactory.setNamespaceAware(true);
+			Document doc = builderFactory.newDocumentBuilder().newDocument();
+
+			JAXBContext context = JAXBContext.newInstance(AddRequest.class,
+					AddResponse.class);
+
+			context.createMarshaller().marshal(addRequest, doc);
+
 			MessageFactory mf = MessageFactory
 					.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
-			// Create a message.
 			SOAPMessage request = mf.createMessage();
 
-			// Obtain the SOAP body from SOAPEnvelope.
-			SOAPEnvelope soapEnv = request.getSOAPPart().getEnvelope();
+			SOAPBody body = request.getSOAPBody();
 
-			// Construct the message payload.
-			Name bodyName = soapEnv.createName("add", "ns", namespaceUri);
-			SOAPBody body = soapEnv.getBody();
-			SOAPBodyElement operation = body.addBodyElement(bodyName);
+			body.addDocument(doc);
 
-			populateOperationArgs(operation, firstArg, secondArg);
-
-			request.saveChanges();
-
-			/** Invoke the service endpoint. **/
 			SOAPMessage response = dispatch.invoke(request);
 
-			sum = getResult(response);
+			AddResponse addResponse = context
+					.createUnmarshaller()
+					.unmarshal(response.getSOAPBody().getFirstChild(),
+							AddResponse.class).getValue();
+
+			sum = addResponse.getSum();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return sum;
-	}
-
-	private void populateOperationArgs(SOAPBodyElement operation, int firstArg,
-			int secondArg) throws SOAPException {
-		SOAPElement arg0 = operation.addChildElement("arg0");
-		arg0.addTextNode(Integer.toString(firstArg));
-		SOAPElement arg1 = operation.addChildElement("arg1");
-		arg1.addTextNode(Integer.toString(secondArg));
-	}
-
-	private int getResult(SOAPMessage response) {
-		SOAPBody body = null;
-		try {
-			body = response.getSOAPBody();
-		} catch (SOAPException e) {
-			e.printStackTrace();
-
-			return 0;
-		}
-
-		@SuppressWarnings("unchecked")
-		Iterator<SOAPElement> it = body.getChildElements(new QName(
-				namespaceUri, "addResponse"));
-
-		return Integer.valueOf(it.next().getTextContent());
 	}
 }

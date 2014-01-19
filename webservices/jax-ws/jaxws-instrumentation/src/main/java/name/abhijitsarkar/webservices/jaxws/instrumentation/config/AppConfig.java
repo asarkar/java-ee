@@ -22,7 +22,7 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(basePackages = "name.abhijitsarkar.webservices.jaxws.instrumentation.config", excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DispatcherConfig.class))
 public class AppConfig {
 	private static final String ENDPOINT_URL = "http://localhost:8080/jaxws-instrumentation/service/CalculatorService";
-	private static final String NAMESPACE_URI = "http://instrumentation.jaxws.webservices.abhijitsarkar.name/";
+	public static final String NAMESPACE_URI = "http://instrumentation.jaxws.webservices.abhijitsarkar.name/";
 	private static final String SERVICE_NAME = "CalculatorService";
 	private static final String PORT_NAME = "CalculatorPort";
 	private static final QName serviceName = new QName(NAMESPACE_URI,
@@ -32,7 +32,7 @@ public class AppConfig {
 	@Bean
 	CalculatorClient rmsClient() {
 		final QName portQName = new QName(NAMESPACE_URI, PORT_NAME);
-		return new CalculatorClient(jaxWsService(), portQName, NAMESPACE_URI);
+		return new CalculatorClient(jaxWsService(), portQName);
 	}
 
 	@Bean
