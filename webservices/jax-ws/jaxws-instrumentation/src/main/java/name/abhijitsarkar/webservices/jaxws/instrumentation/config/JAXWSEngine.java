@@ -14,27 +14,26 @@ public enum JAXWSEngine {
 	private static final String activeJAXWSEngine = System
 			.getProperty(JAXWS_ENGINE_PROPERTY);
 
-	public static boolean isActiveJAXWSEngine(JAXWSEngine jAXWSEngine) {
-		if (activeJAXWSEngine == null) {
-			System.out.println("No active deployment profile is found.");
+	private static final JAXWSEngine[] allJAXWSEngines = JAXWSEngine.values();
 
-			return false;
-		}
-
-		System.out.println("Active JAX-WS engine: " + activeJAXWSEngine);
-
-		return activeJAXWSEngine.equalsIgnoreCase(jAXWSEngine.name);
+	public static boolean isActiveJAXWSEngine(JAXWSEngine jaxWsEngine) {
+		return getActiveJAXWSEngine().equals(jaxWsEngine);
 	}
 
 	public static JAXWSEngine getActiveJAXWSEngine() {
-		JAXWSEngine[] allJAXWSEngines = JAXWSEngine.values();
+		return getJAXWSEngineByName(activeJAXWSEngine);
+	}
 
-		for (JAXWSEngine jaxWsEngine : allJAXWSEngines) {
-			if (jaxWsEngine.name.equalsIgnoreCase(activeJAXWSEngine)) {
-				return jaxWsEngine;
+	public static JAXWSEngine getJAXWSEngineByName(String jaxWsEngineName) {
+		if (jaxWsEngineName != null) {
+			for (JAXWSEngine jaxWsEngine : allJAXWSEngines) {
+				if (jaxWsEngine.name.equalsIgnoreCase(jaxWsEngineName)) {
+					return jaxWsEngine;
+				}
 			}
 		}
 
-		return null;
+		throw new IllegalArgumentException("NO JAX-WS engine found with name "
+				+ jaxWsEngineName);
 	}
 }

@@ -139,6 +139,9 @@
           <version>2.2</version>
           <configuration>
             <charset>UTF-8</charset>
+            <update>true</update>
+            <username>${tomcat.admin.username}</username>
+            <password>${tomcat.admin.password}</password>
             <systemProperties>
               <com.sun.management.jmxremote>true</com.sun.management.jmxremote>
               <com.sun.management.jmxremote.port>1099</com.sun.management.jmxremote.port>
@@ -181,11 +184,6 @@
                 </goals>
                 <configuration>
                   <properties>
-                    <!-- Set the JAX-WS engine used -->
-                    <property>
-                      <name>jaxws.engine</name>
-                      <value>metro</value>
-                    </property>
                     <!-- Set JMX monitoring properties -->
                     <property>
                       <name>com.sun.xml.ws.monitoring.endpoint</name>
@@ -236,26 +234,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>set-system-properties</goal>
-                </goals>
-                <configuration>
-                  <properties>
-                    <!-- Set the JAX-WS engine used -->
-                    <property>
-                      <name>jaxws.engine</name>
-                      <value>cxf</value>
-                    </property>
-                  </properties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
               <packagingExcludes>WEB-INF/sun-jaxws.xml</packagingExcludes>
@@ -300,6 +278,10 @@
     </profile>
     <profile>
       <id>tomcat</id>
+      <properties>
+        <tomcat.admin.username>admin</tomcat.admin.username>
+        <tomcat.admin.password>admin</tomcat.admin.password>
+      </properties>
       <dependencies>
         <!-- Tomcat doesn't ship with a JSTL implementation so package one -->
         <dependency>
