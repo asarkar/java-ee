@@ -14,8 +14,8 @@
 
   <description>
   <![CDATA[
-  This project demonstrates how to enable JMX MBeans to manage/monitor a JAX-WS service or client. Client monitoring
-  is only supported by Metro, not CXF. This project is configured to use either of the two JAX-WS frameworks and 
+  This project demonstrates how to enable JMX MBeans to manage/monitor a JAX-WS service or client. 
+  This project is configured to use either CXF or Metro framework and 
   deploy to any of embedded Jetty, standalone Tomcat or standalone Glassfish. In addition to the Maven goals/phases, 
   it expects a JAX-WS engine profile and a server profile to be specified on the command line. 
   For example, in order to use Metro and deploy to Tomcat, one would execute the following command:
