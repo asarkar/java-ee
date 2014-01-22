@@ -219,7 +219,7 @@
           <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
-              <packagingExcludes>WEB-INF/cxf-servlet.xml,WEB-INF/classes/**/CXFConfig.class</packagingExcludes>
+              <packagingExcludes>WEB-INF/classes/**/CXFConfig.class</packagingExcludes>
             </configuration>
           </plugin>
         </plugins>
