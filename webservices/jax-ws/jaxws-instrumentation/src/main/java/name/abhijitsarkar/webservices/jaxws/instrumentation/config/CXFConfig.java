@@ -1,8 +1,12 @@
 package name.abhijitsarkar.webservices.jaxws.instrumentation.config;
 
 import javax.annotation.PostConstruct;
+import javax.xml.ws.Endpoint;
+
+import name.abhijitsarkar.webservices.jaxws.instrumentation.Calculator;
 
 import org.apache.cxf.Bus;
+import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.management.InstrumentationManager;
 import org.apache.cxf.management.counters.CounterRepository;
 import org.apache.cxf.management.jmx.InstrumentationManagerImpl;
@@ -24,12 +28,14 @@ public class CXFConfig {
 		Assert.notNull(cxfBus, "CXF bus must not be null.");
 	}
 
-	// @Bean
-	// public Endpoint calculator() {
-	// EndpointImpl endpoint = new EndpointImpl(cxfBus, new Calculator());
-	// endpoint.setAddress("/CalculatorService");
-	// return endpoint;
-	// }
+	@Bean
+	public Endpoint calculator() {
+		EndpointImpl endpoint = new EndpointImpl(cxfBus, new Calculator());
+
+		endpoint.publish("/CalculatorService");
+
+		return endpoint;
+	}
 
 	@Bean
 	public InstrumentationManager instrumentationManager() {
