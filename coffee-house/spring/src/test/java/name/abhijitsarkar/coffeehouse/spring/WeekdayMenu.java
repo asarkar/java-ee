@@ -18,36 +18,30 @@ package name.abhijitsarkar.coffeehouse.spring;
 
 import name.abhijitsarkar.coffeehouse.Coffee;
 import name.abhijitsarkar.coffeehouse.Menu;
-import org.springframework.context.annotation.Primary;
+import name.abhijitsarkar.coffeehouse.spring.support.ConditionalOnDayOfTheWeek;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Abhijit Sarkar
  */
 
-@Named
-@Primary
-public class AlternateMenu extends Menu {
-    private List<Coffee.Blend> blends;
-    private List<Coffee.Flavor> flavors;
+@Component
+@ConditionalOnDayOfTheWeek
+public class WeekdayMenu extends Menu {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeekdayMenu.class);
 
     @PostConstruct
     public void postConstruct() {
-        /* Hate to create a List from a List but asList() returns a barebone implementation that doesn't support
-         * the remove() operation.
-         */
-        final List<Coffee.Blend> blendsOnTheMenu = new ArrayList<>(Arrays.asList(Coffee.Blend.values()));
+        LOGGER.debug("Creating a weekday menu.");
+
+        final List<Coffee.Blend> blendsOnTheMenu = super.getBlends();
         blendsOnTheMenu.remove(Coffee.Blend.DECAF);
 
-        final List<Coffee.Flavor> flavorsOnTheMenu = new ArrayList<>(Arrays.asList(Coffee.Flavor.values()));
-        flavorsOnTheMenu.remove(Coffee.Flavor.MOCHA);
-
         this.setBlends(blendsOnTheMenu);
-        this.setFlavors(flavorsOnTheMenu);
     }
 }

@@ -19,13 +19,27 @@ package name.abhijitsarkar.coffeehouse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Abhijit Sarkar
  */
-public class Menu {
+public abstract class Menu {
     private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
+
+    public Menu() {
+        /* Arrays.asList() returns a barebone List implementation that doesn't have many optional method implemented.
+         * Subclasses are going to get an UnsupportedOperationException if they try to invoke any of those methods.
+         * Converting the list into an ArrayList avoids that problem.
+         */
+        final List<Coffee.Blend> blendsOnTheMenu = new ArrayList<>(Arrays.asList(Coffee.Blend.values()));
+        final List<Coffee.Flavor> flavorsOnTheMenu = new ArrayList<>(Arrays.asList(Coffee.Flavor.values()));
+
+        setBlends(blendsOnTheMenu);
+        setFlavors(flavorsOnTheMenu);
+    }
 
     private List<Coffee.Blend> blends;
     private List<Coffee.Flavor> flavors;

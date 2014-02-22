@@ -13,3 +13,27 @@
  * A copy of the GNU General Public License accompanies this software,
  * and is also available at http://www.gnu.org/licenses.
  */
+
+package name.abhijitsarkar.coffeehouse.spring.support;
+
+import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Abhijit Sarkar
+ */
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Conditional(DayOfTheWeekCondition.class)
+public @interface ConditionalOnDayOfTheWeek {
+    public DayOfTheWeek value() default DayOfTheWeek.WEEKDAY;
+
+    public enum DayOfTheWeek {
+        WEEKDAY, WEEKEND;
+    }
+}

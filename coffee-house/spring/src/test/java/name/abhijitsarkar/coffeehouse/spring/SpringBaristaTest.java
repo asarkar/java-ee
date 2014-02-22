@@ -73,7 +73,7 @@ public class SpringBaristaTest {
     }
 
     @Test(expected = NotOnTheMenuException.class)
-    public void testServeDecaf() {
+    public void testWeekdayMenu() {
         barista.serve("decaf");
     }
 

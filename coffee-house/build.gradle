@@ -14,23 +14,15 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-buildscript {
-    repositories { mavenCentral() }
-    dependencies {
-        classpath(
-                // https://github.com/stevesaliman/gradle-cobertura-plugin
-                [group: 'net.saliman', name: 'gradle-cobertura-plugin', version: coberturaPluginVersion]
-        )
-    }
-}
-
-allprojects {
+subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
-    apply plugin: 'cobertura'
+    apply plugin: 'jacoco'
     apply plugin: 'pmd'
 
     sourceCompatibility = projectSourceCompatibility
+    targetCompatibility = projectSourceCompatibility
+
     group = projectGroup
     version = projectVersion
 
@@ -57,9 +49,14 @@ allprojects {
         }
     }
 
-    [instrument, copyCoberturaDatafile, generateCoberturaReport,
-            performCoverageCheck].each {
-        it.onlyIf { !project.hasProperty('skipCoverage') }
+    jacoco {
+        toolVersion = '0.6.4.201312101107'
+    }
+
+    jacocoTestReport {
+        reports {
+            html.destination "${buildDir}/reports/jacoco"
+        }
     }
 
     dependencies {
@@ -69,8 +66,6 @@ allprojects {
         )
 
         testCompile(
-                // hamcrest should appear before junit to avoid classpath problems
-                //  [group: 'org.hamcrest', name: 'hamcrest-all', version: hamcrestVersion],
                 [group: 'junit', name: 'junit', version: junitVersion]
         )
         pmd([group: 'net.sourceforge.pmd', name: 'pmd', version: pmdVersion])
@@ -86,28 +81,6 @@ allprojects {
     }
 
     jar { manifest.attributes provider: 'Abhijit Sarkar' }
-
-    build.dependsOn tasks.cobertura
-}
-
-test {
-    // Makes the standard streams (err and out) visible at console when running tests
-    testLogging.showStandardStreams = true
-
-    dependsOn subprojects.test
-}
-
-cobertura {
-    coberturaVersion = project.coberturaVersion
-
-    coverageSourceDirs = project.allprojects.sourceSets.collect {
-        // srcDirs is a Set<File>
-        it.main.java.srcDirs
-    }.flatten { it }
-
-    coverageDirs = project.allprojects.sourceSets.main.output.classesDir
-
-    coverageMergeDatafiles = project.subprojects.buildDir.collect { file("${it}/cobertura/cobertura.ser") }
 }
 
 task wrapper(type: Wrapper) {
