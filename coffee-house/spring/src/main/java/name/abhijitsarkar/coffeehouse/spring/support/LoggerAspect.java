@@ -16,7 +16,7 @@
 
 package name.abhijitsarkar.coffeehouse.spring.support;
 
-import name.abhijitsarkar.coffeehouse.Coffee;
+import name.abhijitsarkar.coffeehouse.support.LoggingHelper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -25,16 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Locale;
-
 /**
  * @author Abhijit Sarkar
  */
 
 @Component
 @Aspect
-public class OrderValidatorAspect {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderValidatorAspect.class);
+public class LoggerAspect {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggerAspect.class);
 
     /* Define a pointcut, for the execution of all methods that return type 'Coffee',
      * are defined in the 'Barista' interface, named 'serve' and takes at least one String argument. */
@@ -56,23 +54,16 @@ public class OrderValidatorAspect {
      *      && args(String blend, ..)")
      * public void order(String blend)
      * and advice would become:
-     * @Before("name.abhijitsarkar.coffeehouse.spring.support.OrderValidatorAspect.order(blend)")
+     * @Before("name.abhijitsarkar.coffeehouse.spring.support.LoggerAspect.order(blend)")
      *
      * Since the number of arguments are variable, we resort to the JoinPoint instead of the 'binding' args.
      */
-    @Before("name.abhijitsarkar.coffeehouse.spring.support.OrderValidatorAspect.order()")
+    @Before("name.abhijitsarkar.coffeehouse.spring.support.LoggerAspect.order()")
     public void validateOrder(final JoinPoint joinPoint) {
         LOGGER.debug("Intercepted {}.", joinPoint.getSignature());
 
         final Object[] args = joinPoint.getArgs();
 
-        final String orderedBlend = args[0].toString();
-
-        Coffee.Blend.valueOf(orderedBlend.toUpperCase(Locale.getDefault()));
-
-        if (args.length == 2) {
-            final String orderedFlavor = args[1].toString();
-            Coffee.Flavor.valueOf(orderedFlavor.toUpperCase(Locale.getDefault()));
-        }
+        LoggingHelper.logArgs(LOGGER, args);
     }
 }

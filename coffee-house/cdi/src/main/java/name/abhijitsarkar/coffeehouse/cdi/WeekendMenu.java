@@ -14,25 +14,25 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring.support;
+package name.abhijitsarkar.coffeehouse.cdi;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import name.abhijitsarkar.coffeehouse.Menu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Named;
 
 /**
  * @author Abhijit Sarkar
  */
 
-@Configuration
-@ComponentScan(basePackages = "name.abhijitsarkar.coffeehouse.spring")
-@EnableAspectJAutoProxy
-public abstract class AppConfig {
+@Named
+public class WeekendMenu extends Menu {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeekendMenu.class);
 
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
+    public WeekendMenu() {
+        super();
+
+        LOGGER.debug("Creating a weekend menu.");
     }
 }

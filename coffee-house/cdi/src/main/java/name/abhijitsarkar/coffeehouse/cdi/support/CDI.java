@@ -14,25 +14,26 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring.support;
+package name.abhijitsarkar.coffeehouse.cdi.support;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import javax.enterprise.inject.Stereotype;
+import javax.inject.Named;
+import javax.inject.Qualifier;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Abhijit Sarkar
  */
 
-@Configuration
-@ComponentScan(basePackages = "name.abhijitsarkar.coffeehouse.spring")
-@EnableAspectJAutoProxy
-public abstract class AppConfig {
-
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
-    }
+@Documented
+@Named
+@Stereotype
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface CDI {
 }

@@ -22,8 +22,6 @@ package name.abhijitsarkar.coffeehouse;
 public class Coffee {
     private final Blend blend;
     private final Flavor flavor;
-    private int sugar;
-    private int cream;
 
     public Coffee(final Blend blend) {
         this(blend, Flavor.NONE);
@@ -40,22 +38,6 @@ public class Coffee {
 
     public Flavor getFlavor() {
         return flavor;
-    }
-
-    public int getSugar() {
-        return sugar;
-    }
-
-    public void setSugar(final int sugar) {
-        this.sugar = sugar;
-    }
-
-    public int getCream() {
-        return cream;
-    }
-
-    public void setCream(final int cream) {
-        this.cream = cream;
     }
 
     @Override
@@ -92,9 +74,7 @@ public class Coffee {
         return "Coffee{" +
                 "blend=" + blend +
                 ", flavor=" + flavor +
-                ", sugar=" + sugar +
-                ", cream=" + cream +
-                '}';
+                "}";
     }
 
     public enum Blend {

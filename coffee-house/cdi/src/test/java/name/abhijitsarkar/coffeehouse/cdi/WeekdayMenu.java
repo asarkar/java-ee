@@ -14,24 +14,34 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
+package name.abhijitsarkar.coffeehouse.cdi;
 
-
-import name.abhijitsarkar.coffeehouse.Barista;
+import name.abhijitsarkar.coffeehouse.Coffee;
 import name.abhijitsarkar.coffeehouse.Menu;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Alternative;
+import javax.inject.Named;
+import java.util.List;
 
 /**
  * @author Abhijit Sarkar
  */
 
-/* May use general-purpose @Component too */
-@Service
-public class SpringBarista extends Barista {
+@Named
+@Alternative
+public class WeekdayMenu extends Menu {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeekdayMenu.class);
 
-    @Autowired
-    public SpringBarista(final Menu menu) {
-        super(menu);
+    @PostConstruct
+    public void postConstruct() {
+        LOGGER.debug("Creating a weekday menu.");
+
+        final List<Coffee.Blend> blendsOnTheMenu = super.getBlends();
+        blendsOnTheMenu.remove(Coffee.Blend.DECAF);
+
+        this.setBlends(blendsOnTheMenu);
     }
 }

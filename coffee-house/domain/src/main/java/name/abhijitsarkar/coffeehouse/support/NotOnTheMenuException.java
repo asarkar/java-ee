@@ -14,7 +14,7 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse;
+package name.abhijitsarkar.coffeehouse.support;
 
 /**
  * @author Abhijit Sarkar

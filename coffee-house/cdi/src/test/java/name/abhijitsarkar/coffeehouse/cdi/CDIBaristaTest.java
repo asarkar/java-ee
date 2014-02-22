@@ -14,34 +14,30 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
+package name.abhijitsarkar.coffeehouse.cdi;
 
-import name.abhijitsarkar.coffeehouse.Barista;
 import name.abhijitsarkar.coffeehouse.Coffee;
 import name.abhijitsarkar.coffeehouse.support.NotOnTheMenuException;
-import name.abhijitsarkar.coffeehouse.spring.support.AppConfig;
+import name.abhijitsarkar.coffeehouse.cdi.support.CDI;
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 /**
  * @author Abhijit Sarkar
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
-public class SpringBaristaTest {
+@RunWith(CdiTestRunner.class)
+public class CDIBaristaTest {
 
-    /* JSR-330 standard annotations.
-     * http://docs.spring.io/spring/docs/4.0.x/spring-framework-reference/html/beans.html#beans-standard-annotations
-     */
     @Inject
-    private Barista barista;
+    @CDI
+    private CDIBarista barista;
 
     @Before
     public void setUp() {
@@ -77,7 +73,7 @@ public class SpringBaristaTest {
         barista.serve("decaf");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ConstraintViolationException.class)
     public void testNoSuchBlend() {
         barista.serve("light");
     }

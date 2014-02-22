@@ -14,25 +14,23 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring.support;
+package name.abhijitsarkar.coffeehouse.support;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.slf4j.Logger;
 
 /**
  * @author Abhijit Sarkar
  */
+public class LoggingHelper {
+    public static void logArgs(Logger logger, Object[] args) {
+        final String orderedBlend = args[0].toString();
 
-@Configuration
-@ComponentScan(basePackages = "name.abhijitsarkar.coffeehouse.spring")
-@EnableAspectJAutoProxy
-public abstract class AppConfig {
+        logger.debug("Ordered blend: {}.", orderedBlend);
 
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
+        if (args.length == 2) {
+            final String orderedFlavor = args[1].toString();
+
+            logger.debug("Ordered flavor: {}.", orderedFlavor);
+        }
     }
 }

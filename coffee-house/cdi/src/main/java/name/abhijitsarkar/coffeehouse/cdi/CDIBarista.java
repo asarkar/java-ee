@@ -14,24 +14,37 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
-
+package name.abhijitsarkar.coffeehouse.cdi;
 
 import name.abhijitsarkar.coffeehouse.Barista;
+import name.abhijitsarkar.coffeehouse.Coffee;
 import name.abhijitsarkar.coffeehouse.Menu;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import name.abhijitsarkar.coffeehouse.cdi.support.CDI;
+import name.abhijitsarkar.coffeehouse.cdi.support.Logged;
+
+import javax.inject.Inject;
 
 /**
  * @author Abhijit Sarkar
  */
 
-/* May use general-purpose @Component too */
-@Service
-public class SpringBarista extends Barista {
+/* http://docs.oracle.com/javaee/7/tutorial/doc/cdi-basic004.htm */
 
-    @Autowired
-    public SpringBarista(final Menu menu) {
+@CDI
+public class CDIBarista extends Barista {
+
+    @Inject
+    public CDIBarista(final Menu menu) {
         super(menu);
+    }
+
+    @Logged
+    public Coffee serve(final String blend) {
+        return super.serve(blend);
+    }
+
+    @Logged
+    public Coffee serve(final String blend, final String flavor) {
+        return super.serve(blend, flavor);
     }
 }

@@ -13,3 +13,21 @@
  * A copy of the GNU General Public License accompanies this software,
  * and is also available at http://www.gnu.org/licenses.
  */
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            [group: 'javax.inject', name: 'javax.inject', version: injectApiVersion],
+            [group: 'javax.validation', name: 'validation-api', version: beanValidationApiVersion],
+            [group: 'javax.annotation', name: 'javax.annotation-api', version: annotationApiVersion],
+    )
+    runtime(
+            [group: 'org.hibernate', name: 'hibernate-validator', version: hibernateValidatorVersion],
+            [group: 'javax.el', name: 'javax.el-api', version: elVersion],
+            [group: 'org.glassfish.web', name: 'javax.el', version: glassfishElVersion],
+            [group: 'org.hibernate', name: 'hibernate-validator-cdi', version: hibernateValidatorVersion]
+    )
+}
+
