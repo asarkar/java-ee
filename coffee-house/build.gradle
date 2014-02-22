@@ -14,22 +14,102 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
+buildscript {
+    repositories { mavenCentral() }
+    dependencies {
+        classpath(
+                // https://github.com/stevesaliman/gradle-cobertura-plugin
+                [group: 'net.saliman', name: 'gradle-cobertura-plugin', version: coberturaPluginVersion]
+        )
+    }
+}
+
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'cobertura'
+    apply plugin: 'pmd'
 
     sourceCompatibility = projectSourceCompatibility
     group = projectGroup
     version = projectVersion
 
+    configurations {
+        provided
+    }
+
     repositories {
         mavenCentral()
     }
 
-    dependencies {
-        // hamcrest should appear before junit to avoid classpath problems
-        testCompile(
-//            [group: 'org.hamcrest', name: 'hamcrest-all', version: hamcrestVersion],
-            [group: 'junit', name: 'junit', version: junitVersion]
-        )
+    pmd {
+        toolVersion = pmdVersion
+        ignoreFailures = true
+        targetJdk = projectSourceCompatibility
+        ruleSetFiles = files("${rootProject.projectDir}/src/main/config/pmd/ruleset.xml")
     }
+
+    tasks.withType(Pmd) {
+        it.onlyIf { !project.hasProperty('skipCoverage') }
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    [instrument, copyCoberturaDatafile, generateCoberturaReport,
+            performCoverageCheck].each {
+        it.onlyIf { !project.hasProperty('skipCoverage') }
+    }
+
+    dependencies {
+        provided(
+                [group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion],
+                [group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion]
+        )
+
+        testCompile(
+                // hamcrest should appear before junit to avoid classpath problems
+                //  [group: 'org.hamcrest', name: 'hamcrest-all', version: hamcrestVersion],
+                [group: 'junit', name: 'junit', version: junitVersion]
+        )
+        pmd([group: 'net.sourceforge.pmd', name: 'pmd', version: pmdVersion])
+    }
+
+    sourceSets {
+        [main, test].each {
+            it.compileClasspath += configurations.provided
+            it.runtimeClasspath += configurations.provided
+
+            it.output.resourcesDir = project.file("$buildDir/classes/${it.name}")
+        }
+    }
+
+    jar { manifest.attributes provider: 'Abhijit Sarkar' }
+
+    build.dependsOn tasks.cobertura
+}
+
+test {
+    // Makes the standard streams (err and out) visible at console when running tests
+    testLogging.showStandardStreams = true
+
+    dependsOn subprojects.test
+}
+
+cobertura {
+    coberturaVersion = project.coberturaVersion
+
+    coverageSourceDirs = project.allprojects.sourceSets.collect {
+        // srcDirs is a Set<File>
+        it.main.java.srcDirs
+    }.flatten { it }
+
+    coverageDirs = project.allprojects.sourceSets.main.output.classesDir
+
+    coverageMergeDatafiles = project.subprojects.buildDir.collect { file("${it}/cobertura/cobertura.ser") }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = project.gradleVersion
 }

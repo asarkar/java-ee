@@ -14,7 +14,10 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
+package name.abhijitsarkar.coffeehouse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ import java.util.List;
  * @author Abhijit Sarkar
  */
 public class Menu {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
+
     private List<Coffee.Blend> blends;
     private List<Coffee.Flavor> flavors;
 
@@ -29,7 +34,7 @@ public class Menu {
         return blends;
     }
 
-    public void setBlends(List<Coffee.Blend> blends) {
+    public void setBlends(final List<Coffee.Blend> blends) {
         this.blends = blends;
     }
 
@@ -37,7 +42,25 @@ public class Menu {
         return flavors;
     }
 
-    public void setFlavors(List<Coffee.Flavor> flavors) {
+    public void setFlavors(final List<Coffee.Flavor> flavors) {
         this.flavors = flavors;
+    }
+
+    public boolean isOnTheMenu(final Coffee.Blend orderedBlend, final Coffee.Flavor orderedFlavor) {
+        LOGGER.debug("Searching for blend: {} and flavor: {} on the menu.", orderedBlend, orderedFlavor);
+
+        for (final Coffee.Blend blendOnTheMenu : blends) {
+            for (final Coffee.Flavor flavorOnTheMenu : flavors) {
+                if (orderedBlend.equals(blendOnTheMenu) && orderedFlavor.equals(flavorOnTheMenu)) {
+                    LOGGER.debug("Found the ordered combination of blend and flavor on the menu.");
+
+                    return true;
+                }
+            }
+        }
+
+        LOGGER.debug("Did not find the ordered combination of blend and flavor on the menu.");
+
+        return false;
     }
 }

@@ -14,32 +14,30 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package name.abhijitsarkar.coffeehouse;
 
 /**
  * @author Abhijit Sarkar
  */
-
-// May use general-purpose @Component too
-@Service
-public class Barista {
-
-    @Autowired
-    private Menu menu;
-
-    public Menu menu() {
-        return menu;
+public class NotOnTheMenuException extends RuntimeException {
+    public NotOnTheMenuException() {
+        super();
     }
 
-    public Coffee serve(String blend) {
-        throw new UnsupportedOperationException("Sorry, not ready to serve yet.");
+    public NotOnTheMenuException(final String message) {
+        super(message);
     }
 
-    public Coffee serve(String blend, String flavor) {
-        throw new UnsupportedOperationException("Sorry, not ready to serve yet.");
+    public NotOnTheMenuException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    public NotOnTheMenuException(final Throwable cause) {
+        super(cause);
+    }
+
+    public NotOnTheMenuException(final String message, final Throwable cause, final boolean enableSuppression,
+                                 final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

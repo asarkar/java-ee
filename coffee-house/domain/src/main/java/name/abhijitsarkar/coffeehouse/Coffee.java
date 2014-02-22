@@ -14,7 +14,7 @@
  * and is also available at http://www.gnu.org/licenses.
  */
 
-package name.abhijitsarkar.coffeehouse.spring;
+package name.abhijitsarkar.coffeehouse;
 
 /**
  * @author Abhijit Sarkar
@@ -25,34 +25,56 @@ public class Coffee {
     private int sugar;
     private int cream;
 
-    public Coffee(Blend blend) {
+    public Coffee(final Blend blend) {
         this(blend, Flavor.NONE);
     }
 
-    public Coffee(Blend blend, Flavor flavor) {
+    public Coffee(final Blend blend, final Flavor flavor) {
         this.blend = blend;
         this.flavor = flavor;
     }
 
-    public void setSugar(int sugar) {
+    public Blend getBlend() {
+        return blend;
+    }
+
+    public Flavor getFlavor() {
+        return flavor;
+    }
+
+    public int getSugar() {
+        return sugar;
+    }
+
+    public void setSugar(final int sugar) {
         this.sugar = sugar;
     }
 
-    public void setCream(int cream) {
+    public int getCream() {
+        return cream;
+    }
+
+    public void setCream(final int cream) {
         this.cream = cream;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
 
-        Coffee coffee = (Coffee) o;
+        final Coffee coffee = (Coffee) other;
 
-        if (cream != coffee.cream) return false;
-        if (sugar != coffee.sugar) return false;
-        if (blend != coffee.blend) return false;
-        if (flavor != coffee.flavor) return false;
+        if (blend != coffee.blend) {
+            return false;
+        }
+        if (flavor != coffee.flavor) {
+            return false;
+        }
 
         return true;
     }
@@ -61,8 +83,6 @@ public class Coffee {
     public int hashCode() {
         int result = blend.hashCode();
         result = 31 * result + (flavor != null ? flavor.hashCode() : 0);
-        result = 31 * result + sugar;
-        result = 31 * result + cream;
 
         return result;
     }

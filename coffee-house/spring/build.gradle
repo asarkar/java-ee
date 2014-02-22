@@ -19,10 +19,15 @@ dependencies {
 
     compile(
             [group: 'org.springframework', name: 'spring-beans', version: springVersion],
-            [group: 'org.springframework', name: 'spring-context', version: springVersion]
+            [group: 'org.springframework', name: 'spring-context', version: springVersion],
+            [group: 'org.springframework', name: 'spring-aop', version: springVersion],
+            [group: 'org.aspectj', name: 'aspectjrt', version: aspectjVersion],
     )
-
+    runtime(
+            [group: 'org.aspectj', name: 'aspectjweaver', version: aspectjVersion]
+    )
     testCompile(
-            [group: 'org.springframework', name: 'spring-test', version: springVersion]
+            [group: 'org.springframework', name: 'spring-test', version: springVersion],
+            [group: 'javax.inject', name: 'javax.inject', version: injectApiVersion]
     )
 }
