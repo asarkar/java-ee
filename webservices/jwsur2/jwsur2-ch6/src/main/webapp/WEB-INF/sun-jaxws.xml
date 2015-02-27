@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
-  <endpoint implementation="com.github.mkalin.jwsur2.ch6.tempconvert.TempConvert"
-    name="TempConvert" url-pattern="/jaxws/tc" />
-  <endpoint implementation="com.github.mkalin.jwsur2.ch6.wssecurity.Echo"
-    name="Echo" url-pattern="/jaxws/echo" />
-</endpoints>
