@@ -332,7 +332,6 @@
     <module>appointment-service</module>
     <module>user-service</module>
     <module>aggregrator</module>
-    <module>discovery-service</module>
-    <module>shared-data</module>
+    <module>service-extension</module>
   </modules>
 </project>
