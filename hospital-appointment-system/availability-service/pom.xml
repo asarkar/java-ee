@@ -8,4 +8,12 @@
   </parent>
   <artifactId>availability-service</artifactId>
   <packaging>war</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>service-extension</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>
