@@ -1,19 +1,26 @@
 package name.abhijitsarkar.microservices.availability;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
-
-import name.abhijitsarkar.microservices.extension.Consumes;
-import name.abhijitsarkar.microservices.user.Doctor;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class AvailabilityService {
+    @Inject
+    private SlotsManager slotsManager;
+
     private List<Slot> availableSlots;
 
-    @Consumes(value = Doctor.class)
-    private List<Doctor> doctors;
+    public void initSlots() {
+	Objects.nonNull(slotsManager);
+
+	availableSlots = slotsManager.getAvailableSlots();
+
+	Objects.nonNull(availableSlots);
+    }
 
     public Optional<List<Slot>> findSlotsByDate(String date) {
 	return null;
