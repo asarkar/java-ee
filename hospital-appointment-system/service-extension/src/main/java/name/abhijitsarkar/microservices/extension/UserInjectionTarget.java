@@ -28,28 +28,26 @@ public class UserInjectionTarget<X> implements InjectionTarget<X> {
 
     @Override
     public void inject(X instance, CreationalContext<X> ctx) {
-	wrapped.inject(instance, ctx);
-
 	LOGGER.info("Processing class: {}.", instance.getClass().getName());
+
+	wrapped.inject(instance, ctx);
 
 	producerConsumers
 		.forEach(pc -> {
-		    Field field = pc.getValue();
-
-		    LOGGER.info(
-			    "Setting the value of field: {} using method: {}.",
-			    field.getName(), pc.getKey().getName());
-
-		    field.setAccessible(true);
-
 		    try {
-			field.set(instance,
+			LOGGER.info(
+				"Setting the value of field: {} using method: {}.",
+				pc.getValue(), pc.getKey().getName());
+
+			pc.getValue().setAccessible(true);
+
+			pc.getValue().set(instance,
 				pc.getKey().invoke(null, new Object[] {}));
 		    } catch (SecurityException | IllegalArgumentException
 			    | ReflectiveOperationException e) {
 			LOGGER.error(
 				"An error occurred trying to set the value of field: {}.",
-				field.getName(), e);
+				pc.getValue(), e);
 		    }
 		});
     }

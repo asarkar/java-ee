@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AnnotatedType;
@@ -78,25 +79,27 @@ public class UserInjectionExtension implements Extension {
     }
 
     <X> void processInjectionTarget(@Observes ProcessInjectionTarget<X> pit) {
-	AnnotatedType<X> at = pit.getAnnotatedType();
+	Class<X> clazz = pit.getAnnotatedType().getJavaClass();
 
-	List<SimpleImmutableEntry<Method, Field>> pc = at
-		.getFields()
-		.stream()
+	List<SimpleImmutableEntry<Method, Field>> pc = Stream
+		.of(clazz.getDeclaredFields())
 		.filter(field -> field.isAnnotationPresent(Consumes.class))
-		.peek(field -> {
-		    Field f = field.getJavaMember();
-
-		    LOGGER.info(
-			    "Found @Consumer annotation on field: {} while processing injection target: {}.",
-			    f.getName(), f.getDeclaringClass().getName());
-		})
 		.map(field -> {
 		    Class<?> injectionType = field
 			    .getAnnotation(Consumes.class).value();
 
+		    if (producerMap.get(injectionType) == null) {
+			throw new NoSuchProducerException(
+				"No producer found for type: " + injectionType);
+		    }
+
+		    LOGGER.info(
+			    "Found @Consumer annotation on field: {} while processing injection target: {}.",
+			    field.getName(), field.getDeclaringClass()
+				    .getName());
+
 		    return new SimpleImmutableEntry<>(producerMap
-			    .get(injectionType), field.getJavaMember());
+			    .get(injectionType), field);
 		}).collect(toList());
 
 	if (pc != null && !pc.isEmpty()) {
@@ -122,13 +125,14 @@ public class UserInjectionExtension implements Extension {
 		map.putAll(fieldMap);
 	    }
 
-	    map.compute(f.getClass(), (injectionTarget, consumerField) -> {
+	    Field field = map.compute(f.getDeclaringClass(), (injectionTarget,
+		    consumerField) -> {
 		return consumerField == null ? f : consumerField;
 	    });
 
 	    LOGGER.info(
 		    "Found @Consumer annotation on field: {} while processing annotated type: {}.",
-		    map.get(f).getName(), f.getDeclaringClass().getName());
+		    field.getName(), f.getDeclaringClass().getName());
 
 	    return map;
 	}
@@ -144,13 +148,17 @@ public class UserInjectionExtension implements Extension {
 
 	@Override
 	public Method apply(Class<?> injectionType, Method producerMethod) {
-	    Method method = producerMethod == null ? m : producerMethod;
+	    if (producerMethod != null) {
+		throw new TooManyProducersException(
+			"More than one producer found for type: "
+				+ injectionType.getName());
+	    }
 
 	    LOGGER.info(
 		    "Found @Producer annotation on method: {} while processing annotated type: {}.",
-		    method.getName(), method.getDeclaringClass().getName());
+		    m.getName(), m.getDeclaringClass().getName());
 
-	    return method;
+	    return m;
 	}
     }
 }
