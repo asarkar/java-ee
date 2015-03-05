@@ -1,9 +1,13 @@
 package name.abhijitsarkar.microservices.availability;
 
+import static java.io.File.separator;
+import static java.lang.String.join;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -24,22 +28,28 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class AvailabilityResourceIntegrationTest {
     private static final String SERVICE_NAME = "availability-service";
-    private static final String SERVICE_URL = "http://localhost:8080/"
-	    + SERVICE_NAME + "/slot";
+    private static final String SERVICE_URL = join(separator,
+	    "http://localhost:8080", SERVICE_NAME, "slot");
+    private static final String WEB_APP_PATH = "src/main/webapp";
+    private static final String SERVICE_EXTENSION_MVN_COORD = "name.abhijitsarkar.microservices:service-extension";
 
     private Client client;
 
     // https://github.com/shrinkwrap/resolver
     @Deployment(testable = false)
-    public static WebArchive createDeployment() {
-	Maven.configureResolver().workOffline().withMavenCentralRepo(false)
-		.withClassPathResolution(true)
-		.loadPomFromClassLoaderResource("pom.xml")
-		.resolve("name.abhijitsarkar.microservices:service-extension")
-		.withTransitivity().asFile();
+    public static WebArchive createDeployment() throws FileNotFoundException {
+	File[] serviceExtension = Maven.configureResolver().workOffline()
+		.withMavenCentralRepo(false).withClassPathResolution(true)
+		.loadPomFromFile(new File("pom.xml"))
+		/* Transitive dependencies mess up the deployment. */
+		.resolve(SERVICE_EXTENSION_MVN_COORD).withoutTransitivity()
+		.asFile();
 
 	WebArchive app = create(WebArchive.class, SERVICE_NAME + ".war")
-		.addPackages(true, AvailabilityApp.class.getPackage());
+		.addPackages(true, AvailabilityApp.class.getPackage())
+		.addAsWebInfResource(
+			new File(WEB_APP_PATH, "WEB-INF/beans.xml"))
+		.addAsLibraries(serviceExtension);
 
 	System.out.println(app.toString(true));
 
