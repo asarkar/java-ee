@@ -15,6 +15,7 @@ import javax.ws.rs.core.GenericType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,8 +29,15 @@ public class AvailabilityResourceIntegrationTest {
 
     private Client client;
 
+    // https://github.com/shrinkwrap/resolver
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
+	Maven.configureResolver().workOffline().withMavenCentralRepo(false)
+		.withClassPathResolution(true)
+		.loadPomFromClassLoaderResource("pom.xml")
+		.resolve("name.abhijitsarkar.microservices:service-extension")
+		.withTransitivity().asFile();
+
 	WebArchive app = create(WebArchive.class, SERVICE_NAME + ".war")
 		.addPackages(true, AvailabilityApp.class.getPackage());
 
