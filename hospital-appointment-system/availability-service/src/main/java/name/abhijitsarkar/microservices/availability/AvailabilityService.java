@@ -25,10 +25,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import name.abhijitsarkar.microservices.user.Doctor;
-import name.abhijitsarkar.microservices.user.Doctors;
+import name.abhijitsarkar.microservices.user.Users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 
 @ApplicationScoped
 public class AvailabilityService {
@@ -40,8 +42,11 @@ public class AvailabilityService {
     public static final int END_WORKING_HOUR = 17;
 
     @Inject
-    @Doctors
-    private List<Doctor> doctors;
+    private Users users;
+
+    // @Inject
+    // @Doctors
+    // private List<Doctor> doctors;
 
     private ConcurrentMap<Integer, SimpleImmutableEntry<Slot, Boolean>> slotMap;
 
@@ -52,6 +57,9 @@ public class AvailabilityService {
      */
     @PostConstruct
     public void initSlots() {
+	Objects.requireNonNull(users);
+
+	List<Doctor> doctors = users.getDoctors();
 	Objects.requireNonNull(doctors);
 
 	slotMap = new ConcurrentHashMap<>();
@@ -146,10 +154,6 @@ public class AvailabilityService {
 	return Optional.empty();
     }
 
-    void setDoctors(List<Doctor> doctors) {
-	this.doctors = doctors;
-    }
-
     final static class WorkingHourAdjuster implements TemporalAdjuster {
 	private final int hour;
 
@@ -170,5 +174,9 @@ public class AvailabilityService {
 	    return LocalDateTime.from(input).with(HOUR_OF_DAY, hour)
 		    .with(MINUTE_OF_HOUR, 0);
 	}
+    }
+
+    void setUsers(Users users) {
+	this.users = users;
     }
 }

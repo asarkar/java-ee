@@ -22,6 +22,7 @@ public class AvailabilityResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @DateValidated
     public Response getSlots(@QueryParam("date") String date) {
 	Optional<List<Slot>> slots = service.findSlotsByDate(date);
 

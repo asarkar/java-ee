@@ -4,6 +4,13 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 public class Slot {
     private final int id;
     private final LocalDateTime startDateTime;
@@ -26,8 +33,12 @@ public class Slot {
 	return new Slot(s);
     }
 
-    public static Slot of(int id, LocalDateTime startDateTime,
-	    LocalDateTime endDateTime, String doctorId) {
+    @JsonCreator
+    public static Slot of(
+	    @JsonProperty("id") int id,
+	    @JsonProperty("startDateTime") @JsonSerialize(using = LocalDateTimeSerializer.class) @JsonDeserialize(using = LocalDateTimeDeserializer.class) LocalDateTime startDateTime,
+	    @JsonProperty("endDateTime") @JsonSerialize(using = LocalDateTimeSerializer.class) @JsonDeserialize(using = LocalDateTimeDeserializer.class) LocalDateTime endDateTime,
+	    @JsonProperty("doctorId") String doctorId) {
 	return new Slot(id, startDateTime, endDateTime, doctorId);
     }
 
