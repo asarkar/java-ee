@@ -52,7 +52,7 @@ public class AvailabilityServiceTest {
 
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 
-	assertTrue(s.get().isReserved());
+	assertTrue(service.isSlotReserved(s.get().getId()));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class AvailabilityServiceTest {
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 	s = service.relinquishSlot(firstSlotId);
 
-	assertFalse(s.get().isReserved());
+	assertFalse(service.isSlotReserved(s.get().getId()));
     }
 
     @Test

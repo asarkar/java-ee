@@ -10,20 +10,25 @@ public class Slot {
     private final LocalDateTime endDateTime;
     private final String doctorId;
 
-    private boolean reserved;
-
-    public Slot(Slot other) {
-	this(other.id, other.startDateTime, other.endDateTime, other.doctorId,
-		other.reserved);
+    private Slot(Slot other) {
+	this(other.id, other.startDateTime, other.endDateTime, other.doctorId);
     }
 
-    public Slot(int id, LocalDateTime startDateTime, LocalDateTime endDateTime,
-	    String doctorId, boolean reserved) {
+    private Slot(int id, LocalDateTime startDateTime,
+	    LocalDateTime endDateTime, String doctorId) {
 	this.id = id;
 	this.startDateTime = startDateTime;
 	this.endDateTime = endDateTime;
 	this.doctorId = doctorId;
-	this.reserved = reserved;
+    }
+
+    public static Slot from(Slot s) {
+	return new Slot(s);
+    }
+
+    public static Slot of(int id, LocalDateTime startDateTime,
+	    LocalDateTime endDateTime, String doctorId) {
+	return new Slot(id, startDateTime, endDateTime, doctorId);
     }
 
     public int getId() {
@@ -42,15 +47,11 @@ public class Slot {
 	return doctorId;
     }
 
-    public boolean isReserved() {
-	return reserved;
-    }
-
     @Override
     public String toString() {
 	return "Slot [startDateTime="
 		+ ISO_LOCAL_DATE_TIME.format(startDateTime) + ", endDateTime="
 		+ ISO_LOCAL_DATE_TIME.format(endDateTime) + ", doctorId="
-		+ doctorId + ", isReserved=" + reserved + "]";
+		+ doctorId + "]";
     }
 }

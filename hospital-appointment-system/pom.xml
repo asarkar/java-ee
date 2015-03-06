@@ -356,6 +356,6 @@
     <module>appointment-service</module>
     <module>user-service</module>
     <module>aggregrator</module>
-    <module>service-extension</module>
+    <module>hospital-user</module>
   </modules>
 </project>

@@ -18,6 +18,7 @@ import javax.ws.rs.core.GenericType;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
@@ -31,25 +32,26 @@ public class AvailabilityResourceIntegrationTest {
     private static final String SERVICE_URL = join(separator,
 	    "http://localhost:8080", SERVICE_NAME, "slot");
     private static final String WEB_APP_PATH = "src/main/webapp";
-    private static final String SERVICE_EXTENSION_MVN_COORD = "name.abhijitsarkar.microservices:service-extension";
+    private static final String HOSPITAL_USER_MVN_COORD = "name.abhijitsarkar.microservices:hospital-user";
 
     private Client client;
 
     // https://github.com/shrinkwrap/resolver
     @Deployment(testable = false)
     public static WebArchive createDeployment() throws FileNotFoundException {
-	File[] serviceExtension = Maven.configureResolver().workOffline()
+	File[] hospitalUser = Maven.configureResolver().workOffline()
 		.withMavenCentralRepo(false).withClassPathResolution(true)
 		.loadPomFromFile(new File("pom.xml"))
 		/* Transitive dependencies mess up the deployment. */
-		.resolve(SERVICE_EXTENSION_MVN_COORD).withoutTransitivity()
+		.resolve(HOSPITAL_USER_MVN_COORD).withoutTransitivity()
 		.asFile();
 
 	WebArchive app = create(WebArchive.class, SERVICE_NAME + ".war")
-		.addPackages(true, AvailabilityApp.class.getPackage())
+		.addPackages(true, Filters.exclude(".*Test.*"),
+			AvailabilityApp.class.getPackage())
 		.addAsWebInfResource(
 			new File(WEB_APP_PATH, "WEB-INF/beans.xml"))
-		.addAsLibraries(serviceExtension);
+		.addAsLibraries(hospitalUser);
 
 	System.out.println(app.toString(true));
 

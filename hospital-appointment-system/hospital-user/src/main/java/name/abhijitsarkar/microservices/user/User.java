@@ -1,11 +1,11 @@
 package name.abhijitsarkar.microservices.user;
 
-public abstract class AbstractUser {
+public abstract class User {
     private final String userId;
     private final String firstName;
     private final String lastName;
 
-    public AbstractUser(String userId, String firstName, String lastName) {
+    public User(String userId, String firstName, String lastName) {
 	this.userId = userId;
 	this.firstName = firstName;
 	this.lastName = lastName;
