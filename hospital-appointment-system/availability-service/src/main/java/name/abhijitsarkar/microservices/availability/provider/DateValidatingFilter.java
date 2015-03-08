@@ -1,6 +1,8 @@
-package name.abhijitsarkar.microservices.availability;
+package name.abhijitsarkar.microservices.availability.provider;
 
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,7 +20,9 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@DateValidated
+/* c.f. http://docs.oracle.com/javaee/7/api/javax/ws/rs/container/PreMatching.html
+ * "Any named binding annotations will be ignored on a component annotated with the @PreMatching annotation." */
+//@DateValidated
 @Provider
 @PreMatching
 @Priority(Priorities.HEADER_DECORATOR)
@@ -34,15 +38,15 @@ public class DateValidatingFilter implements ContainerRequestFilter {
 
 	UriInfo uriInfo = requestContext.getUriInfo();
 
-	LocalDate today = LocalDate.now();
-
 	if (isDatePresent(uriInfo)) {
 	    return;
 	}
 
+	LocalDate nextMonday = LocalDate.now().with(nextOrSame(MONDAY));
+
 	URI requestUri = uriInfo.getRequestUriBuilder()
 		.replaceQueryParam(DATE, "{date}")
-		.build(ISO_LOCAL_DATE.format(today));
+		.build(ISO_LOCAL_DATE.format(nextMonday));
 
 	LOGGER.info("Original request URI: {}.", uriInfo.getRequestUri());
 	LOGGER.info("Modified request URI: {}.", requestUri);

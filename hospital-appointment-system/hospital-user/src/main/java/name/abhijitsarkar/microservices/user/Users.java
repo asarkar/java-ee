@@ -7,23 +7,19 @@ import java.io.UncheckedIOException;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import name.abhijitsarkar.microservices.representation.ObjectMapperFactory;
 
 @ApplicationScoped
 public class Users {
-    private static final ObjectMapper mapper = new ObjectMapper();
-    
-    public Users() {
-	/* Register optional Jackson module to support Java 8 datetime types. */
-	mapper.registerModule(new JSR310Module());
+    @Inject
+    private ObjectMapperFactory mapperFactory;
+
+    void setMapperFactory(ObjectMapperFactory mapperFactory) {
+	this.mapperFactory = mapperFactory;
     }
-    
-    public ObjectMapper getMapper() {
-	return mapper;
-    }
-    
+
     // @Produces
     // @Doctors
     public List<Doctor> getDoctors() {
@@ -36,13 +32,12 @@ public class Users {
 	return getUsers("/patients.json", Patient.class);
     }
 
-    private static <T extends User> List<T> getUsers(String filename,
-	    Class<T> clazz) {
+    private <T extends User> List<T> getUsers(String filename, Class<T> clazz) {
 	try {
-	    List<T> users = mapper.readValue(
+	    List<T> users = mapperFactory.getObjectMapper().readValue(
 		    Users.class.getResource(filename),
-		    mapper.getTypeFactory().constructCollectionType(List.class,
-			    clazz));
+		    mapperFactory.getObjectMapper().getTypeFactory()
+			    .constructCollectionType(List.class, clazz));
 
 	    return unmodifiableList(users);
 	} catch (IOException e) {

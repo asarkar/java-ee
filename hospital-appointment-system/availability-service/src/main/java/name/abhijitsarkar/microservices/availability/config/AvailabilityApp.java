@@ -1,4 +1,4 @@
-package name.abhijitsarkar.microservices.availability;
+package name.abhijitsarkar.microservices.availability.config;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

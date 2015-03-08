@@ -1,15 +1,16 @@
-package name.abhijitsarkar.microservices.availability;
+package name.abhijitsarkar.microservices.availability.domain;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 import java.time.LocalDateTime;
 
+import name.abhijitsarkar.microservices.availability.representation.SlotDateTimeDeserializer;
+import name.abhijitsarkar.microservices.availability.representation.SlotDateTimeSerializer;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 public class Slot {
     private final int id;
@@ -30,14 +31,14 @@ public class Slot {
     }
 
     public static Slot from(Slot s) {
-	return new Slot(s);
+	return of(s.id, s.startDateTime, s.endDateTime, s.doctorId);
     }
 
     @JsonCreator
     public static Slot of(
 	    @JsonProperty("id") int id,
-	    @JsonProperty("startDateTime") @JsonSerialize(using = LocalDateTimeSerializer.class) @JsonDeserialize(using = LocalDateTimeDeserializer.class) LocalDateTime startDateTime,
-	    @JsonProperty("endDateTime") @JsonSerialize(using = LocalDateTimeSerializer.class) @JsonDeserialize(using = LocalDateTimeDeserializer.class) LocalDateTime endDateTime,
+	    @JsonProperty("startDateTime") @JsonSerialize(using = SlotDateTimeSerializer.class) @JsonDeserialize(using = SlotDateTimeDeserializer.class) LocalDateTime startDateTime,
+	    @JsonProperty("endDateTime") @JsonSerialize(using = SlotDateTimeSerializer.class) @JsonDeserialize(using = SlotDateTimeDeserializer.class) LocalDateTime endDateTime,
 	    @JsonProperty("doctorId") String doctorId) {
 	return new Slot(id, startDateTime, endDateTime, doctorId);
     }
@@ -56,6 +57,29 @@ public class Slot {
 
     public String getDoctorId() {
 	return doctorId;
+    }
+
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + id;
+
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (!(obj instanceof Slot)) {
+	    return false;
+	}
+
+	Slot other = (Slot) obj;
+
+	return id == other.id;
     }
 
     @Override

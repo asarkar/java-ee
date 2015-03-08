@@ -1,9 +1,11 @@
-package name.abhijitsarkar.microservices.availability;
+package name.abhijitsarkar.microservices.availability.service;
 
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
 import static java.util.stream.Collectors.toList;
-import static name.abhijitsarkar.microservices.availability.AvailabilityService.END_WORKING_HOUR;
-import static name.abhijitsarkar.microservices.availability.AvailabilityService.START_WORKING_HOUR;
+import static name.abhijitsarkar.microservices.availability.service.AvailabilityService.END_WORKING_HOUR;
+import static name.abhijitsarkar.microservices.availability.service.AvailabilityService.START_WORKING_HOUR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import name.abhijitsarkar.microservices.availability.domain.Slot;
+import name.abhijitsarkar.microservices.availability.service.AvailabilityService;
 import name.abhijitsarkar.microservices.user.Doctor;
 import name.abhijitsarkar.microservices.user.Users;
 
@@ -42,31 +46,37 @@ public class AvailabilityServiceTest {
     }
 
     @Test
-    public void testAvailabilityForToday() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
+    public void testFindSLotsForNextMonday() {
+	String nextMonday = getNextMonday();
 
-	Optional<List<Slot>> slots = service.findSlotsByDate(today);
+	Optional<List<Slot>> slots = service.findSlotsByDate(nextMonday);
 
 	assertEquals(END_WORKING_HOUR - START_WORKING_HOUR - 1, slots.get()
 		.size());
     }
 
+    private String getNextMonday() {
+	return ISO_LOCAL_DATE.format(LocalDate.now().with(nextOrSame(MONDAY)));
+    }
+
     @Test
     public void testReserveSlot() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
-
-	int firstSlotId = service.findSlotsByDate(today).get().get(0).getId();
+	int firstSlotId = getFirstSlotForNextMonday();
 
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 
 	assertTrue(service.isSlotReserved(s.get().getId()));
     }
 
+    private int getFirstSlotForNextMonday() {
+	String nextMonday = getNextMonday();
+
+	return service.findSlotsByDate(nextMonday).get().get(0).getId();
+    }
+
     @Test
     public void testReserveSlotTwice() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
-
-	int firstSlotId = service.findSlotsByDate(today).get().get(0).getId();
+	int firstSlotId = getFirstSlotForNextMonday();
 
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 	s = service.reserveSlot(firstSlotId);
@@ -76,9 +86,7 @@ public class AvailabilityServiceTest {
 
     @Test
     public void testRelinquishSlot() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
-
-	int firstSlotId = service.findSlotsByDate(today).get().get(0).getId();
+	int firstSlotId = getFirstSlotForNextMonday();
 
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 	s = service.relinquishSlot(firstSlotId);
@@ -88,9 +96,7 @@ public class AvailabilityServiceTest {
 
     @Test
     public void testRelinquishSlotTwice() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
-
-	int firstSlotId = service.findSlotsByDate(today).get().get(0).getId();
+	int firstSlotId = getFirstSlotForNextMonday();
 
 	Optional<Slot> s = service.relinquishSlot(firstSlotId);
 	s = service.relinquishSlot(firstSlotId);
@@ -100,13 +106,22 @@ public class AvailabilityServiceTest {
 
     @Test
     public void testRelinquishSlotWhenNotReserved() {
-	String today = ISO_LOCAL_DATE.format(LocalDate.now());
-
-	int firstSlotId = service.findSlotsByDate(today).get().get(0).getId();
+	int firstSlotId = getFirstSlotForNextMonday();
 
 	Optional<Slot> s = service.reserveSlot(firstSlotId);
 	s = service.relinquishSlot(Integer.MIN_VALUE);
 
 	assertFalse(s.isPresent());
+    }
+
+    @Test
+    public void testSlotIsNotFoundAfterReserved() {
+	String nextMonday = getNextMonday();
+	Slot firstSlot = service.findSlotsByDate(nextMonday).get().get(0);
+
+	service.reserveSlot(firstSlot.getId());
+
+	assertFalse(service.findSlotsByDate(nextMonday).get()
+		.contains(firstSlot));
     }
 }

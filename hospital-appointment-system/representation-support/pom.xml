@@ -6,14 +6,6 @@
     <artifactId>hospital-appointment-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>hospital-user</artifactId>
-
-  <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>representation-support</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+  <artifactId>representation-support</artifactId>
 
 </project>

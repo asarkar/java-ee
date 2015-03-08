@@ -1,15 +1,17 @@
-package name.abhijitsarkar.microservices.availability;
+package name.abhijitsarkar.microservices.availability.service;
 
 import static java.lang.Boolean.FALSE;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static java.time.temporal.ChronoField.HOUR_OF_DAY;
-import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.TemporalAdjusters.next;
+import static java.time.temporal.TemporalAdjusters.nextOrSame;
 import static java.util.stream.Collectors.toList;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -19,18 +21,18 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Predicate;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import name.abhijitsarkar.microservices.availability.domain.Slot;
 import name.abhijitsarkar.microservices.user.Doctor;
 import name.abhijitsarkar.microservices.user.Users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 
 @ApplicationScoped
 public class AvailabilityService {
@@ -66,8 +68,9 @@ public class AvailabilityService {
 
 	Random r = new Random();
 
-	final LocalDateTime startDateTime = LocalDateTime.now().with(
-		WorkingHourAdjuster.startHour(START_WORKING_HOUR));
+	final LocalDateTime startDateTime = LocalDateTime.now()
+		.with(nextOrSame(MONDAY))
+		.with(WorkingHourAdjuster.startHour(START_WORKING_HOUR));
 	final LocalDateTime nextSaturday = startDateTime.with(next(SATURDAY));
 
 	LocalDateTime end = null;
@@ -93,6 +96,8 @@ public class AvailabilityService {
 		slotMap.put(i, entry);
 	    }
 	}
+
+	LOGGER.info("Initialized slots: {}.", slotMap);
     }
 
     public Optional<Slot> findSlotById(int id) {
@@ -104,25 +109,19 @@ public class AvailabilityService {
     }
 
     public Optional<List<Slot>> findSlotsByDate(String date) {
-	LOGGER.info("Looking for a slot on the date: {}.", date);
-
 	LocalDateTime requestedDate = LocalDate.parse(date, ISO_LOCAL_DATE)
 		.atTime(START_WORKING_HOUR, 0);
+
+	LOGGER.info("Looking for a slot on the date: {}.", date);
+
+	EqualOrAfter equalOrAfter = new EqualOrAfter(requestedDate);
 
 	List<Slot> slots = slotMap
 		.values()
 		.stream()
-		.filter(entry -> {
-		    LocalDateTime slotStartDateTime = entry.getKey()
-			    .getStartDateTime();
-
-		    return slotStartDateTime.getDayOfWeek() == requestedDate
-			    .getDayOfWeek()
-			    && (slotStartDateTime.isEqual(requestedDate) || slotStartDateTime
-				    .isAfter(requestedDate))
-			    && entry.getKey().getEndDateTime()
-				    .isAfter(slotStartDateTime);
-		}).map(SimpleImmutableEntry::getKey).collect(toList());
+		.filter(entry -> equalOrAfter.test(entry.getKey())
+			&& !entry.getValue()).map(SimpleImmutableEntry::getKey)
+		.collect(toList());
 
 	return slots.isEmpty() ? Optional.empty() : Optional.of(slots);
     }
@@ -154,6 +153,10 @@ public class AvailabilityService {
 	return Optional.empty();
     }
 
+    void setUsers(Users users) {
+	this.users = users;
+    }
+
     final static class WorkingHourAdjuster implements TemporalAdjuster {
 	private final int hour;
 
@@ -171,12 +174,33 @@ public class AvailabilityService {
 
 	@Override
 	public Temporal adjustInto(Temporal input) {
-	    return LocalDateTime.from(input).with(HOUR_OF_DAY, hour)
-		    .with(MINUTE_OF_HOUR, 0);
+	    if (!(input instanceof LocalDateTime)) {
+		throw new DateTimeException("Cannot adjust using: "
+			+ input.getClass().getName());
+	    }
+
+	    return LocalDateTime.of(((LocalDateTime) input).toLocalDate(),
+		    LocalTime.of(hour, 0, 0, 0));
 	}
     }
 
-    void setUsers(Users users) {
-	this.users = users;
+    static class EqualOrAfter implements Predicate<Slot> {
+	private final LocalDateTime dateTime;
+
+	private EqualOrAfter(LocalDateTime dateTime) {
+	    this.dateTime = dateTime;
+	}
+
+	@Override
+	public boolean test(Slot s) {
+	    LocalDate slotStartDate = s.getStartDateTime().toLocalDate();
+	    LocalTime slotStartTime = s.getStartDateTime().toLocalTime();
+	    LocalTime slotEndTime = s.getEndDateTime().toLocalTime();
+
+	    return slotStartDate.equals(dateTime.toLocalDate())
+		    && (slotStartTime.equals(dateTime.toLocalTime()) || slotStartTime
+			    .isAfter(dateTime.toLocalTime()))
+		    && slotEndTime.isAfter(slotStartTime);
+	}
     }
 }
