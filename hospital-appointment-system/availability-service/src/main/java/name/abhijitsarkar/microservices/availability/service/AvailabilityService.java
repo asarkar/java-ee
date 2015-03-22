@@ -60,9 +60,8 @@ public class AvailabilityService {
     @PostConstruct
     public void initSlots() {
 	Objects.requireNonNull(users);
-
 	List<Doctor> doctors = users.getDoctors();
-	Objects.requireNonNull(doctors);
+	// Objects.requireNonNull(doctors);
 
 	slotMap = new ConcurrentHashMap<>();
 
@@ -156,6 +155,10 @@ public class AvailabilityService {
     void setUsers(Users users) {
 	this.users = users;
     }
+
+    // void setDoctors(List<Doctor> doctors) {
+    // this.doctors = doctors;
+    // }
 
     final static class WorkingHourAdjuster implements TemporalAdjuster {
 	private final int hour;

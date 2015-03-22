@@ -1,39 +1,58 @@
 package name.abhijitsarkar.microservices.availability;
 
+import static com.theoryinpractise.halbuilder.api.RepresentationFactory.COALESCE_ARRAYS;
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static com.theoryinpractise.halbuilder.api.RepresentationFactory.PRETTY_PRINT;
 import static javax.ws.rs.core.Response.noContent;
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static name.abhijitsarkar.microservices.availability.representation.AvailabilityRepresentationFactory.BASE_PATH;
 import static name.abhijitsarkar.microservices.availability.representation.AvailabilityRepresentationFactory.SLOT_PATH;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Link;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import name.abhijitsarkar.microservices.availability.domain.Slot;
+import name.abhijitsarkar.microservices.availability.representation.AvailabilityRepresentationFactory;
 import name.abhijitsarkar.microservices.availability.service.AvailabilityService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Path(BASE_PATH)
+@RequestScoped
 public class AvailabilityResource {
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(AvailabilityResource.class);
+    private static final URI[] HAL_JSON_FLAGS = new URI[] { PRETTY_PRINT,
+	    COALESCE_ARRAYS };
 
     @Inject
     private AvailabilityService service;
+
+    @Inject
+    private AvailabilityRepresentationFactory repFactory;
+
+    @Context
+    private UriInfo uriInfo;
+
+    @PostConstruct
+    public void postConstruct() {
+	repFactory.setBaseUri(uriInfo.getBaseUri().toString());
+    }
 
     @GET
     @Produces(HAL_JSON)
@@ -46,12 +65,9 @@ public class AvailabilityResource {
 
 	    LOGGER.info("Found {} slots for the day: {}.", l.size(), date);
 
-	    Link link = Link.fromUri("slot/{id}").rel("start")
-		    .type(APPLICATION_JSON).build(l.get(0).getId());
-
-	    LOGGER.info("Added link 'start': {}.", link.toString());
-
-	    return ok().entity(l).links(link).build();
+	    return ok().entity(
+		    repFactory.newSlotsRepresentation(l).toString(HAL_JSON,
+			    HAL_JSON_FLAGS)).build();
 	}
 
 	LOGGER.info("Didn't find any slots for the day: {}.", date);
@@ -66,28 +82,15 @@ public class AvailabilityResource {
 	Optional<Slot> slot = service.findSlotById(id);
 
 	if (slot.isPresent()) {
-	    ResponseBuilder builder = ok().entity(slot.get());
-
 	    LOGGER.info("Found slot with id: {}.", id);
 
-	    if (service.findSlotById(id + 1).isPresent()) {
-		Link next = Link.fromUri("slot/{id}").rel("next")
-			.type(APPLICATION_JSON).build(id + 1);
+	    Optional<Slot> previousSlot = service.findSlotById(id - 1);
+	    Optional<Slot> nextSlot = service.findSlotById(id + 1);
 
-		builder.links(next);
-
-		LOGGER.info("Added link 'next': {}.", next.toString());
-	    }
-
-	    if (service.findSlotById(id - 1).isPresent()) {
-		Link prev = Link.fromUri("slot/{id}").rel("prev")
-			.type(APPLICATION_JSON).build(id - 1);
-		builder.links(prev);
-
-		LOGGER.info("Added link 'prev': {}.", prev.toString());
-	    }
-
-	    return builder.build();
+	    return ok().entity(
+		    repFactory.newSlotRepresentation(slot.get(), previousSlot,
+			    nextSlot).toString(HAL_JSON, HAL_JSON_FLAGS))
+		    .build();
 	}
 
 	LOGGER.info("Didn't find any slots with id: {}.", id);

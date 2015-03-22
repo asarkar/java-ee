@@ -2,72 +2,89 @@ package name.abhijitsarkar.microservices.availability.representation;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
+
+import javax.enterprise.context.Dependent;
 
 import name.abhijitsarkar.microservices.availability.domain.Slot;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 
+@Dependent
 public class AvailabilityRepresentationFactory extends
 	StandardRepresentationFactory {
     public static final String BASE_PATH = "slot";
     public static final String SLOT_PATH = "{id}";
 
-    private final String baseUri;
+    private String baseUri;
 
-    public AvailabilityRepresentationFactory(String baseUri) {
+    public void setBaseUri(String baseUri) {
 	this.baseUri = baseUri;
     }
 
-    public Representation newSlotsRepresentation(List<Slot> slots,
-	    int firstSlotId) {
-	StringBuilder str = new StringBuilder(baseUri).append("/").append(
-		BASE_PATH);
+    public Representation newSlotsRepresentation(List<Slot> slots) {
+	StringBuilder str = null;
+
+	try {
+	    str = new StringBuilder(new URI(baseUri).resolve(BASE_PATH)
+		    .toString());
+	} catch (URISyntaxException e) {
+	    throw new IllegalArgumentException("Base URI: " + baseUri
+		    + " is not valid.");
+	}
 
 	Representation rep = newRepresentation(str.toString());
 	rep = rep.withBean(slots);
+
+	int numSlots = slots.size();
 
 	/* Put a placeholder id that'll soon be replaced by actual slot id. */
 	str.append("/").append(1);
 	int slotIdStartIndex = str.lastIndexOf("/") + 1;
 
-	int numSlots = slots.size();
-
 	for (int i = 0; i < numSlots; i++) {
-	    int previousSlotId = -1;
-	    int nextSlotId = -1;
+	    Optional<Slot> previousSlot = Optional.empty();
+	    Optional<Slot> nextSlot = Optional.empty();
 
 	    if (i - 1 >= 0) {
-		previousSlotId = slots.get(i - 1).getId();
+		previousSlot = Optional.of(slots.get(i - 1));
 	    }
 	    if (i + 1 < numSlots) {
-		nextSlotId = slots.get(i + 1).getId();
+		nextSlot = Optional.of(slots.get(i + 1));
 	    }
 
-	    rep.withRepresentation(
-		    "slots",
-		    newSlotRepresentation(slots.get(i), previousSlotId,
-			    nextSlotId));
+	    rep.withRepresentation("slots",
+		    newSlotRepresentation(slots.get(i), previousSlot, nextSlot));
 
 	    str.replace(slotIdStartIndex, str.length(),
 		    String.valueOf(slots.get(i).getId()));
 	    rep.withLink("item", str.toString());
 	}
 
-	if (firstSlotId > 0) {
+	if (numSlots > 0) {
 	    str.replace(slotIdStartIndex, str.length(),
-		    String.valueOf(firstSlotId));
+		    String.valueOf(slots.get(0).getId()));
 	    rep.withLink("start", str.toString());
 	}
 
 	return rep;
     }
 
-    public Representation newSlotRepresentation(Slot slot, int previousSlotId,
-	    int nextSlotId) {
-	StringBuilder str = new StringBuilder(baseUri).append("/")
-		.append(BASE_PATH).append("/").append(slot.getId());
+    public Representation newSlotRepresentation(Slot slot,
+	    Optional<Slot> previousSlot, Optional<Slot> nextSlot) {
+	StringBuilder str = null;
+
+	try {
+	    str = new StringBuilder(new URI(baseUri).resolve(BASE_PATH)
+		    .resolve(String.valueOf(slot.getId())).toString());
+	} catch (URISyntaxException e) {
+	    throw new IllegalArgumentException("Base URI: " + baseUri
+		    + " is not valid.");
+	}
 
 	Representation rep = newRepresentation(str.toString());
 
@@ -91,18 +108,19 @@ public class AvailabilityRepresentationFactory extends
 
 	int slotIdStartIndex = str.lastIndexOf("/") + 1;
 
-	if (previousSlotId > 0) {
+	if (previousSlot.isPresent()) {
 	    rep.withLink(
 		    "prev",
 		    str.replace(slotIdStartIndex, str.length(),
-			    String.valueOf(previousSlotId)).toString());
+			    String.valueOf(previousSlot.get().getId()))
+			    .toString());
 	}
 
-	if (nextSlotId > 0) {
+	if (nextSlot.isPresent()) {
 	    rep.withLink(
 		    "next",
 		    str.replace(slotIdStartIndex, str.length(),
-			    String.valueOf(nextSlotId)).toString());
+			    String.valueOf(nextSlot.get().getId())).toString());
 	}
 
 	return rep;

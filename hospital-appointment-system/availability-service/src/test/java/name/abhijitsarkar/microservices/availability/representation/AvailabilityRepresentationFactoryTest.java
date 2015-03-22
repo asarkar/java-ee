@@ -7,9 +7,9 @@ import static java.util.Arrays.asList;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import name.abhijitsarkar.microservices.availability.domain.Slot;
-import name.abhijitsarkar.microservices.representation.ObjectMapperFactory;
 
 import org.junit.Test;
 
@@ -17,15 +17,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.theoryinpractise.halbuilder.api.Representation;
 
 public class AvailabilityRepresentationFactoryTest {
-    private static final String BASE_URI = "http://localhost:8080/availability-service";
+    private static final String BASE_URI = "http://localhost:8080/availability-service/";
 
-    private AvailabilityRepresentationFactory factory = new AvailabilityRepresentationFactory(
-	    BASE_URI);
+    private AvailabilityRepresentationFactory factory = new AvailabilityRepresentationFactory();
+
+    public AvailabilityRepresentationFactoryTest() {
+	factory.setBaseUri(BASE_URI);
+    }
 
     @Test
-    public void testSlotRepresentationWhenOnlyNext() throws JsonProcessingException {
-	Representation rep = factory.newSlotRepresentation(newSlotStub(1), -1,
-		2);
+    public void testSlotRepresentationWhenOnlyNext()
+	    throws JsonProcessingException {
+	Representation rep = factory.newSlotRepresentation(newSlotStub(1),
+		Optional.<Slot> empty(), Optional.of(newSlotStub(2)));
 
 	System.out.println(rep
 		.toString(HAL_JSON, PRETTY_PRINT, COALESCE_ARRAYS));
@@ -33,7 +37,7 @@ public class AvailabilityRepresentationFactoryTest {
 
     @Test
     public void testSlotsRepresentation() {
-	Representation rep = factory.newSlotsRepresentation(newSlotsStub(), 1);
+	Representation rep = factory.newSlotsRepresentation(newSlotsStub());
 
 	System.out.println(rep
 		.toString(HAL_JSON, PRETTY_PRINT, COALESCE_ARRAYS));

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.Produces;
 
 import name.abhijitsarkar.microservices.representation.ObjectMapperFactory;
 
@@ -20,14 +21,14 @@ public class Users {
 	this.mapperFactory = mapperFactory;
     }
 
-    // @Produces
-    // @Doctors
+    @Produces
+    @Doctors
     public List<Doctor> getDoctors() {
 	return getUsers("/doctors.json", Doctor.class);
     }
 
-    // @Produces
-    // @Patients
+    @Produces
+    @Patients
     public List<Patient> getPatients() {
 	return getUsers("/patients.json", Patient.class);
     }

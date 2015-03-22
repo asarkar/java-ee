@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 import name.abhijitsarkar.microservices.availability.domain.Slot;
-import name.abhijitsarkar.microservices.availability.service.AvailabilityService;
 import name.abhijitsarkar.microservices.user.Doctor;
 import name.abhijitsarkar.microservices.user.Users;
 
@@ -40,8 +39,9 @@ public class AvailabilityServiceTest {
 
 	users = mock(Users.class);
 	when(users.getDoctors()).thenReturn(doctors);
-
+	//
 	service.setUsers(users);
+	// service.setDoctors(doctors);
 	service.initSlots();
     }
 
