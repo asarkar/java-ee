@@ -125,19 +125,11 @@ public class AvailabilityService {
 	return slots.isEmpty() ? Optional.empty() : Optional.of(slots);
     }
 
-    public Optional<Slot> reserveSlot(int id) {
-	return updateSlotAvailability(id, true);
-    }
-
-    public Optional<Slot> relinquishSlot(int id) {
-	return updateSlotAvailability(id, false);
-    }
-
     public boolean isSlotReserved(int id) {
 	return slotMap.containsKey(id) && slotMap.get(id).getValue();
     }
 
-    private Optional<Slot> updateSlotAvailability(int id, boolean reserved) {
+    public Optional<Slot> updateSlotAvailability(int id, boolean reserved) {
 	SimpleImmutableEntry<Slot, Boolean> entry = null;
 
 	if (slotMap.containsKey(id)

@@ -2,12 +2,12 @@ package name.abhijitsarkar.microservices.availability.representation;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.enterprise.context.Dependent;
+import javax.ws.rs.core.UriBuilder;
 
 import name.abhijitsarkar.microservices.availability.domain.Slot;
 
@@ -27,24 +27,13 @@ public class AvailabilityRepresentationFactory extends
     }
 
     public Representation newSlotsRepresentation(List<Slot> slots) {
-	StringBuilder str = null;
+	UriBuilder slotsUriBuilder = newSlotsUriBuilder();
 
-	try {
-	    str = new StringBuilder(new URI(baseUri).resolve(BASE_PATH)
-		    .toString());
-	} catch (URISyntaxException e) {
-	    throw new IllegalArgumentException("Base URI: " + baseUri
-		    + " is not valid.");
-	}
-
-	Representation rep = newRepresentation(str.toString());
+	Representation rep = newRepresentation(slotsUriBuilder.build());
 	rep = rep.withBean(slots);
 
 	int numSlots = slots.size();
-
-	/* Put a placeholder id that'll soon be replaced by actual slot id. */
-	str.append("/").append(1);
-	int slotIdStartIndex = str.lastIndexOf("/") + 1;
+	UriBuilder slotUriBuilder = newSlotUriBuilder();
 
 	for (int i = 0; i < numSlots; i++) {
 	    Optional<Slot> previousSlot = Optional.empty();
@@ -60,34 +49,41 @@ public class AvailabilityRepresentationFactory extends
 	    rep.withRepresentation("slots",
 		    newSlotRepresentation(slots.get(i), previousSlot, nextSlot));
 
-	    str.replace(slotIdStartIndex, str.length(),
-		    String.valueOf(slots.get(i).getId()));
-	    rep.withLink("item", str.toString());
+	    rep.withLink("item", slotUriBuilder.build(slots.get(i).getId())
+		    .toString());
 	}
 
 	if (numSlots > 0) {
-	    str.replace(slotIdStartIndex, str.length(),
-		    String.valueOf(slots.get(0).getId()));
-	    rep.withLink("start", str.toString());
+	    rep.withLink("start", slotUriBuilder.build(slots.get(0).getId())
+		    .toString());
 	}
 
 	return rep;
     }
 
+    UriBuilder newSlotUriBuilder() {
+	return newSlotsUriBuilder().path(BASE_PATH).path(SLOT_PATH);
+    }
+
+    UriBuilder newSlotsUriBuilder() {
+	Objects.requireNonNull(baseUri);
+
+	return UriBuilder.fromUri(baseUri);
+    }
+
     public Representation newSlotRepresentation(Slot slot,
 	    Optional<Slot> previousSlot, Optional<Slot> nextSlot) {
-	StringBuilder str = null;
+	UriBuilder slotUriBuilder = newSlotUriBuilder();
 
-	try {
-	    str = new StringBuilder(new URI(baseUri).resolve(BASE_PATH)
-		    .resolve(String.valueOf(slot.getId())).toString());
-	} catch (URISyntaxException e) {
-	    throw new IllegalArgumentException("Base URI: " + baseUri
-		    + " is not valid.");
-	}
+	Representation rep = newRepresentation(slotUriBuilder.build(
+		slot.getId()).toString());
 
-	Representation rep = newRepresentation(str.toString());
-
+	rep.withLink("edit", newSlotUriBuilder().queryParam("reserve", "true")
+		.build(slot.getId()).toString(), "reserve", "reserve", null,
+		null);
+	rep.withLink("edit", newSlotUriBuilder().queryParam("reserve", "false")
+		.build(slot.getId()).toString(), "relinquish", "relinquish",
+		null, null);
 	/*
 	 * I've yet to investigate deeper but looks like the
 	 * 'JsonRepresentationWriter' that the 'StandardRepresentationFactory'
@@ -106,21 +102,14 @@ public class AvailabilityRepresentationFactory extends
 		ISO_LOCAL_DATE_TIME.format(slot.getEndDateTime()));
 	rep.withProperty("doctorId", slot.getDoctorId());
 
-	int slotIdStartIndex = str.lastIndexOf("/") + 1;
-
 	if (previousSlot.isPresent()) {
-	    rep.withLink(
-		    "prev",
-		    str.replace(slotIdStartIndex, str.length(),
-			    String.valueOf(previousSlot.get().getId()))
-			    .toString());
+	    rep.withLink("prev",
+		    slotUriBuilder.build(previousSlot.get().getId()).toString());
 	}
 
 	if (nextSlot.isPresent()) {
-	    rep.withLink(
-		    "next",
-		    str.replace(slotIdStartIndex, str.length(),
-			    String.valueOf(nextSlot.get().getId())).toString());
+	    rep.withLink("next", slotUriBuilder.build(nextSlot.get().getId())
+		    .toString());
 	}
 
 	return rep;

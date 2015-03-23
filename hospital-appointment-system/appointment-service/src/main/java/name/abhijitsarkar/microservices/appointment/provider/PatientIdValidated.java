@@ -1,4 +1,4 @@
-package name.abhijitsarkar.microservices.availability.provider;
+package name.abhijitsarkar.microservices.appointment.provider;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -12,5 +12,5 @@ import javax.ws.rs.NameBinding;
 @NameBinding
 @Retention(RUNTIME)
 @Target({ METHOD, TYPE })
-public @interface DateValidated {
+public @interface PatientIdValidated {
 }

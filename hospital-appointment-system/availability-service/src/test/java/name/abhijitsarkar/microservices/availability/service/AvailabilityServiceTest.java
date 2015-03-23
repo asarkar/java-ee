@@ -39,7 +39,7 @@ public class AvailabilityServiceTest {
 
 	users = mock(Users.class);
 	when(users.getDoctors()).thenReturn(doctors);
-	//
+
 	service.setUsers(users);
 	// service.setDoctors(doctors);
 	service.initSlots();
@@ -63,7 +63,7 @@ public class AvailabilityServiceTest {
     public void testReserveSlot() {
 	int firstSlotId = getFirstSlotForNextMonday();
 
-	Optional<Slot> s = service.reserveSlot(firstSlotId);
+	Optional<Slot> s = service.updateSlotAvailability(firstSlotId, true);
 
 	assertTrue(service.isSlotReserved(s.get().getId()));
     }
@@ -78,8 +78,8 @@ public class AvailabilityServiceTest {
     public void testReserveSlotTwice() {
 	int firstSlotId = getFirstSlotForNextMonday();
 
-	Optional<Slot> s = service.reserveSlot(firstSlotId);
-	s = service.reserveSlot(firstSlotId);
+	Optional<Slot> s = service.updateSlotAvailability(firstSlotId, true);
+	s = service.updateSlotAvailability(firstSlotId, true);
 
 	assertFalse(s.isPresent());
     }
@@ -88,8 +88,8 @@ public class AvailabilityServiceTest {
     public void testRelinquishSlot() {
 	int firstSlotId = getFirstSlotForNextMonday();
 
-	Optional<Slot> s = service.reserveSlot(firstSlotId);
-	s = service.relinquishSlot(firstSlotId);
+	Optional<Slot> s = service.updateSlotAvailability(firstSlotId, true);
+	s = service.updateSlotAvailability(firstSlotId, false);
 
 	assertFalse(service.isSlotReserved(s.get().getId()));
     }
@@ -98,8 +98,8 @@ public class AvailabilityServiceTest {
     public void testRelinquishSlotTwice() {
 	int firstSlotId = getFirstSlotForNextMonday();
 
-	Optional<Slot> s = service.relinquishSlot(firstSlotId);
-	s = service.relinquishSlot(firstSlotId);
+	Optional<Slot> s = service.updateSlotAvailability(firstSlotId, false);
+	s = service.updateSlotAvailability(firstSlotId, false);
 
 	assertFalse(s.isPresent());
     }
@@ -108,8 +108,8 @@ public class AvailabilityServiceTest {
     public void testRelinquishSlotWhenNotReserved() {
 	int firstSlotId = getFirstSlotForNextMonday();
 
-	Optional<Slot> s = service.reserveSlot(firstSlotId);
-	s = service.relinquishSlot(Integer.MIN_VALUE);
+	Optional<Slot> s = service.updateSlotAvailability(firstSlotId, true);
+	s = service.updateSlotAvailability(Integer.MIN_VALUE, false);
 
 	assertFalse(s.isPresent());
     }
@@ -119,7 +119,7 @@ public class AvailabilityServiceTest {
 	String nextMonday = getNextMonday();
 	Slot firstSlot = service.findSlotsByDate(nextMonday).get().get(0);
 
-	service.reserveSlot(firstSlot.getId());
+	service.updateSlotAvailability(firstSlot.getId(), true);
 
 	assertFalse(service.findSlotsByDate(nextMonday).get()
 		.contains(firstSlot));

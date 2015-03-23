@@ -5,6 +5,7 @@ import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.PRETTY_PRINT;
 import static javax.ws.rs.core.Response.noContent;
 import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static name.abhijitsarkar.microservices.availability.representation.AvailabilityRepresentationFactory.BASE_PATH;
 import static name.abhijitsarkar.microservices.availability.representation.AvailabilityRepresentationFactory.SLOT_PATH;
@@ -17,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -96,5 +98,26 @@ public class AvailabilityResource {
 	LOGGER.info("Didn't find any slots with id: {}.", id);
 
 	return noContent().status(NOT_FOUND).build();
+    }
+
+    @Path(SLOT_PATH)
+    @PUT
+    @Produces(HAL_JSON)
+    public Response reserveOrRelinquishSlot(@PathParam("id") int id,
+	    @QueryParam("reserve") boolean reserve) {
+	Optional<Slot> slot = service.updateSlotAvailability(id, reserve);
+
+	if (slot.isPresent()) {
+	    LOGGER.info("{} slot with id: {}.", reserve ? "Reserved"
+		    : "Relinquished", id);
+
+	    return getSlot(id);
+	}
+
+	if (!service.findSlotById(id).isPresent()) {
+	    return noContent().status(NOT_FOUND).build();
+	}
+
+	return noContent().status(CONFLICT).build();
     }
 }
