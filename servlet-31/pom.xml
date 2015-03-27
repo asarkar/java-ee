@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>name.abhijitsarkar.maven</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>2.0</version>
+  </parent>
+  <groupId>name.abhijitsarkar.javaee</groupId>
+  <artifactId>servlet-31</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>servlet-31</name>
+  <description>
+    Sample code demonstrating the use of Web Fragments and async IO introduced in Servlet 3.0. 
+    http://www.oracle.com/technetwork/articles/javaee/javaee6overview-part2-136353.html
+  </description>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <scope>provided</scope>
+      <version>7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <modules>
+    <module>admin</module>
+    <module>security</module>
+  </modules>
+</project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-fragment id="WebFragment_Security" version="3.1"
+  xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd">
+  <display-name>SecurityFragment</display-name>
+  <name>SecurityFragment</name>
+
+  <filter>
+    <filter-name>GatekeeperFilter</filter-name>
+    <filter-class>name.abhijitsarkar.javaee.servlet31.security.GatekeeperFilter</filter-class>
+    <!-- https://blogs.oracle.com/enterprisetechtips/entry/asynchronous_support_in_servlet_3 -->
+    <!-- An IllegalStateException will be thrown if an application tries to start 
+      an asynchronous operation and there is a servlet or servlet filter in the request 
+      processing chain that does not support asynchronous processing. -->
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>username</param-name>
+      <param-value>admin</param-value>
+    </init-param>
+    <init-param>
+      <param-name>password</param-name>
+      <param-value>admin</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>GatekeeperFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-fragment>
