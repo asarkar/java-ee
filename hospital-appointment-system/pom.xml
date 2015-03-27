@@ -257,6 +257,26 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <!-- Add a new test source directory to our build -->
+          <execution>
+            <id>add-integration-test-sources</id>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <!-- Configure the source directory of our integration tests -->
+              <sources>
+                <source>src/integration-test/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -276,6 +296,19 @@
                     <versionRange>[2.8,)</versionRange>
                     <goals>
                       <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <versionRange>[1.9.1,)</versionRange>
+                    <goals>
+                      <goal>add-test-source</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
@@ -354,34 +387,16 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
           <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <forkMode>always</forkMode>
-            </configuration>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.18.1</version>
             <executions>
-              <!-- Override default goal to exclude integ tests -->
               <execution>
-                <id>default-test</id>
-                <phase>test</phase>
+                <id>integration-tests</id>
                 <goals>
-                  <goal>test</goal>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
                 </goals>
                 <configuration>
-                  <excludes>
-                    <exclude>${integrationTest.pattern}</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-              <execution>
-                <id>integration-test</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <configuration>
-                  <includes>
-                    <include>${integrationTest.pattern}</include>
-                  </includes>
                   <systemPropertyVariables>
                     <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                     <jboss.home>${wildfly.home}</jboss.home>
@@ -391,26 +406,6 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>skipIntegTests</id>
-      <activation>
-        <property>
-          <name>!integTests</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>${integrationTest.pattern}</exclude>
-              </excludes>
-            </configuration>
           </plugin>
         </plugins>
       </build>

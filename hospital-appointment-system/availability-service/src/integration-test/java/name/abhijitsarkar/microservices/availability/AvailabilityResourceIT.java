@@ -1,8 +1,6 @@
 package name.abhijitsarkar.microservices.availability;
 
-import static com.theoryinpractise.halbuilder.api.RepresentationFactory.COALESCE_ARRAYS;
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
-import static com.theoryinpractise.halbuilder.api.RepresentationFactory.PRETTY_PRINT;
 import static java.io.File.separator;
 import static java.lang.String.join;
 import static java.time.DayOfWeek.MONDAY;
@@ -16,7 +14,6 @@ import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,7 +45,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 
 @RunWith(Arquillian.class)
-public class AvailabilityResourceIntegrationTest {
+public class AvailabilityResourceIT {
     private static final String SERVICE_NAME = "availability-service";
     private static final String SERVICE_URL = join(separator,
 	    "http://localhost:8080", SERVICE_NAME, "slot");
