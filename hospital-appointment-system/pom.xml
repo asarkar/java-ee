@@ -416,8 +416,8 @@
     <module>availability-service</module>
     <module>appointment-service</module>
     <module>user-service</module>
-    <module>aggregrator</module>
-    <module>hospital-user</module>
+    <module>user-domain</module>
     <module>representation-support</module>
+    <module>client-support</module>
   </modules>
 </project>

@@ -1,13 +1,19 @@
 package name.abhijitsarkar.javaee.microservices.availability.service;
 
+import static java.io.File.separator;
 import static java.lang.Boolean.FALSE;
+import static java.lang.String.join;
 import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.temporal.TemporalAdjusters.next;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
 import static java.util.stream.Collectors.toList;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.OK;
+import static name.abhijitsarkar.javaee.microservices.user.domain.User.Type.Doctor;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,13 +32,19 @@ import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.Response;
 
 import name.abhijitsarkar.javaee.microservices.availability.domain.Slot;
-import name.abhijitsarkar.javaee.microservices.user.Doctor;
-import name.abhijitsarkar.javaee.microservices.user.Users;
+import name.abhijitsarkar.javaee.microservices.representation.ObjectMapperFactory;
+import name.abhijitsarkar.javaee.microservices.user.domain.Doctor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @ApplicationScoped
 public class AvailabilityService {
@@ -43,12 +55,33 @@ public class AvailabilityService {
     public static final int START_LUNCH_HOUR = 12;
     public static final int END_WORKING_HOUR = 17;
 
-    @Inject
-    private Users users;
+    private static final String SERVICE_NAME = "user-service";
+    private static final String SERVICE_URL = join(separator,
+	    "http://localhost:8080", SERVICE_NAME, "user");
 
     // @Inject
-    // @Doctors
-    // private List<Doctor> doctors;
+    // private UserServiceClientFactory clientFactory;
+    //
+    // void setClientFactory(UserServiceClientFactory clientFactory) {
+    // this.clientFactory = clientFactory;
+    // }
+
+    @Inject
+    @name.abhijitsarkar.javaee.microservices.client.Client
+    private Client client;
+
+    @Inject
+    private ObjectMapperFactory mapperFactory;
+
+    void setMapperFactory(ObjectMapperFactory mapperFactory) {
+	this.mapperFactory = mapperFactory;
+    }
+
+    private List<Doctor> doctors;
+
+    void setDoctors(List<Doctor> doctors) {
+	this.doctors = doctors;
+    }
 
     private ConcurrentMap<Integer, SimpleImmutableEntry<Slot, Boolean>> slotMap;
 
@@ -59,9 +92,10 @@ public class AvailabilityService {
      */
     @PostConstruct
     public void initSlots() {
-	Objects.requireNonNull(users);
-	List<Doctor> doctors = users.getDoctors();
-	// Objects.requireNonNull(doctors);
+	/* This is true except for unit tests. */
+	if (doctors == null) {
+	    doctors = getDoctors();
+	}
 
 	slotMap = new ConcurrentHashMap<>();
 
@@ -97,6 +131,29 @@ public class AvailabilityService {
 	}
 
 	LOGGER.info("Initialized slots: {}.", slotMap);
+    }
+
+    private List<Doctor> getDoctors() {
+	// Objects.requireNonNull(clientFactory);
+	Objects.requireNonNull(mapperFactory);
+
+	Response response = newDoctorsTargetBuilder().get();
+
+	if (response.getStatus() != OK.getStatusCode()) {
+	    throw new InternalServerErrorException(
+		    "Unable to retrieve list of registered doctors. Availability service response code: "
+			    + response.getStatus());
+	}
+
+	try {
+	    return mapperFactory.getObjectMapper().readValue(
+		    response.readEntity(String.class),
+		    new TypeReference<List<Doctor>>() {
+		    });
+	} catch (IOException e) {
+	    throw new InternalServerErrorException(
+		    "Unable to retrieve list of registered doctors. ", e);
+	}
     }
 
     public Optional<Slot> findSlotById(int id) {
@@ -144,13 +201,10 @@ public class AvailabilityService {
 	return Optional.empty();
     }
 
-    void setUsers(Users users) {
-	this.users = users;
+    private Builder newDoctorsTargetBuilder() {
+	return client.target(SERVICE_URL).matrixParam("type", Doctor.name())
+		.request().accept(APPLICATION_JSON);
     }
-
-    // void setDoctors(List<Doctor> doctors) {
-    // this.doctors = doctors;
-    // }
 
     final static class WorkingHourAdjuster implements TemporalAdjuster {
 	private final int hour;

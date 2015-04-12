@@ -8,4 +8,17 @@
   </parent>
   <artifactId>appointment-service</artifactId>
   <packaging>war</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>user-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>client-support</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

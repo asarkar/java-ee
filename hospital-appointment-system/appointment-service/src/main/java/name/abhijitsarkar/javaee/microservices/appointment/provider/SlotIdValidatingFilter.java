@@ -13,7 +13,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
-@PatientIdValidated
+@SlotIdValidated
 @Provider
 @Priority(Priorities.USER)
 public class SlotIdValidatingFilter implements ContainerRequestFilter {

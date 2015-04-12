@@ -9,8 +9,6 @@ import static name.abhijitsarkar.javaee.microservices.availability.service.Avail
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,16 +16,13 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 import name.abhijitsarkar.javaee.microservices.availability.domain.Slot;
-import name.abhijitsarkar.javaee.microservices.availability.service.AvailabilityService;
-import name.abhijitsarkar.javaee.microservices.user.Doctor;
-import name.abhijitsarkar.javaee.microservices.user.Users;
+import name.abhijitsarkar.javaee.microservices.user.domain.Doctor;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class AvailabilityServiceTest {
     private AvailabilityService service;
-    private Users users;
 
     @Before
     public void init() {
@@ -38,11 +33,7 @@ public class AvailabilityServiceTest {
 		.map(docId -> new Doctor(docId, "Good", "Doctor"))
 		.collect(toList());
 
-	users = mock(Users.class);
-	when(users.getDoctors()).thenReturn(doctors);
-
-	service.setUsers(users);
-	// service.setDoctors(doctors);
+	service.setDoctors(doctors);
 	service.initSlots();
     }
 

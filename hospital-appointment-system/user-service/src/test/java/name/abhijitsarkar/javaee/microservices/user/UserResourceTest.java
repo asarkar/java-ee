@@ -12,16 +12,16 @@ import java.util.stream.IntStream;
 
 import javax.ws.rs.core.Response;
 
-import name.abhijitsarkar.javaee.microservices.user.Doctor;
-import name.abhijitsarkar.javaee.microservices.user.Patient;
 import name.abhijitsarkar.javaee.microservices.user.UserResource;
-import name.abhijitsarkar.javaee.microservices.user.Users;
+import name.abhijitsarkar.javaee.microservices.user.domain.Doctor;
+import name.abhijitsarkar.javaee.microservices.user.domain.Patient;
+import name.abhijitsarkar.javaee.microservices.user.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class UserResourceTest {
-    private Users users;
+    private UserService userService;
     private UserResource userResource;
 
     @Before
@@ -38,12 +38,12 @@ public class UserResourceTest {
 		.map(patientId -> new Patient(patientId, "Sick", "Patient"))
 		.collect(toList());
 
-	users = mock(Users.class);
+	userService = mock(UserService.class);
 
-	when(users.getDoctors()).thenReturn(doctors);
-	when(users.getPatients()).thenReturn(patients);
+	when(userService.getDoctors()).thenReturn(doctors);
+	when(userService.getPatients()).thenReturn(patients);
 
-	userResource.setUsers(users);
+	userResource.setUsers(userService);
 	userResource.initUsers();
     }
 

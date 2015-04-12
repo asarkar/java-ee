@@ -21,22 +21,24 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import name.abhijitsarkar.javaee.microservices.availability.AvailabilityApp;
+import name.abhijitsarkar.javaee.microservices.client.ClientFactory;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.Filters;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,39 +50,54 @@ import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 
 @RunWith(Arquillian.class)
 public class AvailabilityResourceIT {
-    private static final String SERVICE_NAME = "availability-service";
-    private static final String SERVICE_URL = join(separator,
-	    "http://localhost:8080", SERVICE_NAME, "slot");
-    private static final String HOSPITAL_USER_MVN_COORD = "name.abhijitsarkar.javaee.microservices:hospital-user";
+    private static final String AVAILABILITY_SERVICE_NAME = "availability-service";
+    private static final String AVAILABILITY_SERVICE_URL = join(separator,
+	    "http://localhost:8080", AVAILABILITY_SERVICE_NAME, "slot");
+    private static final String USER_SERVICE_GROUP = "name.abhijitsarkar.javaee.microservices";
+    private static final String USER_SERVICE_NAME = "user-service";
+    private static final String USER_SERVICE_PACKAGING = "war";
+    private static final String USER_SERVICE_VERSION = "0.0.1-SNAPSHOT";
 
-    private Client client;
+    @Inject
+    private ClientFactory clientFactory;
 
     private RepresentationFactory repFactory = new JsonRepresentationFactory();
 
+    private Client client;
+
     @Before
     public void initClient() {
-	client = ClientBuilder.newClient();
+	client = clientFactory.newClient();
     }
 
-    @After
-    public void closeClient() {
-	client.close();
+    @Deployment(name = USER_SERVICE_NAME, order = 1)
+    public static WebArchive createUserServiceDeployment() {
+	String mvnCoordinate = join(":", USER_SERVICE_GROUP, USER_SERVICE_NAME,
+		USER_SERVICE_PACKAGING, USER_SERVICE_VERSION);
+	File service = Maven.configureResolver().workOffline()
+		.withMavenCentralRepo(false).withClassPathResolution(true)
+		.resolve(mvnCoordinate).withoutTransitivity().asSingleFile();
+
+	return ShrinkWrap
+		.create(ZipImporter.class,
+			join(".", USER_SERVICE_NAME, USER_SERVICE_PACKAGING))
+		.importFrom(service).as(WebArchive.class);
     }
 
     // https://github.com/shrinkwrap/resolver
-    @Deployment
-    public static WebArchive createDeployment() throws FileNotFoundException {
-	File[] hospitalUser = Maven.configureResolver().workOffline()
-		.withMavenCentralRepo(false).withClassPathResolution(true)
-		.loadPomFromFile(new File("pom.xml"))
-		.resolve(HOSPITAL_USER_MVN_COORD).withTransitivity().asFile();
-
-	WebArchive app = create(WebArchive.class, SERVICE_NAME + ".war")
+    @Deployment(name = AVAILABILITY_SERVICE_NAME, order = 2)
+    public static WebArchive createAvailabilityServiceDeployment()
+	    throws FileNotFoundException {
+	File[] libs = Maven.resolver().loadPomFromFile("pom.xml")
+		.importRuntimeDependencies().resolve().withTransitivity()
+		.asFile();
+	WebArchive app = create(WebArchive.class,
+		AVAILABILITY_SERVICE_NAME + ".war")
 		.addPackages(true, Filters.exclude(".*Test.*"),
 			AvailabilityApp.class.getPackage())
-		.addAsWebInfResource(EmptyAsset.INSTANCE,
-			ArchivePaths.create("beans.xml"))
-		.addAsLibraries(hospitalUser);
+		.addAsWebInfResource(
+			new File("src/main/webapp", "WEB-INF/beans.xml"))
+		.addAsLibraries(libs);
 
 	System.out.println(app.toString(true));
 
@@ -88,8 +105,9 @@ public class AvailabilityResourceIT {
     }
 
     @Test
+    @OperateOnDeployment(AVAILABILITY_SERVICE_NAME)
     public void testGetSlotsWithDefaultDate() {
-	WebTarget wt = client.target(SERVICE_URL);
+	WebTarget wt = client.target(AVAILABILITY_SERVICE_URL);
 	Builder builder = wt.request();
 
 	Response response = builder.accept(HAL_JSON).get();
@@ -109,8 +127,9 @@ public class AvailabilityResourceIT {
     }
 
     @Test
+    @OperateOnDeployment(AVAILABILITY_SERVICE_NAME)
     public void testGetSlotsForYesterday() {
-	WebTarget wt = client.target(SERVICE_URL);
+	WebTarget wt = client.target(AVAILABILITY_SERVICE_URL);
 	Builder builder = wt.queryParam("date",
 		ISO_LOCAL_DATE.format(LocalDate.now().minusDays(1))).request();
 
@@ -120,8 +139,9 @@ public class AvailabilityResourceIT {
     }
 
     @Test
+    @OperateOnDeployment(AVAILABILITY_SERVICE_NAME)
     public void testGetSlotsForASaturday() {
-	WebTarget wt = client.target(SERVICE_URL);
+	WebTarget wt = client.target(AVAILABILITY_SERVICE_URL);
 	Builder builder = wt.queryParam(
 		"date",
 		ISO_LOCAL_DATE.format(LocalDate.now()
@@ -133,6 +153,7 @@ public class AvailabilityResourceIT {
     }
 
     @Test
+    @OperateOnDeployment(AVAILABILITY_SERVICE_NAME)
     public void testGetFirstSlotForNextMondayUsingLink() {
 	String json = getSlotsForNextMonday();
 
@@ -153,9 +174,7 @@ public class AvailabilityResourceIT {
     }
 
     private String getSlotsForNextMonday() {
-	Client c = ClientBuilder.newClient();
-
-	WebTarget wt = c.target(SERVICE_URL);
+	WebTarget wt = client.target(AVAILABILITY_SERVICE_URL);
 	Builder builder = wt
 		.queryParam(
 			"date",
@@ -167,12 +186,11 @@ public class AvailabilityResourceIT {
 
 	String slots = response.readEntity(String.class);
 
-	c.close();
-
 	return slots;
     }
 
     @Test
+    @OperateOnDeployment(AVAILABILITY_SERVICE_NAME)
     public void testReserveAndRelinquishSlot() {
 	/* Get all slots for next Monday */
 	String json = getSlotsForNextMonday();

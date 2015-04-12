@@ -48,7 +48,7 @@ public class AppointmentResource {
      * manage it's lifecycle better.
      */
     @Inject
-    private AvailabilityClientFactory clientFactory;
+    private AvailabilityServiceClientFactory clientFactory;
 
     @Inject
     private AppointmentService service;
