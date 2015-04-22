@@ -20,7 +20,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import name.abhijitsarkar.javaee.microservices.client.ClientFactory;
 import name.abhijitsarkar.javaee.microservices.user.domain.Doctor;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -43,17 +42,9 @@ public class UserResourceIT {
 	    "http://localhost:8080", SERVICE_NAME, "user");
     private static final String RESOURCES_PATH = "src/main/resources";
 
-    // @Inject
-    private ClientFactory clientFactory;
-
     @Inject
     @name.abhijitsarkar.javaee.microservices.client.Client
     private Client client;
-
-    // @Before
-    // public void initClient() {
-    // client = clientFactory.newClient();
-    // }
 
     @Deployment
     public static WebArchive createDeployment() throws FileNotFoundException {

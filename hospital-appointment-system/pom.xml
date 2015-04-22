@@ -1,11 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>name.abhijitsarkar.maven</groupId>
-    <artifactId>maven-parent</artifactId>
-    <version>2.0</version>
-  </parent>
   <groupId>name.abhijitsarkar.javaee.microservices</groupId>
   <artifactId>hospital-appointment-system</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -69,12 +64,13 @@
     <wildfly.plugin.version>1.0.2.Final</wildfly.plugin.version>
     <war.plugin.version>2.6</war.plugin.version>
     <compiler.plugin.version>3.2</compiler.plugin.version>
+    <failsafe.plugin.version>2.18.1</failsafe.plugin.version>
     <wildfly.version>8.2.0.Final</wildfly.version>
-    <wildfly.unpackDir>${java.io.tmpdir}</wildfly.unpackDir>
+    <wildfly.unpackDir>${project.build.directory}</wildfly.unpackDir>
     <wildfly.home>${wildfly.unpackDir}/wildfly-${wildfly.version}</wildfly.home>
     <arquillan.version>1.1.7.Final</arquillan.version>
     <shrinkwrap.version>2.1.0</shrinkwrap.version>
-    <integrationTest.pattern>**/*IntegrationTest.java</integrationTest.pattern>
+    <logback.version>1.1.2</logback.version>
   </properties>
 
   <dependencies>
@@ -101,11 +97,13 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -133,7 +131,7 @@
       <artifactId>resteasy-client</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- Use Jackson instead of Jettision -->
+    <!-- Use Jackson instead of Jettison -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jackson2-provider</artifactId>
@@ -155,9 +153,20 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.wildfly</groupId>
+      <artifactId>wildfly-arquillian-container-embedded</artifactId>
+      <version>${wildfly.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly</groupId>
+      <artifactId>wildfly-embedded</artifactId>
+      <version>${wildfly.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jboss.shrinkwrap.resolver</groupId>
       <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-      <version>${shrinkwrap.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -178,61 +187,19 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.jboss.arquillian.junit</groupId>
-        <artifactId>arquillian-junit-container</artifactId>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
         <version>${arquillan.version}</version>
-        <scope>test</scope>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
+    <!-- This is the name used by Wildfly as the context root -->
+    <finalName>${project.artifactId}</finalName>
     <plugins>
-      <plugin>
-        <artifactId>maven-help-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>${war.plugin.version}</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${compiler.plugin.version}</version>
-        <configuration>
-          <compilerVersion>${project.build.sourceLevel}</compilerVersion>
-          <source>${project.build.sourceLevel}</source>
-          <target>${project.build.targetLevel}</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <showDeprecation>true</showDeprecation>
-          <showWarnings>true</showWarnings>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>2.6.1</version>
-        <executions>
-          <!-- Delete previously unpacked wildfly - don't do for child projects. -->
-          <execution>
-            <id>delete-wildfly</id>
-            <phase>clean</phase>
-            <inherited>false</inherited>
-            <goals>
-              <goal>clean</goal>
-            </goals>
-            <configuration>
-              <filesets>
-                <fileset>
-                  <directory>${wildfly.home}</directory>
-                  <followSymlinks>false</followSymlinks>
-                </fileset>
-              </filesets>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -257,29 +224,61 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.9.1</version>
-        <executions>
-          <!-- Add a new test source directory to our build -->
-          <execution>
-            <id>add-integration-test-sources</id>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <!-- Configure the source directory of our integration tests -->
-              <sources>
-                <source>src/integration-test/java</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <compilerVersion>${project.build.sourceLevel}</compilerVersion>
+            <source>${project.build.sourceLevel}</source>
+            <target>${project.build.targetLevel}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>integration-test</id>
+              <phase>integration-test</phase>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <systemPropertyVariables>
+                  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                  <jboss.home>${wildfly.home}</jboss.home>
+                  <module.path>${wildfly.home}/modules</module.path>
+                </systemPropertyVariables>
+                <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                <includes>
+                  <include>**/*IT.java</include>
+                </includes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <compilerVersion>${project.build.sourceLevel}</compilerVersion>
+            <source>${project.build.sourceLevel}</source>
+            <target>${project.build.targetLevel}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${war.plugin.version}</version>
+          <configuration>
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+          </configuration>
+        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. 
           It has no influence on the Maven build itself. -->
         <plugin>
@@ -302,19 +301,6 @@
                     <ignore></ignore>
                   </action>
                 </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <versionRange>[1.9.1,)</versionRange>
-                    <goals>
-                      <goal>add-test-source</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
@@ -323,98 +309,9 @@
     </pluginManagement>
   </build>
 
-  <profiles>
-    <profile>
-      <id>wildfly</id>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-7.0</artifactId>
-            <version>${wildfly.plugin.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-      <build>
-        <!-- This is the name used by Wildfly as the context root -->
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-          <plugin>
-            <groupId>org.wildfly.plugins</groupId>
-            <artifactId>wildfly-maven-plugin</artifactId>
-            <version>${wildfly.plugin.version}</version>
-            <configuration>
-              <force>true</force>
-              <name>${project.artifactId}</name>
-              <jbossHome>${wildfly.home}</jbossHome>
-              <modulesPath>${wildfly.home}/modules</modulesPath>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>wildfly-arq</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.wildfly</groupId>
-          <artifactId>wildfly-arquillian-container-embedded</artifactId>
-          <version>${wildfly.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.wildfly</groupId>
-          <artifactId>wildfly-embedded</artifactId>
-          <version>${wildfly.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.jboss.arquillian</groupId>
-            <artifactId>arquillian-bom</artifactId>
-            <version>${arquillan.version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-      <build>
-        <!-- This is the name used by Wildfly as the context root -->
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.18.1</version>
-            <executions>
-              <execution>
-                <id>integration-tests</id>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                  <systemPropertyVariables>
-                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    <jboss.home>${wildfly.home}</jboss.home>
-                    <module.path>${wildfly.home}/modules</module.path>
-                  </systemPropertyVariables>
-                  <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <modules>
-    <module>availability-service</module>
-    <module>appointment-service</module>
+    <!-- <module>availability-service</module> -->
+    <!-- <module>appointment-service</module> -->
     <module>user-service</module>
     <module>user-domain</module>
     <module>representation-support</module>
