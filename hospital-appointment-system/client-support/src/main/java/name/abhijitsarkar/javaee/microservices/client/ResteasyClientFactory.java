@@ -3,7 +3,7 @@ package name.abhijitsarkar.javaee.microservices.client;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Produces;
+import javax.enterprise.inject.Produces;
 import javax.ws.rs.client.Client;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -26,7 +26,6 @@ public class ResteasyClientFactory implements ClientFactory {
     @Override
     @Produces
     @ApplicationScoped
-    @name.abhijitsarkar.javaee.microservices.client.Client
     public Client newClient() {
 	return client;
     }

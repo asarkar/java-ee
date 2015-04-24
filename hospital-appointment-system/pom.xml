@@ -1,6 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>name.abhijitsarkar.maven</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>2.0</version>
+  </parent>
   <groupId>name.abhijitsarkar.javaee.microservices</groupId>
   <artifactId>hospital-appointment-system</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -8,22 +13,25 @@
   <name>hospital-appointment-system</name>
 
   <description>
-  A basic example of the Richardson Maturity Model a.k.a. RMM and HATEOAS. Our problems domain is a hospital 
+  An example of the Richardson Maturity Model a.k.a. RMM and HATEOAS. Our problems domain is a hospital 
   appointment system as follows:
   
-  # Patients can query for open slots with a hospital for a particular day. In response, they receive a list of 
-  slots that're open on that day, with the name of a doctor that's available for a particular slot. If no slots are
-  available on the requested date, they get an appropriate HTTP response.
+  # A patient can query for open slots for a particular day. In response, they receive a list of 
+  slots that're open on that day. If no slots are available on the requested date, they get an appropriate response.
+   - They can request information for a particular slot using the slot id.
+   - They can browse the slots using the 'start' URI provided in the response and the 'next' or 'prev' links
+  provided with an individual slot, if applicable (obviously the 1st slot has no 'prev' link, neither does the last
+  slot has a 'next' link).
+   - Given a slot URI, the slot can be reserved or if previously reserved, relinquished. This functionality is
+   intended to be used by the appointment service and not directly by the patients.
   
-  # Given a slot information, a client can either book an appointment, find more information about the doctor
-  or request for the next slot. Requesting next slot assumes the same day. If a successful appointment is
-  booked, the client receives a link to view or cancel the appointment. If for some reason the appointment booking
-  failed, they get an appropriate HTTP response.
+  # Given a slot id, a patient can book an appointment or if previously booked, cancel an appointment. 
+  If a successful appointment is booked, the client receives a link to it along with a link to cancel the appointment. 
+  If for some reason the appointment booking failed, they get an appropriate response.
   
   Note: To book an appointment, a client must already be registered with the hospital; 
-  registration is outside the scope of our system.
   
-  The response is of type 'application/hal+json'. HAL is built using HalBuilder. 
+  Most of the response is of type 'application/hal+json'. HAL is built using HalBuilder. 
   Links to the HAL spec, IANA-registered link relations and HalBuilder can be found in the 'References' section.
   
   References:
@@ -42,54 +50,62 @@
   GET /slot?date=20150101 -> Response similar to above, except for the date is provided by the patient.
   
   GET /slot/1 -> Returns slot that has an id 1. Returns HTTP status code 200.
+    If slot isn't found, returns HTTP status code 404.
+    
+  PUT /slot/1?reserve=true -> Reserves the slot that has an id 1. Returns same response as GET /slot/1.
+    If slot found but not able to reserve, returns HTTP status code 409.
+    
+  PUT /slot/1?reserve=false -> Relinquishes the slot that has an id 1. Returns same response as GET /slot/1.
+    If slot found but not able to relinquish, returns HTTP status code 409.
+    
+  For all of the below requests, it is checked that slot id and patient id are present. If not, the request is rejected
+  with HTTP status code 400.
+  The patient id is validated as well. If the patient is not registered, the request is rejected
+  with HTTP status code 404.
+    
+  GET /appointment/1?patientId=patientId -> Returns appointment that has an id 1. Returns HTTP status code 200.
+    If appointment isn't found, returns HTTP status code 404.
+    
+  POST /appointment/1?patientId=patientId -> Creates an appointment for a slot that has an id 1. 
+    Returns HTTP status code 201 and the URI of the newly created appointment.
+    If failed to create appointment, returns HTTP status code 409.
+    If slot isn't found, returns HTTP status code 404.
+      
+  DELETE /appointment/1?patientId=patientId -> Cancels an appointment that has an id 1. 
+    Returns HTTP status code 200 and the appointment that was deleted.
+    If failed to cancel appointment, returns HTTP status code 409.
     If slot isn't found, HTTP status code 404.
     
-  POST /appointment/1 -> Creates an appointment for slot that that has an id 1. Returns HTTP status code 201.
-    If slot isn't found, returns HTTP status code 404.
-  
-  GET /appointment/1 -> Returns appointment that has an id 1. Returns HTTP status code 200.
-    If appointment isn't found, HTTP status code 404.
-      
-  DELETE /appointment/1 -> Cancels an appointment that has an id 1. Returns HTTP status code 200.
-    If appointment isn't found, HTTP status code 404.
+  GET /user;type=Doctor|Patient -> Returns all registered users, doctors or patients, according to the type. 
+    Returns HTTP status code 200. 
+    If doctor isn't found, returns HTTP status code 404.
     
-  GET /doctor/1 -> Returns doctor whose id is 1. Returns HTTP status code 200. 
-    If doctor isn't found, HTTP status code 404.
+  GET /user/1;type=Doctor|Patient -> Returns a user that has an id 1, doctor or patient, according to the type. 
+    Returns HTTP status code 200. 
+    If doctor isn't found, returns HTTP status code 404.
   </description>
 
   <properties>
     <project.build.sourceLevel>1.8</project.build.sourceLevel>
     <project.build.targetLevel>1.8</project.build.targetLevel>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+    <halbuilder.version>4.0.1</halbuilder.version>
     <wildfly.plugin.version>1.0.2.Final</wildfly.plugin.version>
     <war.plugin.version>2.6</war.plugin.version>
     <compiler.plugin.version>3.2</compiler.plugin.version>
     <failsafe.plugin.version>2.18.1</failsafe.plugin.version>
+    <build-helper.plugin.version>1.9.1</build-helper.plugin.version>
+    <clean.plugin.version>2.6.1</clean.plugin.version>
     <wildfly.version>8.2.0.Final</wildfly.version>
-    <wildfly.unpackDir>${project.build.directory}</wildfly.unpackDir>
+    <wildfly.unpackDir>${java.io.tmpdir}</wildfly.unpackDir>
     <wildfly.home>${wildfly.unpackDir}/wildfly-${wildfly.version}</wildfly.home>
     <arquillan.version>1.1.7.Final</arquillan.version>
     <shrinkwrap.version>2.1.0</shrinkwrap.version>
-    <logback.version>1.1.2</logback.version>
+    <mockito.version>1.10.19</mockito.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.theoryinpractise</groupId>
-      <artifactId>halbuilder-standard</artifactId>
-      <version>4.0.1</version>
-      <!-- Exclude Jackson to avoid any conflict with the one bundled with Wildfly -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -97,13 +113,11 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -172,13 +186,29 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>halbuilder-standard</artifactId>
+        <version>${halbuilder.version}</version>
+        <!-- Exclude Jackson to avoid any conflict with the one bundled with Wildfly -->
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
       <dependency>
         <groupId>org.wildfly.bom</groupId>
         <artifactId>jboss-javaee-7.0-with-resteasy</artifactId>
@@ -201,11 +231,15 @@
     <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
+        <artifactId>maven-help-plugin</artifactId>
+      </plugin>
+      <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
             <id>unpack-wildfly</id>
             <phase>generate-test-resources</phase>
+            <inherited>false</inherited>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -224,43 +258,72 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper.plugin.version}</version>
+        <executions>
+          <!-- Add a new test source directory to our build -->
+          <execution>
+            <id>add-integration-test-sources</id>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/integration-test/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${failsafe.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                <jboss.home>${wildfly.home}</jboss.home>
+                <module.path>${wildfly.home}/modules</module.path>
+              </systemPropertyVariables>
+              <redirectTestOutputToFile>false</redirectTestOutputToFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${clean.plugin.version}</version>
+        <executions>
+          <!-- Delete previously unpacked wildfly - don't do for child projects. -->
+          <execution>
+            <id>delete-wildfly</id>
+            <phase>clean</phase>
+            <inherited>false</inherited>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>${wildfly.home}</directory>
+                  <followSymlinks>false</followSymlinks>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <compilerVersion>${project.build.sourceLevel}</compilerVersion>
-            <source>${project.build.sourceLevel}</source>
-            <target>${project.build.targetLevel}</target>
-            <encoding>${project.build.sourceEncoding}</encoding>
-            <showDeprecation>true</showDeprecation>
-            <showWarnings>true</showWarnings>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>integration-test</id>
-              <phase>integration-test</phase>
-              <goals>
-                <goal>test</goal>
-              </goals>
-              <configuration>
-                <systemPropertyVariables>
-                  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                  <jboss.home>${wildfly.home}</jboss.home>
-                  <module.path>${wildfly.home}/modules</module.path>
-                </systemPropertyVariables>
-                <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                <includes>
-                  <include>**/*IT.java</include>
-                </includes>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
@@ -301,6 +364,19 @@
                     <ignore></ignore>
                   </action>
                 </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <versionRange>[1.9.1,)</versionRange>
+                    <goals>
+                      <goal>add-test-source</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
@@ -310,11 +386,11 @@
   </build>
 
   <modules>
-    <!-- <module>availability-service</module> -->
-    <!-- <module>appointment-service</module> -->
     <module>user-service</module>
     <module>user-domain</module>
     <module>representation-support</module>
     <module>client-support</module>
+    <module>availability-service</module>
+    <module>appointment-service</module>
   </modules>
 </project>

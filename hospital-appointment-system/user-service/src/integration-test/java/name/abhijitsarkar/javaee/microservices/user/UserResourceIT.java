@@ -43,7 +43,6 @@ public class UserResourceIT {
     private static final String RESOURCES_PATH = "src/main/resources";
 
     @Inject
-    @name.abhijitsarkar.javaee.microservices.client.Client
     private Client client;
 
     @Deployment

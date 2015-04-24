@@ -8,4 +8,11 @@
   </parent>
   <artifactId>representation-support</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.theoryinpractise</groupId>
+      <artifactId>halbuilder-standard</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>
