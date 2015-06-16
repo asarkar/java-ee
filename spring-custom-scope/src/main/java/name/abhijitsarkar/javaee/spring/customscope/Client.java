@@ -8,6 +8,10 @@ public class Client {
     @Autowired
     private RequestContext reqCtx;
 
+    public Client() {
+	System.out.println("Client instantiated.");
+    }
+
     public String getUsername() {
 	return reqCtx.getUsername();
     }

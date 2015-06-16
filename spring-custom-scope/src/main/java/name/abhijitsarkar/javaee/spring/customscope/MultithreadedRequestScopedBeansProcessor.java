@@ -5,11 +5,12 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
@@ -22,7 +23,15 @@ public class MultithreadedRequestScopedBeansProcessor implements
     @Override
     public void postProcessBeanFactory(
 	    ConfigurableListableBeanFactory beanFactory) throws BeansException {
-	Scope multithreadedRequestScope = new MultithreadedRequestScope(
+	// Object bean = beanFactory.autowire(ContextManagerImpl.class,
+	// AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
+
+	// beanFactory.autowireBeanProperties(contextManager(),
+	// AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
+
+	System.out.println("Inside postProcessBeanFactory");
+
+	org.springframework.beans.factory.config.Scope multithreadedRequestScope = new MultithreadedRequestScope(
 		beanFactory);
 
 	beanFactory.registerScope(multithreadedRequestScope.getClass()
@@ -61,5 +70,11 @@ public class MultithreadedRequestScopedBeansProcessor implements
 	// registry.registerBeanDefinition("requestContextImpl2",
 	// reqCtxImpl2Bldr.getBeanDefinition());
 
+    }
+
+    @Bean
+    @Scope("MultithreadedRequestScope")
+    RequestContext requestContext() {
+	return new RequestContextImpl();
     }
 }

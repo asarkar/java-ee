@@ -1,18 +1,30 @@
 package name.abhijitsarkar.javaee.spring.customscope;
 
-import javax.annotation.Resource;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope("MultithreadedRequestScope")
 public class RequestContextImpl implements RequestContext {
-    @Resource(name = "userManagerImpl1")
-    private UserManager userMgr;
+    private final UserManager userMgr;
+
+    private String requestId;
+
+    public RequestContextImpl() {
+	this(null);
+    }
+
+    public RequestContextImpl(UserManager userMgr) {
+	System.out.println("RequestContextImpl instantiated.");
+
+	this.userMgr = userMgr;
+    }
 
     @Override
     public String getUsername() {
 	return userMgr.getUsername();
+    }
+
+    public String getRequestId() {
+	return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+	this.requestId = requestId;
     }
 }

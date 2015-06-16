@@ -1,13 +1,13 @@
 package name.abhijitsarkar.javaee.spring.customscope;
 
 public class ThreadAttributes {
-    private String requestId;
+    private String conversationId;
 
-    public String getRequestId() {
-	return requestId;
+    public String getConversationId() {
+	return conversationId;
     }
 
-    public void setRequestId(String requestId) {
-	this.requestId = requestId;
+    public void setConversationId(String conversationId) {
+	this.conversationId = conversationId;
     }
 }
