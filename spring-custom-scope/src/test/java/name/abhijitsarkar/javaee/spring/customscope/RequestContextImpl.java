@@ -1,13 +1,14 @@
 package name.abhijitsarkar.javaee.spring.customscope;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(value = "MultithreadedRequestScope")
+@Scope("MultithreadedRequestScope")
 public class RequestContextImpl implements RequestContext {
-    @Autowired
+    @Resource(name = "userManagerImpl1")
     private UserManager userMgr;
 
     @Override

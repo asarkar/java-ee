@@ -6,8 +6,14 @@ import org.springframework.stereotype.Component;
 public class ContextManagerImpl implements ContextManager {
     @Override
     public Object get(String name, String conversationId) {
-	// TODO Auto-generated method stub
-	return null;
+	System.out.println("Retrieving bean with name: " + name);
+
+	return new RequestContext() {
+	    @Override
+	    public String getUsername() {
+		return "Abhijit Sarkar";
+	    }
+	};
     }
 
     @Override

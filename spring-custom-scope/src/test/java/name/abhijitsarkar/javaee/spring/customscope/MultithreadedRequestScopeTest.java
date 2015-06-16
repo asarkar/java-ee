@@ -10,10 +10,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = MultithreadedRequestScopedBeansProcessor.class)
 public class MultithreadedRequestScopeTest {
     @Autowired
-    private RequestContext reqCtx;
+    private Client client;
 
     @Test
     public void testUsername() {
-	System.out.println(reqCtx.getUsername());
+	System.out.println(client.getUsername());
     }
 }

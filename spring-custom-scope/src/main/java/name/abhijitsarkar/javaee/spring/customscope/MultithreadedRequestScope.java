@@ -5,10 +5,13 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 
 public class MultithreadedRequestScope implements Scope {
+    public static final String NAME = MultithreadedRequestScope.class
+	    .getSimpleName();
+
     private final ContextManager ctxMgr;
 
     public MultithreadedRequestScope(BeanFactory beanFactory) {
-	ctxMgr = beanFactory.getBean(ContextManager.class);
+	this.ctxMgr = beanFactory.getBean(ContextManager.class);
     }
 
     @Override
