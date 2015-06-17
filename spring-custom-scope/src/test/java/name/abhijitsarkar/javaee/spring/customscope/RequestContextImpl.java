@@ -10,8 +10,6 @@ public class RequestContextImpl implements RequestContext {
     }
 
     public RequestContextImpl(UserManager userMgr) {
-	System.out.println("RequestContextImpl instantiated.");
-
 	this.userMgr = userMgr;
     }
 

@@ -11,16 +11,16 @@ public class MultithreadedRequestScope implements Scope {
     private final BeanFactory beanFactory;
 
     public MultithreadedRequestScope(BeanFactory beanFactory) {
-	System.out.println("MultithreadedRequestScope instantiated.");
-
 	this.beanFactory = beanFactory;
     }
 
     @Override
     public Object get(String name, ObjectFactory<?> objFactory) {
-	System.out.println("MultithreadedRequestScope.get called.");
+	System.out.println("MultithreadedRequestScope.get called for name: "
+		+ name);
+	System.out.println("Current conversation id: " + getConversationId());
 
-	Object obj = getContextManager().get(name, getConversationId());
+	Object obj = getContextManager().get(name);
 
 	if (obj == null) {
 	    obj = objFactory.getObject();
@@ -35,7 +35,8 @@ public class MultithreadedRequestScope implements Scope {
 
     @Override
     public String getConversationId() {
-	return Thread.currentThread().getName();
+	return ThreadContextHolder.currentThreadAttributes()
+		.getConversationId();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class MultithreadedRequestScope implements Scope {
 
     @Override
     public Object remove(String name) {
-	return getContextManager().remove(name, getConversationId());
+	return getContextManager().remove(name);
     }
 
     @Override

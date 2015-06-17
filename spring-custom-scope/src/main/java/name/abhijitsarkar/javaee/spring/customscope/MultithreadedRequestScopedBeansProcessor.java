@@ -23,14 +23,6 @@ public class MultithreadedRequestScopedBeansProcessor implements
     @Override
     public void postProcessBeanFactory(
 	    ConfigurableListableBeanFactory beanFactory) throws BeansException {
-	// Object bean = beanFactory.autowire(ContextManagerImpl.class,
-	// AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-
-	// beanFactory.autowireBeanProperties(contextManager(),
-	// AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-
-	System.out.println("Inside postProcessBeanFactory");
-
 	org.springframework.beans.factory.config.Scope multithreadedRequestScope = new MultithreadedRequestScope(
 		beanFactory);
 
