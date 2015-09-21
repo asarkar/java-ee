@@ -7,7 +7,11 @@ import name.abhijitsarkar.javaee.userpref.domain.UserPreference;
 public interface UserPreferenceRepository {
     Optional<UserPreference> findOne(UserPreference userPreference);
 
-    Optional<UserPreference> save(UserPreference userPreference);
+    default Optional<UserPreference> save(UserPreference userPreference) {
+	throw new UnsupportedOperationException("Implement me!");
+    }
 
-    Optional<UserPreference> delete(UserPreference userPreference);
+    default Optional<UserPreference> delete(UserPreference userPreference) {
+	throw new UnsupportedOperationException("Implement me!");
+    }
 }

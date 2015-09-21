@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import name.abhijitsarkar.javaee.userpref.domain.SecurityContext;
 import name.abhijitsarkar.javaee.userpref.domain.UserPreference;
@@ -14,15 +15,12 @@ import name.abhijitsarkar.javaee.userpref.domain.UserPreferenceId;
 
 @Repository
 @Slf4j
-
-// SimpleJpaRepository throws an exception if entity is not found 
+@RequiredArgsConstructor(onConstructor = @__(@Autowired) )
+// SimpleJpaRepository throws an exception if entity is not found
 public class DelegatingUserPreferenceRepository
 	implements UserPreferenceRepository {
-    @Autowired
-    private JPAUserPreferenceRepository userPreferenceRepository;
-
-    @Autowired
-    private SecurityContext securityContext;
+    private final JPAUserPreferenceRepository userPreferenceRepository;
+    private final SecurityContext securityContext;
 
     @Override
     public Optional<UserPreference> findOne(UserPreference userPreference) {

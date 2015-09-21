@@ -19,7 +19,7 @@ import name.abhijitsarkar.javaee.userpref.repository.JPAUserRepository;
 @Component
 @Scope(scopeName = SCOPE_REQUEST, proxyMode = TARGET_CLASS)
 @Slf4j
-public class TestSecurityContext implements SecurityContext {
+public class FakeSecurityContext implements SecurityContext {
     private static final String USERNAME_HDR = "x-loginId";
     private static final String PARTNER_ID_PARAM = "partnerId";
 

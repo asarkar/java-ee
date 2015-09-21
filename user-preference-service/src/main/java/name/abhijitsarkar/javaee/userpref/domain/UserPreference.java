@@ -1,10 +1,14 @@
 package name.abhijitsarkar.javaee.userpref.domain;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserPreference {
-    private final String name;
-    private final String value;
-    private final int serviceId;
+    private String name;
+    private String value;
+    private int serviceId;
 }

@@ -29,13 +29,13 @@ public class UserPreferenceResourceAssembler
     private static final MappingDiscoverer DISCOVERER = new AnnotationMappingDiscoverer(
 	    RequestMapping.class);
 
-    private final String CREATE_METHOD = "createUserPreference";
+    private static final String CREATE_METHOD = "createUserPreference";
 
     private static final Class<UserPreferenceController> CONTROLLER_CLASS = UserPreferenceController.class;
 
-    private final String CREATE_LINK = "create";
-    private final String UPDATE_LINK = "update";
-    private final String DELETE_LINK = "delete";
+    private static final String CREATE_LINK = "create";
+    private static final String UPDATE_LINK = "update";
+    private static final String DELETE_LINK = "delete";
 
     private UserPreference newUserPreference(String name, int serviceId,
 	    String value) {
