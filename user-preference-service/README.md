@@ -36,29 +36,27 @@ partnerId
 
 ```
 
-/users/johndoe/prefs/favoriteStocks/svc/9
+http://localhost:8080/users/prefs/favoriteCity/svc/1
 200 or 404
 
 ```
 
 {
-    "_links": {
-        "self": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
-        },
-        "edit": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
-        },
-        "delete": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
-        }
-    },
-    "username": "johndoe",
-    "preferences": [
+    "name": "favoriteCity",
+    "value": "seattle",
+    "serviceId": 1,
+    "links": [
         {
-            "name": "favoriteStocks",
-            "value": "APPL",
-            "serviceId": "9"
+            "rel": "self",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
+        },
+        {
+            "rel": "update",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1?value=seattle"
+        },
+        {
+            "rel": "delete",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
         }
     ]
 }
@@ -67,67 +65,82 @@ partnerId
 
 ##### POST (create)
 
-/users/johndoe/prefs/favoriteStocks/svc/9
-value=AAPL
+http://localhost:8080/users/prefs/favoriteCity/svc/1?value=seattle
 
-201 or 404 or 409
+201 or 409
 
 ```
 
 {
-    "_links": {
-        "self": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+    "name": "favoriteCity",
+    "value": "seattle",
+    "serviceId": 1,
+    "links": [
+        {
+            "rel": "self",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
         },
-        "edit": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+        {
+            "rel": "update",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1?value=seattle"
         },
-        "delete": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+        {
+            "rel": "delete",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
         }
-    }
+    ]
 }
 
 ```
 
-##### PUT (update)
+##### PATCH (update)
 
-/users/johndoe/prefs/favoriteStocks/svc/9
-204 or 404
+http://localhost:8080/users/prefs/favoriteCity/svc/1?value=sfo
+200 or 404
 
 
 ```
 
 {
-    "_links": {
-        "self": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+    "name": "favoriteCity",
+    "value": "sfo",
+    "serviceId": 1,
+    "links": [
+        {
+            "rel": "self",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
         },
-        "edit": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+        {
+            "rel": "update",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1?value=seattle"
         },
-        "delete": {
-            "href": "/users/johndoe/prefs/favoriteStocks/svc/9"
+        {
+            "rel": "delete",
+            "href": "http://localhost:8080/users/prefs/favoriteCity/svc/1"
         }
-    }
+    ]
 }
 
 ```
 
 ##### DELETE (delete)
 
-/users/johndoe/prefs/favoriteStocks/svc/9
+http://localhost:8080/users/prefs/favoriteCity/svc/1
 204 or 404
 
 ---
 
+SERVICES
+-----------------
+id (PK) | name
+
 USERS
 -----------------
-id 	| username
+username (PK) | partner_id
 
 
 USER_PREFS
 -----------------
-id  | name | svc_id | username
+name(PK) | val | service_id (PK, FK) | username (PK, FK)	
 
 
