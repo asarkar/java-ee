@@ -1,0 +1,9 @@
+INSERT INTO SERVICES VALUES (1, 'WEATHER');
+INSERT INTO SERVICES VALUES (2, 'STOCKS');
+INSERT INTO SERVICES VALUES (3, 'SPORTS');
+
+INSERT INTO USERS VALUES ('johndoe', 'toyota');
+INSERT INTO USERS VALUES ('janedoe', 'fiat');
+INSERT INTO USERS VALUES ('johnnyappleseed', 'chrysler');
+
+INSERT INTO USER_PREFS VALUES ('favoriteCity', 'seattle', 1, 'janedoe')
