@@ -19,6 +19,7 @@
 		<servlet-api.version>3.1.0</servlet-api.version>
 		<hibernate.version>5.0.1.Final</hibernate.version>
 		<lombok.version>1.16.6</lombok.version>
+		<oracle-driver.version>11.2.0.2.0</oracle-driver.version>
 	</properties>
 
 	<dependencies>
@@ -46,6 +47,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>oracle6</artifactId>
+			<scope>compile</scope>
+			<version>${oracle-driver.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

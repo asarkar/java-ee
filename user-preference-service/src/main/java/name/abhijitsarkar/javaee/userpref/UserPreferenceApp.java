@@ -7,12 +7,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.InternalResourceView;
 
 @SpringBootApplication
-@EnableAsync
 public class UserPreferenceApp extends SpringBootServletInitializer {
     public static void main(String[] args) throws Exception {
 	SpringApplication.run(UserPreferenceApp.class, args);

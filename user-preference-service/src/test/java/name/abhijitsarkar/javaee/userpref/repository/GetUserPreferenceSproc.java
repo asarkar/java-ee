@@ -14,6 +14,7 @@ import org.springframework.jdbc.object.StoredProcedure;
 
 import lombok.extern.slf4j.Slf4j;
 import name.abhijitsarkar.javaee.userpref.domain.UserPreference;
+import oracle.jdbc.OracleTypes;
 
 @Slf4j
 public class GetUserPreferenceSproc extends StoredProcedure {
@@ -40,23 +41,27 @@ public class GetUserPreferenceSproc extends StoredProcedure {
 		new SqlParameter(PREFERENCE_NAME, Types.VARCHAR)));
 	declareParameter(
 		new SqlParameter(new SqlParameter(PARTNER_ID, Types.VARCHAR)));
-	declareParameter(new SqlOutParameter(USER_PREFERENCE, Types.REF_CURSOR,
-		new UserPreferenceExtractor()));
+	declareParameter(new SqlOutParameter(USER_PREFERENCE,
+		OracleTypes.CURSOR, new UserPreferenceExtractor()));
 
 	compile();
     }
 
     @SuppressWarnings("unchecked")
     public Object execute(String username, String password, int serviceId,
-	    String name, String partnerId) {
+	    String partnerId, String name) {
+	log.warn(
+		"Username: {}, Password: {}, Service ID: {}, Partner ID: {}, Name: {}.",
+		username, password, serviceId, partnerId, name);
+
 	Map<String, Object> results = super.execute(username, password,
 		serviceId, name, partnerId);
 
-	Object userPreferences = results.get(USER_PREFERENCE);
-	UserPreference userPreference = null;
+	List<UserPreference> userPreferences = (List<UserPreference>) results
+		.get(USER_PREFERENCE);
+	UserPreference userPreference = userPreferences.get(0);
 
-	if (userPreferences != null) {
-	    userPreference = ((List<UserPreference>) userPreferences).get(0);
+	if (userPreference != null) {
 	    userPreference.setName(name);
 	    userPreference.setServiceId(serviceId);
 	}

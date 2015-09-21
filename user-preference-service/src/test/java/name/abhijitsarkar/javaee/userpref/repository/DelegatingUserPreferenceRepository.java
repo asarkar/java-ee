@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import name.abhijitsarkar.javaee.userpref.domain.UserPreferenceEntity;
 import name.abhijitsarkar.javaee.userpref.domain.UserPreferenceId;
 
 @Repository
+@Profile("!oracle")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired) )
 // SimpleJpaRepository throws an exception if entity is not found
