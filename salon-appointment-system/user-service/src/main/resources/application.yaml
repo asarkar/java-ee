@@ -1,0 +1,7 @@
+spring:
+  data:
+    rest:
+      basePath: /users
+      defaultMediaType: application/hal+json
+      returnBodyOnCreate: true
+      returnBodyOnUpdate: true
