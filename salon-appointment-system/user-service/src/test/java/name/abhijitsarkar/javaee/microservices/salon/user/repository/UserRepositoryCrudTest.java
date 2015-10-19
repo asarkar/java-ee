@@ -45,7 +45,7 @@ import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
 @SpringApplicationConfiguration(classes = UserAppConfig.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
-public class UserRepositoryTest {
+public class UserRepositoryCrudTest {
 	private String jsonUser;
 
 	private MockMvc mockMvc;

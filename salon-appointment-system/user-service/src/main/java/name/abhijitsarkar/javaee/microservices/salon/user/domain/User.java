@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import name.abhijitsarkar.javaee.microservices.salon.common.OptionalConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
+import name.abhijitsarkar.javaee.microservices.salon.user.repository.NameConverter;
+import name.abhijitsarkar.javaee.microservices.salon.user.repository.PhoneNumberConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,15 +33,18 @@ public class User implements Serializable {
 	private Long id;
 
 	@Column(name = "FIRST_NAME", nullable = false, unique = false)
+	@Convert(converter = NameConverter.class)
 	private String firstName;
 
 	@Column(name = "LAST_NAME", nullable = false, unique = false)
+	@Convert(converter = NameConverter.class)
 	private String lastName;
 
 	@Column(name = "PHONE_NUM", nullable = false, unique = false)
+	@Convert(converter = PhoneNumberConverter.class)
 	private String phoneNum;
 
 	@Column(name = "EMAIL", nullable = true, unique = false)
-	@Convert(converter = OptionalConverter.class)
+	@Convert(converter = OptionalStringConverter.class)
 	private Optional<String> email;
 }

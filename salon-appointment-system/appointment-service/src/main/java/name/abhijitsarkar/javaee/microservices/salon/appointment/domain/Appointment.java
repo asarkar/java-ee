@@ -17,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
 import name.abhijitsarkar.javaee.microservices.salon.common.OffsetDateTimeConverter;
-import name.abhijitsarkar.javaee.microservices.salon.common.OptionalConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,6 +44,6 @@ public class Appointment implements Serializable {
 	private OffsetDateTime endTime;
 
 	@Column(name = "COMMENT", nullable = true, unique = false)
-	@Convert(converter = OptionalConverter.class)
+	@Convert(converter = OptionalStringConverter.class)
 	private Optional<String> comment;
 }
