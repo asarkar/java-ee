@@ -6,7 +6,7 @@
 		<artifactId>salon-appointment-system</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>user-service</artifactId>
+	<artifactId>appointment-service</artifactId>
 
 	<dependencies>
 		<dependency>

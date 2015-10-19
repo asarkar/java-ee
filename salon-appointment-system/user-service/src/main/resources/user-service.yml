@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: user-service
+  data:
+    rest:
+      basePath: /users
+      
+server:
+  port: 3333

@@ -1,0 +1,8 @@
+eureka:
+  client:
+    serviceUrl:
+      # The trailing slash is important, without that looks for eurekaapp
+      defaultZone: http://localhost:1111/eureka/
+      
+user-service:
+  url: http://USER-SERVICE

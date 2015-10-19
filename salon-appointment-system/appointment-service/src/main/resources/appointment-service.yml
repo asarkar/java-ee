@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: appointment-service
+  data:
+    rest:
+      basePath: /appointments
+
+server:
+  port: 2222
