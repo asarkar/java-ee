@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.salon.common;
+package name.abhijitsarkar.javaee.microservices.salon.common.domain;
 
 import java.util.Optional;
 
@@ -10,7 +10,11 @@ public class OptionalStringConverter implements AttributeConverter<Optional<Stri
 
 	@Override
 	public String convertToDatabaseColumn(Optional<String> opt) {
-		return opt != null ? opt.map(String::toLowerCase).orElse(null) : null;
+		if (opt == null || !opt.isPresent() || opt.get() == null) {
+			return null;
+		}
+
+		return opt.get().toLowerCase();
 	}
 
 	@Override

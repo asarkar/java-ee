@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("!test")
 public class UserApp {
 	public static void main(String[] args) {
-		System.setProperty("spring.config.location", "classpath:/user-service.yml, classpath:/salon-common.yml");
+		System.setProperty("spring.config.location", "classpath:/user-service.yml");
 		System.setProperty("spring.cloud.bootstrap.location", "classpath:/user-service-registration.yml");
 		
 		SpringApplication.run(UserApp.class, args);

@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.salon.common;
+package name.abhijitsarkar.javaee.microservices.salon.common.domain;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

@@ -7,6 +7,7 @@ import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
+import name.abhijitsarkar.javaee.microservices.salon.user.domain.PhoneNumberConverter;
 import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
 
 @RepositoryEventHandler(User.class)

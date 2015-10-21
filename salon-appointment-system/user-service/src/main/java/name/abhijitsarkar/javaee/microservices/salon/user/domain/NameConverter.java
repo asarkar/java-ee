@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.salon.user.repository;
+package name.abhijitsarkar.javaee.microservices.salon.user.domain;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -4,6 +4,16 @@ spring:
   data:
     rest:
       basePath: /users
+      defaultMediaType: application/hal+json
+      returnBodyOnCreate: true
+      returnBodyOnUpdate: true
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+      write_dates_with_zone_id: true
+      write_null_map_values: false
+    deserialization:
+      adjust_dates_to_context_time_zone: false
       
 server:
   port: 3333

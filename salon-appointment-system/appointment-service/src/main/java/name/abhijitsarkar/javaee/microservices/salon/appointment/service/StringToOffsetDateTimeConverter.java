@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 import org.springframework.core.convert.converter.Converter;
 
-import name.abhijitsarkar.javaee.microservices.salon.common.OffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.domain.OffsetDateTimeConverter;
 
 public class StringToOffsetDateTimeConverter implements Converter<String, OffsetDateTime> {
 	private final OffsetDateTimeConverter converter = new OffsetDateTimeConverter();

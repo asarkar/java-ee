@@ -14,7 +14,7 @@
 		<appender-ref ref="STDOUT" />
 	</root>
 
-	<!-- <logger name="org.hibernate" level="debug" /> -->
+	<logger name="org.hibernate" level="debug" />
 	<logger name="name.abhijitsarkar" level="debug" />
 
 </configuration>

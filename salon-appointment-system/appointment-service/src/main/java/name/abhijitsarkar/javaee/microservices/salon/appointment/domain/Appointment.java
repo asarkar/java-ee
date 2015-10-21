@@ -16,8 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import name.abhijitsarkar.javaee.microservices.salon.common.OffsetDateTimeConverter;
-import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.domain.OffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.domain.OptionalStringConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor

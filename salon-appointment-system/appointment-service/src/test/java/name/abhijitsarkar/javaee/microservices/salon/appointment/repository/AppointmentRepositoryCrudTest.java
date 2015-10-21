@@ -13,7 +13,6 @@ import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +29,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -87,8 +85,7 @@ public class AppointmentRepositoryCrudTest {
 	public void testCreateAppointment() throws Exception {
 		Pair pair = new Pair(asList("_links", "self", "href"), ".*/appointments/\\d$");
 
-		createNewAppointment().andDo(MockMvcResultHandlers.print())
-				.andExpect(content().string(new ContentMatcher(pair)));
+		createNewAppointment().andExpect(content().string(new ContentMatcher(pair)));
 	}
 
 	@Test
@@ -102,8 +99,7 @@ public class AppointmentRepositoryCrudTest {
 	public void testUpdateAppointment() throws Exception {
 		OffsetDateTime startTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00), ZoneOffset.of("-08:30"));
 
-		// 2015-01-01T19:00:00Z
-		String startTimeText = DateTimeFormatter.ISO_INSTANT.format(startTime);
+		String startTimeText = ObjectMapperFactory.getInstance().writeValueAsString(startTime).replaceAll("\"", "");
 
 		AppointmentExtractor AppointmentExtractor = new AppointmentExtractor(startTime);
 		Pair pair = new Pair(asList("startTime"), startTimeText);

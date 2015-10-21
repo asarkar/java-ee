@@ -3,12 +3,16 @@ package name.abhijitsarkar.javaee.microservices.salon.user;
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
+import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
+
 @SpringBootApplication
+@EntityScan(basePackageClasses = User.class)
 public class UserAppConfig {
 	@Bean
 	ServletRegistrationBean h2servletRegistration() {

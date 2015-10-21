@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.salon.user.repository;
+package name.abhijitsarkar.javaee.microservices.salon.user.domain;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.stream.Collectors.joining;

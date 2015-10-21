@@ -18,7 +18,7 @@ import name.abhijitsarkar.javaee.microservices.salon.appointment.service.StringT
 
 @SpringBootApplication
 public class AppointmentAppConfig {
-	@Resource(name = "defaultConversionService")
+	@Resource(name = "mvcConversionService") // There is also a mvcConversionService
 	private ConverterRegistry converterRegistry;
 
 	@PostConstruct
@@ -35,7 +35,7 @@ public class AppointmentAppConfig {
 
 	/*
 	 * c.f. JacksonAutoConfiguration, Jackson2ObjectMapperBuilder,
-	 * AbstractJackson2HttpMessageConverter
+	 * AbstractJackson2HttpMessageConverter, JavaTimeModule
 	 */
 
 	@Bean

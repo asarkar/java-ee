@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.persistence;
+package name.abhijitsarkar.javaee.microservices.salon.common.domain;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -7,7 +7,7 @@ import java.time.ZoneOffset;
 import org.junit.Assert;
 import org.junit.Test;
 
-import name.abhijitsarkar.javaee.microservices.salon.common.OffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.domain.OffsetDateTimeConverter;
 
 public class OffsetDateTimeConverterTest {
 	private OffsetDateTimeConverter converter = new OffsetDateTimeConverter();
@@ -22,9 +22,9 @@ public class OffsetDateTimeConverterTest {
 	
 	@Test
 	public void testDeserialization() {
-		OffsetDateTime dateTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00), ZoneOffset.of("-08:30"));
+		OffsetDateTime dateTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00), ZoneOffset.of("-08:00"));
 		
-		OffsetDateTime actual = converter.convertToEntityAttribute("2015-01-01T11:00:00-08:30");
+		OffsetDateTime actual = converter.convertToEntityAttribute("2015-01-01T11:00-08:00");
 		
 		Assert.assertEquals(dateTime, actual);
 	}

@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import name.abhijitsarkar.javaee.microservices.salon.user.domain.PhoneNumberConverter;
 import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
 
 @Repository

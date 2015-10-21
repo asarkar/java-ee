@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("!test")
 public class AppointmentApp {
 	public static void main(String[] args) {
-		System.setProperty("spring.config.location", "classpath:/appointment-service.yml, classpath:/salon-common.yml");
+		System.setProperty("spring.config.location", "classpath:/appointment-service.yml");
 		System.setProperty("spring.cloud.bootstrap.location", "classpath:/appointment-service-registration.yml");
 
 		SpringApplication.run(AppointmentApp.class, args);

@@ -13,6 +13,6 @@
     <appender-ref ref="STDOUT" />
   </root>
   
-  <logger name="name.abhijitsarkar" level="debug" />
+  <logger name="name.abhijitsarkar" level="DEBUG" />
 
 </configuration>

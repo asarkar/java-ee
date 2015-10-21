@@ -15,9 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
-import name.abhijitsarkar.javaee.microservices.salon.user.repository.NameConverter;
-import name.abhijitsarkar.javaee.microservices.salon.user.repository.PhoneNumberConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.domain.OptionalStringConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor

@@ -101,7 +101,7 @@ public class UserRepositoryFindTest {
 				MockHttpServletRequestBuilder findRequest = get(String.format("/users/search/findByPhoneNum"))
 						.param("phoneNum", "111-111").accept(HAL_JSON);
 
-				mockMvc.perform(findRequest).andExpect(jsonPath("$._links").isEmpty());
+				mockMvc.perform(findRequest).andExpect(jsonPath("$._embedded").isEmpty());
 			}
 		});
 	}
@@ -164,7 +164,7 @@ public class UserRepositoryFindTest {
 				MockHttpServletRequestBuilder findRequest = get(String.format("/users/search/findByEmail"))
 						.param("email", "test@test.com").accept(HAL_JSON);
 
-				mockMvc.perform(findRequest).andExpect(jsonPath("$._links").isEmpty());
+				mockMvc.perform(findRequest).andExpect(jsonPath("$._embedded").isEmpty());
 			}
 		});
 	}
