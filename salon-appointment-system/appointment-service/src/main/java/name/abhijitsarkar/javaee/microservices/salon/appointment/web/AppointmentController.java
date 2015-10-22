@@ -45,7 +45,7 @@ public class AppointmentController {
 		OffsetDateTime beginningOfDay = OffsetDateTime.now().with(BEGINNING_OF_DAY_ADJUSTER);
 		OffsetDateTime endOfDay = OffsetDateTime.from(beginningOfDay).plusDays(1);
 
-		Page<Appointment> todaysSchedule = apptRepo.findByStartTimeBetween(beginningOfDay, endOfDay, pageable);
+		Page<Appointment> todaysSchedule = apptRepo.findByStartDateTimeBetween(beginningOfDay, endOfDay, pageable);
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		PagedResources<Resource<Appointment>> resource = pagedResourcesAssembler.toResource(todaysSchedule,
@@ -87,7 +87,7 @@ public class AppointmentController {
 			@RequestParam("firstName") String firstName) {
 		OffsetDateTime beginningOfDay = OffsetDateTime.now().with(BEGINNING_OF_DAY_ADJUSTER);
 
-		return findByFirstNameAndStartsOnDate(entityAssembler, pageable, firstName, beginningOfDay);
+		return findByFirstNameAndStartsOnOrAfterDateTime(entityAssembler, pageable, firstName, beginningOfDay);
 	}
 
 	@RequestMapping("/findByLastNameAndStartsToday")
@@ -96,7 +96,7 @@ public class AppointmentController {
 			@RequestParam("lastName") String lastName) {
 		OffsetDateTime beginningOfDay = OffsetDateTime.now().with(BEGINNING_OF_DAY_ADJUSTER);
 
-		return findByLastNameAndStartsOnDate(entityAssembler, pageable, lastName, beginningOfDay);
+		return findByLastNameAndStartsOnOrAfterDateTime(entityAssembler, pageable, lastName, beginningOfDay);
 	}
 
 	@RequestMapping("/findByFirstAndLastNamesAndStartsToday")
@@ -105,41 +105,41 @@ public class AppointmentController {
 			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
 		OffsetDateTime beginningOfDay = OffsetDateTime.now().with(BEGINNING_OF_DAY_ADJUSTER);
 
-		return findByFirstAndLastNamesAndStartsOnDate(entityAssembler, pageable, firstName, lastName, beginningOfDay);
+		return findByFirstAndLastNamesAndStartsOnOrAfterDateTime(entityAssembler, pageable, firstName, lastName, beginningOfDay);
 	}
 
-	@RequestMapping("/findByFirstNameAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByFirstNameAndStartsOnDate(
+	@RequestMapping("/findByFirstNameAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByFirstNameAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable,
-			@RequestParam("firstName") String firstName, @RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("firstName") String firstName, @RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByFirstName(firstName);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
-	@RequestMapping("/findByLastNameAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByLastNameAndStartsOnDate(
+	@RequestMapping("/findByLastNameAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByLastNameAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable,
-			@RequestParam("lastName") String lastName, @RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("lastName") String lastName, @RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByLastName(lastName);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
-	@RequestMapping("/findByFirstAndLastNamesAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByFirstAndLastNamesAndStartsOnDate(
+	@RequestMapping("/findByFirstAndLastNamesAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByFirstAndLastNamesAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable,
 			@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
-			@RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByFirstAndLastNames(firstName, lastName);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
 	@RequestMapping("/findByEmail")
@@ -150,15 +150,15 @@ public class AppointmentController {
 		return findByUserIdIn(entityAssembler, pageable, userIds);
 	}
 
-	@RequestMapping("/findByEmailAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByEmailAndStartsOnDate(
+	@RequestMapping("/findByEmailAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByEmailAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable, @RequestParam("email") String email,
-			@RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByEmail(email);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
 	@RequestMapping("/findByPhoneNum")
@@ -170,15 +170,15 @@ public class AppointmentController {
 		return findByUserIdIn(entityAssembler, pageable, userIds);
 	}
 
-	@RequestMapping("/findByPhoneNumAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByPhoneNumAndStartsOnDate(
+	@RequestMapping("/findByPhoneNumAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByPhoneNumAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable,
-			@RequestParam("phoneNum") String phoneNum, @RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("phoneNum") String phoneNum, @RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByPhoneNum(phoneNum);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
 	@RequestMapping("/findByPhoneNumEndingWith")
@@ -190,15 +190,15 @@ public class AppointmentController {
 		return findByUserIdIn(entityAssembler, pageable, userIds);
 	}
 
-	@RequestMapping("/findByPhoneNumEndingWithAndStartsOnDate")
-	public HttpEntity<PagedResources<Resource<Appointment>>> findByPhoneNumEndingWithAndStartsOnDate(
+	@RequestMapping("/findByPhoneNumEndingWithAndStartsOnOrAfterDateTime")
+	public HttpEntity<PagedResources<Resource<Appointment>>> findByPhoneNumEndingWithAndStartsOnOrAfterDateTime(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable,
-			@RequestParam("phoneNum") String phoneNum, @RequestParam("startTime") OffsetDateTime startTime) {
-		OffsetDateTime endOfDay = OffsetDateTime.from(startTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
+			@RequestParam("phoneNum") String phoneNum, @RequestParam("startDateTime") OffsetDateTime startDateTime) {
+		OffsetDateTime endOfDay = OffsetDateTime.from(startDateTime).plusDays(1).with(BEGINNING_OF_DAY_ADJUSTER);
 
 		Collection<Long> userIds = userService.getUserIdsByPhoneNumEndingWith(phoneNum);
 
-		return findByUserIdInAndStartTimeBetween(entityAssembler, pageable, userIds, startTime, endOfDay);
+		return findByUserIdInAndStartDateTimeBetween(entityAssembler, pageable, userIds, startDateTime, endOfDay);
 	}
 
 	private HttpEntity<PagedResources<Resource<Appointment>>> findByUserIdIn(
@@ -212,11 +212,11 @@ public class AppointmentController {
 		return new ResponseEntity<>(resource, OK);
 	}
 
-	private HttpEntity<PagedResources<Resource<Appointment>>> findByUserIdInAndStartTimeBetween(
+	private HttpEntity<PagedResources<Resource<Appointment>>> findByUserIdInAndStartDateTimeBetween(
 			PersistentEntityResourceAssembler entityAssembler, Pageable pageable, Collection<Long> userIds,
-			OffsetDateTime startTime, OffsetDateTime endTime) {
-		Page<Appointment> todaysSchedule = apptRepo.findByUserIdInAndStartTimeBetween(userIds, startTime, endTime,
-				pageable);
+			OffsetDateTime startDateTime, OffsetDateTime endDateTime) {
+		Page<Appointment> todaysSchedule = apptRepo.findByUserIdInAndStartDateTimeBetween(userIds, startDateTime,
+				endDateTime, pageable);
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		PagedResources<Resource<Appointment>> resource = pagedResourcesAssembler.toResource(todaysSchedule,

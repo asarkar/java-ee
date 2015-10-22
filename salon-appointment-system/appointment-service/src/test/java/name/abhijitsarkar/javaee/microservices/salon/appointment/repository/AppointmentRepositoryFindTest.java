@@ -1,14 +1,16 @@
 package name.abhijitsarkar.javaee.microservices.salon.appointment.repository;
 
-import static name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentTestUtil.createNewAppointment;
-import static name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentTestUtil.getAppointmentAsJson;
+import static name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentTestHelper.createNewAppointment;
+import static name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentTestHelper.getAppointmentAsJson;
 import static org.springframework.data.rest.webmvc.RestMediaTypes.HAL_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.time.OffsetDateTime;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,23 +28,29 @@ import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentAppConfig;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.VerifyFindResult;
+import name.abhijitsarkar.javaee.microservices.salon.appointment.service.OffsetDateTimeFormatter;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.web.BeginningOfDayAdjuster;
-import name.abhijitsarkar.javaee.microservices.salon.common.domain.OffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.IdExtractor;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppointmentAppConfig.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class AppointmentRepositoryFindTest {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
 	private String jsonAppt;
 
 	private MockMvc mockMvc;
+
+	// GOTCHA ALERT: There's also a mvcConversionService; tests DO NOT use that
+	@Resource(name = "defaultConversionService")
+	private FormatterRegistry formatterRegistry;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -49,16 +58,20 @@ public class AppointmentRepositoryFindTest {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 
-	private OffsetDateTimeConverter converter = new OffsetDateTimeConverter();
+	private final OffsetDateTimeFormatter formatter = new OffsetDateTimeFormatter();
 
 	@PostConstruct
-	void init() throws JsonProcessingException {
+	void init() {
+		formatterRegistry.removeConvertible(String.class, OffsetDateTime.class);
+
+		formatterRegistry.addFormatter(formatter);
+
+		OffsetDateTime startDateTime = OffsetDateTime.now();
+		OffsetDateTime endDateTime = startDateTime.plusHours(1);
+
+		jsonAppt = getAppointmentAsJson(startDateTime, endDateTime);
+
 		mockMvc = webAppContextSetup(webApplicationContext).build();
-
-		OffsetDateTime startTime = OffsetDateTime.now();
-		OffsetDateTime endTime = startTime.plusHours(1);
-
-		jsonAppt = getAppointmentAsJson(startTime, endTime);
 	}
 
 	@Before
@@ -78,7 +91,7 @@ public class AppointmentRepositoryFindTest {
 			public void handle(MvcResult createResult) throws Exception {
 				String createBody = createResult.getResponse().getContentAsString();
 
-				String userId = ObjectMapperFactory.getInstance().readTree(createBody).path("userId").asText();
+				String userId = OBJECT_MAPPER.readTree(createBody).path("userId").asText();
 
 				String id = new IdExtractor().apply(createResult);
 
@@ -92,19 +105,19 @@ public class AppointmentRepositoryFindTest {
 	}
 
 	@Test
-	public void testFindByStartTimeGreaterThanEqual() throws Exception {
+	public void testfindByStartDateTimeGreaterThanEqual() throws Exception {
 		createNewAppointment(mockMvc, jsonAppt).andDo(new ResultHandler() {
 			@Override
 			public void handle(MvcResult createResult) throws Exception {
 				String createBody = createResult.getResponse().getContentAsString();
 
-				String startTime = ObjectMapperFactory.getInstance().readTree(createBody).path("startTime").asText();
+				String startDateTime = OBJECT_MAPPER.readTree(createBody).path("startDateTime").asText();
 
 				String id = new IdExtractor().apply(createResult);
 
 				MockHttpServletRequestBuilder findRequest = get(
-						String.format("/appointments/search/findByStartTimeGreaterThanEqual"))
-								.param("startTime", startTime).accept(HAL_JSON);
+						String.format("/appointments/search/findByStartDateTimeGreaterThanEqual"))
+								.param("startDateTime", startDateTime).accept(HAL_JSON);
 
 				mockMvc.perform(findRequest).andDo(new VerifyFindResult(id));
 			}
@@ -112,19 +125,19 @@ public class AppointmentRepositoryFindTest {
 	}
 
 	@Test
-	public void testFindByStartTimeLessThanEqual() throws Exception {
+	public void testfindByStartDateTimeLessThanEqual() throws Exception {
 		createNewAppointment(mockMvc, jsonAppt).andDo(new ResultHandler() {
 			@Override
 			public void handle(MvcResult createResult) throws Exception {
 				String createBody = createResult.getResponse().getContentAsString();
 
-				String startTime = ObjectMapperFactory.getInstance().readTree(createBody).path("startTime").asText();
+				String startDateTime = OBJECT_MAPPER.readTree(createBody).path("startDateTime").asText();
 
 				String id = new IdExtractor().apply(createResult);
 
 				MockHttpServletRequestBuilder findRequest = get(
-						String.format("/appointments/search/findByStartTimeLessThanEqual"))
-								.param("startTime", startTime).accept(HAL_JSON);
+						String.format("/appointments/search/findByStartDateTimeLessThanEqual"))
+								.param("startDateTime", startDateTime).accept(HAL_JSON);
 
 				mockMvc.perform(findRequest).andDo(new VerifyFindResult(id));
 			}
@@ -132,24 +145,25 @@ public class AppointmentRepositoryFindTest {
 	}
 
 	@Test
-	public void testFindByStartTimeBetween() throws Exception {
+	public void testfindByStartDateTimeBetween() throws Exception {
 		createNewAppointment(mockMvc, jsonAppt).andDo(new ResultHandler() {
 			@Override
 			public void handle(MvcResult createResult) throws Exception {
 				String createBody = createResult.getResponse().getContentAsString();
 
-				String startTimeText = ObjectMapperFactory.getInstance().readTree(createBody).path("startTime")
-						.asText();
+				String startDateTimeText = OBJECT_MAPPER.readTree(createBody).path("startDateTime").asText();
 
-				OffsetDateTime startTime = converter.convertToEntityAttribute(startTimeText);
+				Locale defaultLocale = Locale.getDefault();
 
-				String begin = converter.convertToDatabaseColumn(startTime.minusMinutes(30));
-				String end = converter.convertToDatabaseColumn(startTime.plusMinutes(30));
+				OffsetDateTime startDateTime = formatter.parse(startDateTimeText, defaultLocale);
+
+				String begin = formatter.print(startDateTime.minusMinutes(30), defaultLocale);
+				String end = formatter.print(startDateTime.plusMinutes(30), defaultLocale);
 
 				String id = new IdExtractor().apply(createResult);
 
 				MockHttpServletRequestBuilder findRequest = get(
-						String.format("/appointments/search/findByStartTimeBetween")).param("begin", begin)
+						String.format("/appointments/search/findByStartDateTimeBetween")).param("begin", begin)
 								.param("end", end).accept(HAL_JSON);
 
 				mockMvc.perform(findRequest).andDo(new VerifyFindResult(id));
@@ -164,18 +178,19 @@ public class AppointmentRepositoryFindTest {
 			public void handle(MvcResult createResult) throws Exception {
 				String createBody = createResult.getResponse().getContentAsString();
 
-				String startTimeText = ObjectMapperFactory.getInstance().readTree(createBody).path("startTime")
-						.asText();
+				String startDateTimeText = OBJECT_MAPPER.readTree(createBody).path("startDateTime").asText();
 
-				OffsetDateTime startTime = converter.convertToEntityAttribute(startTimeText);
-				
-				String begin = converter.convertToDatabaseColumn(startTime.with(new BeginningOfDayAdjuster()));
-				String end = converter.convertToDatabaseColumn(startTime.plusDays(1));
+				Locale defaultLocale = Locale.getDefault();
+
+				OffsetDateTime startDateTime = formatter.parse(startDateTimeText, defaultLocale);
+
+				String begin = formatter.print(startDateTime.with(new BeginningOfDayAdjuster()), defaultLocale);
+				String end = formatter.print(startDateTime.plusDays(1), defaultLocale);
 
 				String id = new IdExtractor().apply(createResult);
 
 				MockHttpServletRequestBuilder findRequest = get(
-						String.format("/appointments/search/findByStartTimeBetween")).param("begin", begin)
+						String.format("/appointments/search/findByStartDateTimeBetween")).param("begin", begin)
 								.param("end", end).accept(HAL_JSON);
 
 				mockMvc.perform(findRequest).andDo(new VerifyFindResult(id));

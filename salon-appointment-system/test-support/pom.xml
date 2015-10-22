@@ -29,5 +29,10 @@
 			<artifactId>spring-test</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>salon-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

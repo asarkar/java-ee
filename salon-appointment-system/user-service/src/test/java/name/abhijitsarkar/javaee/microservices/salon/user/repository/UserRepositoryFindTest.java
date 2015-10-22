@@ -34,11 +34,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.ContentMatcher;
 import name.abhijitsarkar.javaee.microservices.salon.test.IdExtractor;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.Pair;
 import name.abhijitsarkar.javaee.microservices.salon.user.UserAppConfig;
 import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
@@ -48,6 +49,8 @@ import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class UserRepositoryFindTest {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
 	private String jsonUser;
 
 	private MockMvc mockMvc;
@@ -64,7 +67,7 @@ public class UserRepositoryFindTest {
 
 		User testUser = new User().withFirstName("john").withLastName("doe").withPhoneNum("111-111-1111");
 
-		jsonUser = ObjectMapperFactory.getInstance().writeValueAsString(testUser);
+		jsonUser = OBJECT_MAPPER.writeValueAsString(testUser);
 	}
 
 	@Before
@@ -141,7 +144,7 @@ public class UserRepositoryFindTest {
 	public void testFindByEmail() throws Exception {
 		User testUser = new User().withFirstName("john").withLastName("doe").withPhoneNum("111-111-1111")
 				.withEmail(Optional.of("test@test.com"));
-		String user = ObjectMapperFactory.getInstance().writeValueAsString(testUser);
+		String user = OBJECT_MAPPER.writeValueAsString(testUser);
 
 		mockMvc.perform(post("/users").content(user).contentType(APPLICATION_JSON)).andDo(new ResultHandler() {
 			@Override
@@ -185,7 +188,7 @@ public class UserRepositoryFindTest {
 
 			String findBody = findResult.getResponse().getContentAsString();
 
-			JsonNode tree = ObjectMapperFactory.getInstance().readTree(findBody);
+			JsonNode tree = OBJECT_MAPPER.readTree(findBody);
 			JsonNode users = tree.path("_embedded").path("users");
 
 			assertFalse(users.isMissingNode());

@@ -16,8 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import name.abhijitsarkar.javaee.microservices.salon.common.domain.OffsetDateTimeConverter;
-import name.abhijitsarkar.javaee.microservices.salon.common.domain.OptionalStringConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,13 +34,13 @@ public class Appointment implements Serializable {
 	@Column(name = "USER_ID", nullable = false, unique = false)
 	private Long userId;
 
-	@Column(name = "START_TIME", nullable = false, unique = false)
-	@Convert(converter = OffsetDateTimeConverter.class)
-	private OffsetDateTime startTime;
+	@Column(name = "START_DT_TIME", nullable = false, unique = false)
+	@Convert(converter = OffsetDateTimeAttributeConverter.class)
+	private OffsetDateTime startDateTime;
 
-	@Column(name = "END_TIME", nullable = false, unique = false)
-	@Convert(converter = OffsetDateTimeConverter.class)
-	private OffsetDateTime endTime;
+	@Column(name = "END_DT_TIME", nullable = false, unique = false)
+	@Convert(converter = OffsetDateTimeAttributeConverter.class)
+	private OffsetDateTime endDateTime;
 
 	@Column(name = "COMMENT", nullable = true, unique = false)
 	@Convert(converter = OptionalStringConverter.class)

@@ -1,5 +1,7 @@
 package name.abhijitsarkar.javaee.microservices.salon.appointment;
 
+import java.time.OffsetDateTime;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
@@ -7,23 +9,28 @@ import org.h2.server.web.WebServlet;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.ConverterRegistry;
+import org.springframework.format.FormatterRegistry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import name.abhijitsarkar.javaee.microservices.salon.appointment.service.StringToOffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.appointment.service.OffsetDateTimeConverter;
+import name.abhijitsarkar.javaee.microservices.salon.appointment.service.OffsetDateTimeFormatter;
 
 @SpringBootApplication
 public class AppointmentAppConfig {
-	@Resource(name = "mvcConversionService") // There is also a mvcConversionService
-	private ConverterRegistry converterRegistry;
+	// There's also a mvcConversionService
+	@Resource(name = "defaultConversionService")
+	private FormatterRegistry formatterRegistry;
 
 	@PostConstruct
 	void init() throws JsonProcessingException {
-		converterRegistry.addConverter(new StringToOffsetDateTimeConverter());
+		formatterRegistry.removeConvertible(String.class, OffsetDateTime.class);
+
+		formatterRegistry.addFormatter(new OffsetDateTimeFormatter());
+		formatterRegistry.addConverter(new OffsetDateTimeConverter());
 	}
 
 	@Bean

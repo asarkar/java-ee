@@ -22,18 +22,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentAppConfig;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.VerifyFindResult;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.domain.Appointment;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.repository.AppointmentRepository;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppointmentAppConfig.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class AppointmentControllerTest {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -60,7 +63,7 @@ public class AppointmentControllerTest {
 		OffsetDateTime startTime = OffsetDateTime.now();
 		OffsetDateTime endTime = startTime.plusHours(1);
 
-		appt = new Appointment().withUserId(1l).withStartTime(startTime).withEndTime(endTime);
+		appt = new Appointment().withUserId(1l).withStartDateTime(startTime).withEndDateTime(endTime);
 
 		appt = appointmentRepository.save(appt);
 	}
@@ -91,22 +94,20 @@ public class AppointmentControllerTest {
 	}
 
 	@Test
-	public void testFindByFirstNameAndStartsOnDate() throws Exception {
-		String startTime = ObjectMapperFactory.getInstance().writeValueAsString(appt.getStartTime()).replaceAll("\"",
-				"");
+	public void testFindByFirstNameAndStartsOnDateTime() throws Exception {
+		String startTime = OBJECT_MAPPER.writeValueAsString(appt.getStartDateTime()).replaceAll("\"", "");
 
-		mockMvc.perform(get("/appointments/search/findByFirstNameAndStartsOnDate").param("firstName", "john")
-				.param("startTime", startTime).accept(HAL_JSON))
+		mockMvc.perform(get("/appointments/search/findByFirstNameAndStartsOnDateTime").param("firstName", "john")
+				.param("startDateTime", startTime).accept(HAL_JSON))
 				.andDo(new VerifyFindResult(String.valueOf(appt.getId())));
 	}
 
 	@Test
-	public void testFindByFirstAndLastNamesAndStartsOnDate() throws Exception {
-		String startTime = ObjectMapperFactory.getInstance().writeValueAsString(appt.getStartTime()).replaceAll("\"",
-				"");
+	public void testFindByFirstAndLastNamesAndStartsOnDateTime() throws Exception {
+		String startTime = OBJECT_MAPPER.writeValueAsString(appt.getStartDateTime()).replaceAll("\"", "");
 
-		mockMvc.perform(get("/appointments/search/findByFirstAndLastNamesAndStartsOnDate").param("firstName", "john")
-				.param("lastName", "doe").param("startTime", startTime).accept(HAL_JSON))
+		mockMvc.perform(get("/appointments/search/findByFirstAndLastNamesAndStartsOnDateTime").param("firstName", "john")
+				.param("lastName", "doe").param("startDateTime", startTime).accept(HAL_JSON))
 				.andDo(MockMvcResultHandlers.print()).andDo(new VerifyFindResult(String.valueOf(appt.getId())));
 	}
 }

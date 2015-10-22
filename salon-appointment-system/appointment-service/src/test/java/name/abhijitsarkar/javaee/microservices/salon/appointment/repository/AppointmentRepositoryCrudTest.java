@@ -33,14 +33,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import name.abhijitsarkar.javaee.microservices.salon.appointment.AppointmentAppConfig;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.domain.Appointment;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.ContentMatcher;
 import name.abhijitsarkar.javaee.microservices.salon.test.DeleteAndCompare;
 import name.abhijitsarkar.javaee.microservices.salon.test.GetAndCompare;
 import name.abhijitsarkar.javaee.microservices.salon.test.IdExtractor;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.Pair;
 import name.abhijitsarkar.javaee.microservices.salon.test.UpdateAndCompare;
 
@@ -49,6 +50,8 @@ import name.abhijitsarkar.javaee.microservices.salon.test.UpdateAndCompare;
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class AppointmentRepositoryCrudTest {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
 	private String jsonAppt;
 
 	private MockMvc mockMvc;
@@ -63,12 +66,13 @@ public class AppointmentRepositoryCrudTest {
 	void init() throws JsonProcessingException {
 		mockMvc = webAppContextSetup(webApplicationContext).build();
 
-		OffsetDateTime startTime = OffsetDateTime.now();
-		OffsetDateTime endTime = startTime.plusHours(1);
+		OffsetDateTime startDateTime = OffsetDateTime.now();
+		OffsetDateTime endDateTime = startDateTime.plusHours(1);
 
-		Appointment testAppt = new Appointment().withUserId(1l).withStartTime(startTime).withEndTime(endTime);
+		Appointment testAppt = new Appointment().withUserId(1l).withStartDateTime(startDateTime)
+				.withEndDateTime(endDateTime);
 
-		jsonAppt = ObjectMapperFactory.getInstance().writeValueAsString(testAppt);
+		jsonAppt = OBJECT_MAPPER.writeValueAsString(testAppt);
 	}
 
 	@Before
@@ -97,12 +101,14 @@ public class AppointmentRepositoryCrudTest {
 
 	@Test
 	public void testUpdateAppointment() throws Exception {
-		OffsetDateTime startTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00), ZoneOffset.of("-08:30"));
+		OffsetDateTime startDateTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00),
+				ZoneOffset.of("-08:30"));
 
-		String startTimeText = ObjectMapperFactory.getInstance().writeValueAsString(startTime).replaceAll("\"", "");
+		String startDateTimeText = ObjectMapperFactory.newObjectMapper().writeValueAsString(startDateTime)
+				.replaceAll("\"", "");
 
-		AppointmentExtractor AppointmentExtractor = new AppointmentExtractor(startTime);
-		Pair pair = new Pair(asList("startTime"), startTimeText);
+		AppointmentExtractor AppointmentExtractor = new AppointmentExtractor(startDateTime);
+		Pair pair = new Pair(asList("startDateTime"), startDateTimeText);
 
 		createNewAppointment()
 				.andDo(new UpdateAndCompare<Appointment>(pair, mockMvc, "/appointments/%s", AppointmentExtractor));
@@ -115,7 +121,7 @@ public class AppointmentRepositoryCrudTest {
 
 	private ResultActions createNewAppointment() throws Exception {
 		return mockMvc.perform(post("/appointments").content(jsonAppt).contentType(APPLICATION_JSON).accept(HAL_JSON))
-				.andExpect(content().contentType(HAL_JSON)).andExpect(status().isCreated());
+				.andExpect(status().isCreated()).andExpect(content().contentType(HAL_JSON));
 	}
 
 	private final class AppointmentExtractor implements Function<MvcResult, Appointment> {
@@ -131,11 +137,11 @@ public class AppointmentRepositoryCrudTest {
 				String appointmentId = new IdExtractor().apply(result);
 
 				String body = result.getResponse().getContentAsString();
-				JsonNode getTree = ObjectMapperFactory.getInstance().readTree(body);
+				JsonNode getTree = OBJECT_MAPPER.readTree(body);
 				long userId = getTree.path("userId").asLong();
 
-				return new Appointment().withId(Long.valueOf(appointmentId)).withStartTime(newStartTime)
-						.withEndTime(newStartTime.plusHours(2)).withUserId(userId);
+				return new Appointment().withId(Long.valueOf(appointmentId)).withStartDateTime(newStartTime)
+						.withEndDateTime(newStartTime.plusHours(2)).withUserId(userId);
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
 			}

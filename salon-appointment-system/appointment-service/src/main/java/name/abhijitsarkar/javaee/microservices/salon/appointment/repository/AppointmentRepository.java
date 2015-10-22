@@ -14,16 +14,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	// @Param is not necessary if code is compiled with -parameters
 	Page<Appointment> findByUserIdIn(@Param("userIds") Collection<Long> userIds, Pageable p);
 
-	Page<Appointment> findByStartTimeGreaterThanEqual(@Param("startTime") OffsetDateTime startTime, Pageable p);
+	Page<Appointment> findByStartDateTimeGreaterThanEqual(@Param("startDateTime") OffsetDateTime startDateTime, Pageable p);
 
-	Page<Appointment> findByStartTimeLessThanEqual(@Param("startTime") OffsetDateTime startTime, Pageable p);
+	Page<Appointment> findByStartDateTimeLessThanEqual(@Param("startDateTime") OffsetDateTime startDateTime, Pageable p);
 
-	Page<Appointment> findByStartTimeBetween(@Param("begin") OffsetDateTime begin, @Param("end") OffsetDateTime end,
+	Page<Appointment> findByStartDateTimeBetween(@Param("begin") OffsetDateTime begin, @Param("end") OffsetDateTime end,
 			Pageable p);
 
-	Page<Appointment> findByUserIdInAndStartTimeBetween(@Param("userIds") Collection<Long> userIds,
+	Page<Appointment> findByUserIdInAndStartDateTimeBetween(@Param("userIds") Collection<Long> userIds,
 			@Param("begin") OffsetDateTime begin, @Param("end") OffsetDateTime end, Pageable p);
 
-	Page<Appointment> findByStartTimeGreaterThanEqualAndEndTimeLessThan(@Param("startTime") OffsetDateTime startTime,
-			@Param("endTime") OffsetDateTime endTime, Pageable p);
+	Page<Appointment> findByStartDateTimeGreaterThanEqualAndEndDateTimeLessThan(
+			@Param("startDateTime") OffsetDateTime startDateTime, @Param("endDateTime") OffsetDateTime endDateTime,
+			Pageable p);
 }

@@ -12,7 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
+
 public class UpdateAndCompare<T> implements ResultHandler {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+	
 	private final Pair pair;
 	private final MockMvc mockMvc;
 	private final String idUriFormat;
@@ -37,7 +43,7 @@ public class UpdateAndCompare<T> implements ResultHandler {
 						T entity = entityExtractor.apply(getResult);
 
 						mockMvc.perform(patch(String.format(idUriFormat, userId))
-								.content(ObjectMapperFactory.getInstance().writeValueAsString(entity)).accept(HAL_JSON))
+								.content(OBJECT_MAPPER.writeValueAsString(entity)).accept(HAL_JSON))
 								.andExpect(content().contentType(HAL_JSON)).andExpect(status().isOk())
 								.andDo(new GetAndCompare(pair, mockMvc, idUriFormat));
 					}

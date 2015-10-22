@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.microservices.salon.common.domain;
+package name.abhijitsarkar.javaee.microservices.salon.common;
 
 import java.util.Optional;
 

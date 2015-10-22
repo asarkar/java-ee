@@ -11,14 +11,16 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.ContentMatcher;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.Pair;
 
 @RequiredArgsConstructor
 public class VerifyFindResult implements ResultHandler {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
 	private final String id;
 
 	@Override
@@ -28,7 +30,7 @@ public class VerifyFindResult implements ResultHandler {
 
 		String findBody = findResult.getResponse().getContentAsString();
 
-		JsonNode tree = ObjectMapperFactory.getInstance().readTree(findBody);
+		JsonNode tree = OBJECT_MAPPER.readTree(findBody);
 		JsonNode appointments = tree.path("_embedded").path("appointments");
 
 		assertFalse(appointments.isMissingNode());

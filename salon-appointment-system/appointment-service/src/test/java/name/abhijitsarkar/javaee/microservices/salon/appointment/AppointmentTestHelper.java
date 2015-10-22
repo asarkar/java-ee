@@ -13,16 +13,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import name.abhijitsarkar.javaee.microservices.salon.appointment.domain.Appointment;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 
-public class AppointmentTestUtil {
-	public static String getAppointmentAsJson(OffsetDateTime startTime, OffsetDateTime endTime) {
-		Appointment testAppt = new Appointment().withUserId(1l).withStartTime(startTime).withEndTime(endTime);
+public class AppointmentTestHelper {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
+	public static String getAppointmentAsJson(OffsetDateTime startDateTime, OffsetDateTime endDateTime) {
+		Appointment testAppt = new Appointment().withUserId(1l).withStartDateTime(startDateTime).withEndDateTime(endDateTime);
 
 		try {
-			return ObjectMapperFactory.getInstance().writeValueAsString(testAppt);
+			return OBJECT_MAPPER.writeValueAsString(testAppt);
 		} catch (JsonProcessingException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -30,6 +33,6 @@ public class AppointmentTestUtil {
 
 	public static ResultActions createNewAppointment(MockMvc mockMvc, String jsonAppt) throws Exception {
 		return mockMvc.perform(post("/appointments").content(jsonAppt).contentType(APPLICATION_JSON).accept(HAL_JSON))
-				.andExpect(content().contentType(HAL_JSON)).andExpect(status().isCreated());
+				.andExpect(status().isCreated()).andExpect(content().contentType(HAL_JSON));
 	}
 }

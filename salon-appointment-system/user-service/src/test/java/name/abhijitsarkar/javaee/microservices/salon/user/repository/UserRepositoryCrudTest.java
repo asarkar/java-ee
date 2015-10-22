@@ -30,12 +30,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import name.abhijitsarkar.javaee.microservices.salon.common.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.ContentMatcher;
 import name.abhijitsarkar.javaee.microservices.salon.test.DeleteAndCompare;
 import name.abhijitsarkar.javaee.microservices.salon.test.GetAndCompare;
 import name.abhijitsarkar.javaee.microservices.salon.test.IdExtractor;
-import name.abhijitsarkar.javaee.microservices.salon.test.ObjectMapperFactory;
 import name.abhijitsarkar.javaee.microservices.salon.test.Pair;
 import name.abhijitsarkar.javaee.microservices.salon.test.UpdateAndCompare;
 import name.abhijitsarkar.javaee.microservices.salon.user.UserAppConfig;
@@ -46,6 +47,8 @@ import name.abhijitsarkar.javaee.microservices.salon.user.domain.User;
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class UserRepositoryCrudTest {
+	private static final ObjectMapper OBJECT_MAPPER = ObjectMapperFactory.newObjectMapper();
+
 	private String jsonUser;
 
 	private MockMvc mockMvc;
@@ -62,7 +65,7 @@ public class UserRepositoryCrudTest {
 
 		User testUser = new User().withFirstName("John").withLastName("Doe").withPhoneNum("111-111-1111");
 
-		jsonUser = ObjectMapperFactory.getInstance().writeValueAsString(testUser);
+		jsonUser = OBJECT_MAPPER.writeValueAsString(testUser);
 	}
 
 	@Before
@@ -118,7 +121,7 @@ public class UserRepositoryCrudTest {
 		public User apply(MvcResult result) {
 			try {
 				String body = result.getResponse().getContentAsString();
-				JsonNode getTree = ObjectMapperFactory.getInstance().readTree(body);
+				JsonNode getTree = OBJECT_MAPPER.readTree(body);
 
 				String userId = new IdExtractor().apply(result);
 				String lastName = getTree.path("lastName").asText();

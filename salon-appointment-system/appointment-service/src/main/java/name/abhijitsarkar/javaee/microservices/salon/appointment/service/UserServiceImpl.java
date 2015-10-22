@@ -23,8 +23,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.amazonaws.services.cloudsearch.model.ResourceNotFoundException;
-
+import name.abhijitsarkar.javaee.microservices.salon.appointment.domain.User;
 import name.abhijitsarkar.javaee.microservices.salon.appointment.domain.UserSearchResult;
 
 @Service
@@ -38,14 +37,10 @@ public class UserServiceImpl implements UserService {
 	@Value("${user-service.url}")
 	private String userServiceUrl;
 
-	private UriComponentsBuilder builder;
-	private HttpHeaders headers;
 	private HttpEntity<Void> dummyEntity;
 
 	@PostConstruct
 	void postConstruct() {
-		builder = UriComponentsBuilder.fromUriString(userServiceUrl);
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(asList(HAL_JSON));
 
@@ -55,11 +50,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isValidUser(long userId) {
 		try {
-			restTemplate.headForHeaders(userServiceUrl + "/userSearchResult/{userId}", userId);
+			restTemplate.headForHeaders(userServiceUrl + "/users/{userId}", userId);
 
 			return true;
 		} catch (RestClientException e) {
-			LOGGER.info("User look up by user id: {} failed.", userId, e);
+			LOGGER.warn("User look up by user id: {} failed.", userId, e);
 
 			return false;
 		}
@@ -70,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		String findByFirstNameUri = UriComponentsBuilder.fromUriString(userServiceUrl)
 				.path("/users/search/findByFirstName").queryParam("firstName", firstName).toUriString();
 
-		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByFirstNameUri, GET, null,
+		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByFirstNameUri, GET, dummyEntity,
 				UserSearchResult.class);
 
 		return convertToIds(userSearchResult);
@@ -78,13 +73,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Collection<Long> getUserIdsByLastName(String lastName) {
-		String findByLastNameUri = builder.path("/users/search/findByLastName").queryParam("lastName", lastName)
-				.toUriString();
+		String findByLastNameUri = UriComponentsBuilder.fromUriString(userServiceUrl)
+				.path("/users/search/findByLastName").queryParam("lastName", lastName).toUriString();
 
-		ResponseEntity<String> userSearchResult = restTemplate.exchange(findByLastNameUri, GET, dummyEntity,
-				String.class);
+		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByLastNameUri, GET, dummyEntity,
+				UserSearchResult.class);
 
-		return null;
+		return convertToIds(userSearchResult);
 	}
 
 	@Override
@@ -93,8 +88,8 @@ public class UserServiceImpl implements UserService {
 				.path("/users/search/findByFirstNameAndLastName").queryParam("firstName", firstName)
 				.queryParam("lastName", lastName).toUriString();
 
-		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByFirstAndLastNamesUri, GET, null,
-				UserSearchResult.class);
+		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByFirstAndLastNamesUri, GET,
+				dummyEntity, UserSearchResult.class);
 
 		return convertToIds(userSearchResult);
 	}
@@ -104,7 +99,7 @@ public class UserServiceImpl implements UserService {
 		String findByEmailUri = UriComponentsBuilder.fromUriString(userServiceUrl).path("/users/search/findByEmail")
 				.queryParam("email", email).toUriString();
 
-		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByEmailUri, GET, null,
+		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByEmailUri, GET, dummyEntity,
 				UserSearchResult.class);
 
 		return convertToIds(userSearchResult);
@@ -115,7 +110,7 @@ public class UserServiceImpl implements UserService {
 		String findByPhoneNumUri = UriComponentsBuilder.fromUriString(userServiceUrl)
 				.path("/users/search/findByPhoneNum").queryParam("phoneNum", phoneNum).toUriString();
 
-		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByPhoneNumUri, GET, null,
+		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByPhoneNumUri, GET, dummyEntity,
 				UserSearchResult.class);
 
 		return convertToIds(userSearchResult);
@@ -127,22 +122,14 @@ public class UserServiceImpl implements UserService {
 				.path("/users/search/findByPhoneNumEndingWith").queryParam("phoneNum", phoneNum).toUriString();
 
 		ResponseEntity<UserSearchResult> userSearchResult = restTemplate.exchange(findByPhoneNumEndingWithUri, GET,
-				null, UserSearchResult.class);
+				dummyEntity, UserSearchResult.class);
 
 		return convertToIds(userSearchResult);
 	}
 
 	private Collection<Long> convertToIds(ResponseEntity<UserSearchResult> userSearchResult) {
 		if (userSearchResult.getStatusCode().is2xxSuccessful()) {
-			return userSearchResult.getBody().getLinks().stream().map(link -> {
-				String href = link.getHref();
-
-				if (href == null || href.isEmpty()) {
-					throw new ResourceNotFoundException("User not found.");
-				}
-
-				return href.substring(href.lastIndexOf('/') + 1);
-			}).map(Long::parseLong).collect(toList());
+			return userSearchResult.getBody().getEmbedded().getUsers().stream().map(User::getUserId).collect(toList());
 		}
 
 		return emptyList();

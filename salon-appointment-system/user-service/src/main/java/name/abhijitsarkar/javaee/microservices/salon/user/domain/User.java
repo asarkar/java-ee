@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import name.abhijitsarkar.javaee.microservices.salon.common.domain.OptionalStringConverter;
+import name.abhijitsarkar.javaee.microservices.salon.common.OptionalStringConverter;
 
 @AllArgsConstructor
 @NoArgsConstructor
