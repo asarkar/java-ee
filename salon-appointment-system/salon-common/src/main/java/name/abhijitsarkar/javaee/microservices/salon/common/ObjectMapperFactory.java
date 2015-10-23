@@ -1,5 +1,7 @@
 package name.abhijitsarkar.javaee.microservices.salon.common;
 
+import org.springframework.security.core.userdetails.User;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -17,6 +19,6 @@ public class ObjectMapperFactory {
 				.disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
 				.enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID);
 
-		return mapper;
+		return mapper.addMixIn(User.class, UserDetailsMixin.class);
 	}
 }

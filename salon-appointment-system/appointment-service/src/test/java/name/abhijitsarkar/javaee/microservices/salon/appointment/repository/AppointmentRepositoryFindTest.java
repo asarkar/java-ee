@@ -66,7 +66,7 @@ public class AppointmentRepositoryFindTest {
 
 		formatterRegistry.addFormatter(formatter);
 
-		OffsetDateTime startDateTime = OffsetDateTime.now();
+		OffsetDateTime startDateTime = OffsetDateTime.now().plusHours(1);
 		OffsetDateTime endDateTime = startDateTime.plusHours(1);
 
 		jsonAppt = getAppointmentAsJson(startDateTime, endDateTime);

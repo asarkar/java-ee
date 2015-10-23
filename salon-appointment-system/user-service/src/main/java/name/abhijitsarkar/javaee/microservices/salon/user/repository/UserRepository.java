@@ -22,4 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public Page<User> findByPhoneNum(@Param("phoneNum") String phoneNum, Pageable p);
 
 	public Page<User> findByPhoneNumEndingWith(@Param("phoneNum") String phoneNum, Pageable p);
+
 }

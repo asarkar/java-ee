@@ -66,7 +66,7 @@ public class AppointmentRepositoryCrudTest {
 	void init() throws JsonProcessingException {
 		mockMvc = webAppContextSetup(webApplicationContext).build();
 
-		OffsetDateTime startDateTime = OffsetDateTime.now();
+		OffsetDateTime startDateTime = OffsetDateTime.now().plusHours(1);
 		OffsetDateTime endDateTime = startDateTime.plusHours(1);
 
 		Appointment testAppt = new Appointment().withUserId(1l).withStartDateTime(startDateTime)
@@ -101,8 +101,7 @@ public class AppointmentRepositoryCrudTest {
 
 	@Test
 	public void testUpdateAppointment() throws Exception {
-		OffsetDateTime startDateTime = OffsetDateTime.of(LocalDateTime.of(2015, 01, 01, 11, 00),
-				ZoneOffset.of("-08:30"));
+		OffsetDateTime startDateTime = OffsetDateTime.now().plusHours(2);
 
 		String startDateTimeText = ObjectMapperFactory.newObjectMapper().writeValueAsString(startDateTime)
 				.replaceAll("\"", "");

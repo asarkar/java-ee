@@ -60,7 +60,7 @@ public class AppointmentControllerTest {
 	}
 
 	private void createNewAppointment() {
-		OffsetDateTime startTime = OffsetDateTime.now();
+		OffsetDateTime startTime = OffsetDateTime.now().plusHours(1);
 		OffsetDateTime endTime = startTime.plusHours(1);
 
 		appt = new Appointment().withUserId(1l).withStartDateTime(startTime).withEndDateTime(endTime);
@@ -97,7 +97,7 @@ public class AppointmentControllerTest {
 	public void testFindByFirstNameAndStartsOnDateTime() throws Exception {
 		String startTime = OBJECT_MAPPER.writeValueAsString(appt.getStartDateTime()).replaceAll("\"", "");
 
-		mockMvc.perform(get("/appointments/search/findByFirstNameAndStartsOnDateTime").param("firstName", "john")
+		mockMvc.perform(get("/appointments/search/findByFirstNameAndStartsOnOrAfterDateTime").param("firstName", "john")
 				.param("startDateTime", startTime).accept(HAL_JSON))
 				.andDo(new VerifyFindResult(String.valueOf(appt.getId())));
 	}
@@ -106,7 +106,7 @@ public class AppointmentControllerTest {
 	public void testFindByFirstAndLastNamesAndStartsOnDateTime() throws Exception {
 		String startTime = OBJECT_MAPPER.writeValueAsString(appt.getStartDateTime()).replaceAll("\"", "");
 
-		mockMvc.perform(get("/appointments/search/findByFirstAndLastNamesAndStartsOnDateTime").param("firstName", "john")
+		mockMvc.perform(get("/appointments/search/findByFirstAndLastNamesAndStartsOnOrAfterDateTime").param("firstName", "john")
 				.param("lastName", "doe").param("startDateTime", startTime).accept(HAL_JSON))
 				.andDo(MockMvcResultHandlers.print()).andDo(new VerifyFindResult(String.valueOf(appt.getId())));
 	}
