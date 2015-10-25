@@ -17,7 +17,7 @@ There are 2 types of users: admins (a.k.a. business' employees) and clients.
 
 This Application Uses Spring Data JPA, Spring Data Rest, Spring HATEOAS, Spring Cloud, Spring Security and Spring Boot. 
 
-[In-memory H2 JDBC URL](jdbc:h2:mem:testdb)
+In-memory H2 JDBC URL - jdbc:h2:mem:testdb
 
 [H2 Web Console](http://localhost:<port>/console)
 
