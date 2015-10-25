@@ -5,6 +5,8 @@
 This is a system to manage a business' clients and their appointments. Client information stored is first name, last name, phone number and email.
 Each Appointment has a start time, end time and an optional comment.
 
+There are 2 types of users: admins (a.k.a. business' employees) and clients.
+
    * Admin must have an email.
    * Admin can create, update and delete users.
    * Admin can create, update and delete appointments.  
@@ -19,4 +21,5 @@ This Application Uses Spring Data JPA, Spring Data Rest, Spring HATEOAS, Spring 
 [H2 Web Console](http://localhost:<port>/console)
 
 [Eureka Console](http://localhost:1111)
+
 [Registered serivces](http://localhost:1111/eureka/apps)
