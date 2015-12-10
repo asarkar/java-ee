@@ -10,5 +10,6 @@ Can be deployed on a Docker container or Heroku.
    * Run `git remote -v | grep heroku` to make sure heroku is added as a git remote.
      If not, run `heroku create` from root.
    * Run `git subtree push --prefix hello-world heroku master` from root.
+     (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
    * If working from a branch, either first merge to master or run `git subtree push --prefix hello-world heroku yourbranch:master`
 
