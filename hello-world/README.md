@@ -5,4 +5,10 @@ Can be deployed on a Docker container or Heroku.
 `./gradlew clean stage`
 `./gradlew clean stage -Penv=heroku` to build with Heroku property file
 
-`heroku local web`
+### Deploying to Heroku:
+   * Run `heroku local web` to verify that stuff works.
+   * Run `git remote -v | grep heroku` to make sure heroku is added as a git remote.
+     If not, run `heroku create` from root.
+   * Run `git subtree push --prefix hello-world heroku master` from root.
+   * If working from a branch, either first merge to master or run `git subtree push --prefix hello-world heroku yourbranch:master`
+
