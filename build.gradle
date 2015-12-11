@@ -57,12 +57,6 @@ springBoot {
 }
 
 bootRun {
-    systemProperties = [
-            'JDBC_DATABASE_URL'           : project.filterTokens.JDBC_DATABASE_URL,
-            'JDBC_DATABASE_USERNAME'      : project.filterTokens.JDBC_DATABASE_USERNAME,
-            'JDBC_DATABASE_PASSWORD'      : project.filterTokens.JDBC_DATABASE_PASSWORD,
-            'spring.datasource.initialize': project.filterTokens['spring.datasource.initialize'],
-            'PORT'                        : project.filterTokens['PORT']
-    ]
+    systemProperties = project.filterTokens
 }
 
