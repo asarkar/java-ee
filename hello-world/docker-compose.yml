@@ -12,6 +12,6 @@ web:
     - ./gradle-local.properties
 db:
   container_name: "mysql"
-  image: abhijitsarkar/mysql5
+  image: abhijitsarkar/docker:mysql5
   ports:
       - "3306:3306"

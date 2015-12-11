@@ -26,14 +26,18 @@ apply plugin: 'net.saliman.properties'
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://repo.spring.io/libs-snapshot"
+    }
+    maven {
+        url "http://files.couchbase.com/maven2"
+    }
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.data:spring-data-couchbase:2.0.0.M1")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.projectlombok:lombok:1.16.6")
-
-    runtime("mysql:mysql-connector-java")
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
@@ -53,7 +57,7 @@ task stage {
 println "Env: ${env}, Properties: ${project.filterTokens}"
 
 springBoot {
-    mainClass = 'name.abhijitsarkar.javaee.hello.HelloWorldApp'
+    mainClass = 'name.abhijitsarkar.javaee.travel.TravelApp'
 }
 
 bootRun {
