@@ -1,7 +1,7 @@
 package name.abhijitsarkar.javaee.travel.web;
 
 import name.abhijitsarkar.javaee.travel.domain.Airport;
-import name.abhijitsarkar.javaee.travel.repository.AirportRepository;
+import name.abhijitsarkar.javaee.travel.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,10 +19,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping(method = GET, path = "/airports")
 public class AirportController {
     @Autowired
-    private AirportRepository airportRepository;
+    private AirportService service;
 
     @RequestMapping
-    public Airport findByAirportCode(@RequestParam(name = "icao") String airportCode) {
-        return airportRepository.findByIcao(airportCode);
+    public Collection<Airport> findByFaaCodes(@RequestParam List<String> faaCodes) {
+        return service.findByFaaCodes(faaCodes);
     }
 }

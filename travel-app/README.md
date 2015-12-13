@@ -2,7 +2,7 @@
 Can be deployed on a Docker container or Heroku.
 
 ### To load Couchbase travel-sample bucket:
-`curl -u admin:admin123 --data-ascii '["travel-sample"]' http://192.168.99.100:8091/sampleBuckets/install`
+`curl -u admin:admin123 --data-ascii '["travel-sample"]' http://$(docker-machine ip default):8091/sampleBuckets/install`
 
 ### To create primary index necessary for querying:
    * Run `/opt/couchbase/bin/cbq`
@@ -26,3 +26,16 @@ Can be deployed on a Docker container or Heroku.
      (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
    * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app heroku yourbranch:master`
 
+### Find flights:
+```
+SELECT airln.name AS airline, schedule.flight AS flightNum, schedule.utc AS departureTimeUTC, \
+route.sourceairport AS srcAirport, route.destinationairport AS destAirport \
+FROM `travel-sample` route UNNEST route.schedule schedule JOIN `travel-sample` airln ON KEYS route.airlineid \
+WHERE route.sourceairport='SEA' AND route.destinationairport='MCO' AND schedule.day=6 ORDER BY airln.name
+```
+
+### Find airport info:
+```
+SELECT airportname AS airport, faa AS airportCode, city, country, tz AS timeZone \
+FROM `travel-sample` WHERE faa IN ['SEA', 'MCO']
+```

@@ -10,12 +10,12 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  */
 @SpringBootApplication
 public class TravelApp extends SpringBootServletInitializer {
+    public static void main(String[] args) {
+        SpringApplication.run(TravelApp.class, args);
+    }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(TravelApp.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(TravelApp.class, args);
     }
 }
