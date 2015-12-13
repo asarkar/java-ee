@@ -1,7 +1,12 @@
 package name.abhijitsarkar.javaee.travel.repository;
 
+import name.abhijitsarkar.javaee.travel.domain.Page;
 import name.abhijitsarkar.javaee.travel.domain.Route;
-import org.springframework.data.couchbase.repository.CouchbaseRepository;
+import rx.Observable;
 
-public interface RouteRepository extends CouchbaseRepository<Route, String>, RouteRepositoryCustom {
+import java.time.DayOfWeek;
+
+public interface RouteRepository {
+    Observable<Page<Route>> findRoutes(String srcAirportFaa, String destAirportFaa,
+                                       DayOfWeek departureDay, int pageSize, int pageNum);
 }

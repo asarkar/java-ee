@@ -35,9 +35,11 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.data:spring-data-couchbase:2.0.0.M1")
+    compile("com.couchbase.client:java-client:2.2.2")
+    compile("com.couchbase.client:core-io:1.2.2")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.projectlombok:lombok:1.16.6")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.4")
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }

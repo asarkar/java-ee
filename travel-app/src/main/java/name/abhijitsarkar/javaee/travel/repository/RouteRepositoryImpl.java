@@ -2,23 +2,21 @@ package name.abhijitsarkar.javaee.travel.repository;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.ParameterizedQuery;
-import com.couchbase.client.java.query.Query;
-import com.couchbase.client.java.query.QueryResult;
+import com.couchbase.client.java.query.N1qlMetrics;
+import com.couchbase.client.java.query.N1qlQueryResult;
+import com.couchbase.client.java.query.ParameterizedN1qlQuery;
 import com.couchbase.client.java.query.Statement;
+import name.abhijitsarkar.javaee.travel.domain.Page;
 import name.abhijitsarkar.javaee.travel.domain.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.couchbase.core.CouchbaseQueryExecutionException;
 import org.springframework.stereotype.Repository;
 import rx.Observable;
 
-import javax.annotation.PostConstruct;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.OffsetTime;
-import java.util.Collection;
 import java.util.List;
 
 import static com.couchbase.client.java.query.Select.select;
@@ -34,7 +32,7 @@ import static java.util.stream.Collectors.toList;
  * @author Abhijit Sarkar
  */
 @Repository
-public class RouteRepositoryImpl implements RouteRepositoryCustom {
+public class RouteRepositoryImpl implements RouteRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteRepositoryImpl.class);
 
     private static final String FIELD_SRC_AIRPORT_FAA = "srcAirportFaa";
@@ -46,14 +44,11 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
     private static final String FIELD_DEPARTURE_TIME = "departureTimeUTC";
     private static final String FIELD_DEPARTURE_DAY = "departureDay";
 
-    private Statement findRoutes;
-
     @Autowired
     private Bucket bucket;
 
-    @PostConstruct
-    void postConstruct() {
-        findRoutes = select(
+    private Statement findRoutes(int limit, int offset) {
+        return select(
                 path("route", "sourceairport").as(FIELD_SRC_AIRPORT_FAA),
                 path("route", "destinationairport").as(FIELD_DEST_AIRPORT_FAA),
                 path("route", "stops").as(FIELD_STOPS),
@@ -70,7 +65,7 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
                 .where(path("route", "sourceairport").eq(x("$srcAirportFaa"))
                         .and(path("route", "destinationairport").eq(x("$destAirportFaa")))
                         .and(path("schedule", "day").eq(x("$departureDay"))))
-                .orderBy(asc(path("airln", "name")));
+                .orderBy(asc(path("airln", "name"))).limit(limit).offset(offset);
     }
 
     /*
@@ -80,9 +75,11 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
      *
      * No blocking call is needed, because the observable is completely handled on the current thread.
      */
-    public Observable<Collection<Route>> findRoutes(String srcAirportFaa, String destAirportFaa, DayOfWeek departureDay) {
-        return Observable.<Collection<Route>>create(subscriber -> {
-            ParameterizedQuery query = Query.parameterized(findRoutes,
+    public Observable<Page<Route>> findRoutes(String srcAirportFaa, String destAirportFaa,
+                                              DayOfWeek departureDay, int pageSize, int pageNum) {
+        return Observable.<Page<Route>>create(subscriber -> {
+            ParameterizedN1qlQuery query = ParameterizedN1qlQuery.parameterized(
+                    findRoutes(pageSize, (pageNum - 1) * pageSize),
                     JsonObject.create()
                             .put(FIELD_SRC_AIRPORT_FAA, srcAirportFaa)
                             .put(FIELD_DEST_AIRPORT_FAA, destAirportFaa)
@@ -91,9 +88,11 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
 
             LOGGER.debug("Executing query: {}.", query.n1ql());
 
-            QueryResult result = bucket.query(query);
+            N1qlQueryResult result = bucket.query(query);
 
-            LOGGER.debug("Query metrics: {}.", result.info());
+            N1qlMetrics metrics = result.info();
+
+            LOGGER.debug("Query metrics: {}.", metrics);
 
             if (result.finalSuccess()) {
                 List<Route> routes = result.allRows().stream().map(row -> {
@@ -113,12 +112,14 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
                             .departureDay(departureDay).build();
                 }).collect(toList());
 
-                subscriber.onNext(routes);
+                Page<Route> page = new Page(pageNum, pageSize, metrics.resultCount(), routes);
+
+                subscriber.onNext(page);
 
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(
-                        new CouchbaseQueryExecutionException(
+                        new RuntimeException(
                                 String.format("Failed to find routes between %s and %s on %s.",
                                         srcAirportFaa, destAirportFaa, departureDay)
                         ));

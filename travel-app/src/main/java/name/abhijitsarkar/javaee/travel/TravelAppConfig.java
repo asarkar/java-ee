@@ -1,49 +1,50 @@
 package name.abhijitsarkar.javaee.travel;
 
-import com.couchbase.client.java.env.CouchbaseEnvironment;
-import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
+import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.Cluster;
+import com.couchbase.client.java.CouchbaseCluster;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
-import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Abhijit Sarkar
  */
 @Configuration
-@EnableCouchbaseRepositories
-public class TravelAppConfig extends AbstractCouchbaseConfiguration {
+public class TravelAppConfig {
     @Value("${COUCHBASE_NODES}")
-    private String couchbaseNodes;
+    private String nodes;
 
-    @Value("${COUCHBASE_BUCKET}")
-    private String couchbaseBucket;
+    @Value("${COUCHBASE_BUCKET_NAME}")
+    private String bucketName;
 
-    @Override
-    protected List<String> getBootstrapHosts() {
-        return Arrays.asList(couchbaseNodes.split("\\s*,\\s*"));
+    @Value("${COUCHBASE_BUCKET_PASSWORD}")
+    private String bucketPassword;
+
+    @Bean
+    Cluster cluster() {
+        return CouchbaseCluster.create(nodes.split("\\s+"));
     }
 
-    @Override
-    protected String getBucketName() {
-        return couchbaseBucket;
+    @Bean
+    Bucket bucket() {
+        return cluster().openBucket(bucketName, bucketPassword);
     }
 
-    @Override
-    protected String getBucketPassword() {
-        return "";
-    }
+    @Bean
+    public static ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
 
-    @Override
-    protected CouchbaseEnvironment getEnvironment() {
-        return DefaultCouchbaseEnvironment.builder()
-                .connectTimeout(TimeUnit.SECONDS.toMillis(10))
-                .computationPoolSize(3)
-                .queryEnabled(true)
-                .build();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+                .disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
+                .enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID);
+
+        return mapper;
     }
 }

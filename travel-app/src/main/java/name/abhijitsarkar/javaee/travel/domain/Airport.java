@@ -3,6 +3,8 @@ package name.abhijitsarkar.javaee.travel.domain;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 /**
@@ -24,5 +26,14 @@ public class Airport {
     * designating aerodromes around the world. These codes are defined by the International Civil Aviation Organization.
     */
     private String icao;
-    private TimeZone timeZone;
+    private ZoneOffset timeZoneOffset;
+
+    public void updateFrom(Airport from) {
+        name = from.name;
+        city = from.city;
+        country = from.country;
+        faaCode = from.faaCode;
+        icao = from.icao;
+        timeZoneOffset = from.timeZoneOffset;
+    }
 }

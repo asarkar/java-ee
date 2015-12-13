@@ -1,7 +1,11 @@
 package name.abhijitsarkar.javaee.travel.repository;
 
 import name.abhijitsarkar.javaee.travel.domain.Airport;
-import org.springframework.data.couchbase.repository.CouchbaseRepository;
+import rx.Observable;
 
-public interface AirportRepository extends CouchbaseRepository<Airport, String>, AirportRepositoryCustom {
+import java.util.Collection;
+import java.util.List;
+
+public interface AirportRepository {
+    Observable<Collection<Airport>> findByFaaCodesIn(List<String> faaCodes);
 }

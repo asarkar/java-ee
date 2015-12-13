@@ -3,22 +3,22 @@ package name.abhijitsarkar.javaee.travel.repository;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.ParameterizedQuery;
-import com.couchbase.client.java.query.Query;
-import com.couchbase.client.java.query.QueryResult;
+import com.couchbase.client.java.query.N1qlQueryResult;
+import com.couchbase.client.java.query.ParameterizedN1qlQuery;
 import com.couchbase.client.java.query.Statement;
 import name.abhijitsarkar.javaee.travel.domain.Airport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.couchbase.core.CouchbaseQueryExecutionException;
 import org.springframework.stereotype.Repository;
 import rx.Observable;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.TimeZone;
 
 import static com.couchbase.client.java.query.Select.select;
 import static com.couchbase.client.java.query.dsl.Expression.i;
@@ -30,7 +30,7 @@ import static java.util.stream.Collectors.toList;
  * @author Abhijit Sarkar
  */
 @Repository
-public class AirportRepositoryImpl implements AirportRepositoryCustom {
+public class AirportRepositoryImpl implements AirportRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirportRepositoryImpl.class);
 
     private static final String FIELD_NAME = "airportname";
@@ -74,12 +74,12 @@ public class AirportRepositoryImpl implements AirportRepositoryCustom {
     @Override
     public Observable<Collection<Airport>> findByFaaCodesIn(List<String> faaCodes) {
         return Observable.<Collection<Airport>>create(subscriber -> {
-            ParameterizedQuery query = Query.parameterized(findByFaaCodes,
+            ParameterizedN1qlQuery query = ParameterizedN1qlQuery.parameterized(findByFaaCodes,
                     JsonObject.create().put(PARAM_FAA, JsonArray.from(faaCodes)));
 
             LOGGER.debug("Executing query: {}.", query.n1ql());
 
-            QueryResult result = bucket.query(query);
+            N1qlQueryResult result = bucket.query(query);
 
             LOGGER.debug("Query metrics: {}.", result.info());
 
@@ -87,13 +87,16 @@ public class AirportRepositoryImpl implements AirportRepositoryCustom {
                 List<Airport> airports = result.allRows().stream().map(row -> {
                     JsonObject value = row.value();
 
+                    /* Get current time at airport timezone */
+                    ZonedDateTime now = Instant.now().atZone(ZoneId.of(value.getString(FIELD_TIMEZONE)));
+
                     return Airport.builder()
                             .name(value.getString(FIELD_NAME))
                             .faaCode(value.getString(FIELD_FAA))
                             .icao(value.getString(FIELD_ICAO))
                             .city(value.getString(FIELD_CITY))
                             .country(value.getString(FIELD_COUNTRY))
-                            .timeZone(TimeZone.getTimeZone(value.getString(FIELD_TIMEZONE)))
+                            .timeZoneOffset(now.getOffset())
                             .build();
                 }).collect(toList());
 
@@ -102,7 +105,7 @@ public class AirportRepositoryImpl implements AirportRepositoryCustom {
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(
-                        new CouchbaseQueryExecutionException(
+                        new RuntimeException(
                                 String.format("Failed to find airports by faa codes: %s.", faaCodes)
                         ));
             }

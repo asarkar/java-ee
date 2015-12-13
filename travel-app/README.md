@@ -26,16 +26,8 @@ Can be deployed on a Docker container or Heroku.
      (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
    * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app heroku yourbranch:master`
 
-### Find flights:
-```
-SELECT airln.name AS airline, schedule.flight AS flightNum, schedule.utc AS departureTimeUTC, \
-route.sourceairport AS srcAirport, route.destinationairport AS destAirport \
-FROM `travel-sample` route UNNEST route.schedule schedule JOIN `travel-sample` airln ON KEYS route.airlineid \
-WHERE route.sourceairport='SEA' AND route.destinationairport='MCO' AND schedule.day=6 ORDER BY airln.name
-```
+### References:
+[Mastering observables](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/observables.html)
+[Working with N1QL](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/querying-n1ql.html)
+[N1QL reference](http://developer.couchbase.com/documentation/server/4.0/n1ql/index.html)
 
-### Find airport info:
-```
-SELECT airportname AS airport, faa AS airportCode, city, country, tz AS timeZone \
-FROM `travel-sample` WHERE faa IN ['SEA', 'MCO']
-```
