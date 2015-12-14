@@ -16,6 +16,7 @@ import rx.Subscriber;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -60,27 +61,30 @@ public class FlightService {
 
                                 ZoneOffset srcAirportTimeZoneOffset = srcAirport.getTimeZoneOffset();
 
-                                Collection<Flight> flights = data.stream().map(r ->
-                                        Flight.builder()
-                                                .srcAirportName(srcAirport.getName())
-                                                .srcCity(srcAirport.getCity())
-                                                .srcCountry(srcAirport.getCountry())
-                                                .srcFaaCode(srcAirport.getFaaCode())
-                                                .srcTimeZoneOffset(srcAirportTimeZoneOffset)
-                                                .destAirportName(destAirport.getName())
-                                                .destCity(destAirport.getCity())
-                                                .destCountry(destAirport.getCountry())
-                                                .destFaaCode(destAirport.getFaaCode())
-                                                .destTimeZoneOffset(destAirport.getTimeZoneOffset())
-                                                .stops(r.getStops())
-                                                .aircraft(r.getAircraft())
-                                                .airline(r.getAirline())
-                                                .flightNum(r.getFlightNum())
-                                                .departureTime(r.getDepartureTimeUTC()
-                                                        .withOffsetSameInstant(srcAirportTimeZoneOffset)
-                                                        .toLocalTime())
-                                                .departureDate(departureDate).build()
-                                ).collect(toList());
+                                Collection<Flight> flights = data.stream().map(r -> {
+                                    ZonedDateTime departureDateTime = ZonedDateTime.of(
+                                            departureDate,
+                                            r.getDepartureTimeUTC().withOffsetSameInstant(srcAirportTimeZoneOffset).toLocalTime(),
+                                            srcAirportTimeZoneOffset);
+
+                                    return Flight.builder()
+                                            .srcAirportName(srcAirport.getName())
+                                            .srcCity(srcAirport.getCity())
+                                            .srcCountry(srcAirport.getCountry())
+                                            .srcFaaCode(srcAirport.getFaaCode())
+                                            .srcTimeZoneOffset(srcAirportTimeZoneOffset)
+                                            .destAirportName(destAirport.getName())
+                                            .destCity(destAirport.getCity())
+                                            .destCountry(destAirport.getCountry())
+                                            .destFaaCode(destAirport.getFaaCode())
+                                            .destTimeZoneOffset(destAirport.getTimeZoneOffset())
+                                            .stops(r.getStops())
+                                            .aircraft(r.getAircraft())
+                                            .airline(r.getAirline())
+                                            .flightNum(r.getFlightNum())
+                                            .departureTime(departureDateTime.toLocalTime())
+                                            .departureDate(departureDateTime.toLocalDate()).build();
+                                }).collect(toList());
 
                                 flightsPage.setData(flights);
                                 flightsPage.setNumPages(routesPage.getNumPages());

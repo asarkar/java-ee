@@ -1,6 +1,7 @@
 package name.abhijitsarkar.javaee.hello;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -22,5 +23,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         super.configurePathMatch(configurer);
 
         configurer.setUseSuffixPatternMatch(false);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*");
     }
 }
