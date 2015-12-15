@@ -11,12 +11,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * @author Abhijit Sarkar
  */
 @Configuration
-public class TravelAppConfig {
+public class TravelAppConfig extends WebMvcConfigurerAdapter {
     @Value("${COUCHBASE_NODES}")
     private String nodes;
 
@@ -50,5 +53,24 @@ public class TravelAppConfig {
                 PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
         return mapper;
+    }
+
+    /* Don't map URLs with suffixes to handlers. Give a chance to ResourceHttpRequestHandler.
+    * This is usually not necessary if static resources don't map to URLs for which, if the suffix is stripped off,
+    * some handler exists. For example, if /abc maps to a handler and /abc.html to a static page, with suffix
+    * pattern matching enabled, the request maps to the handler, not to the ResourceHttpRequestHandler.
+    *
+    * c.f. WebMvcProperties.staticPathPattern and ResourceProperties for more configuration options.
+    */
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        super.configurePathMatch(configurer);
+
+        configurer.setUseSuffixPatternMatch(false);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*");
     }
 }
