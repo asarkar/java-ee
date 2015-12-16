@@ -7,7 +7,7 @@
     "mysql",
     "docker",
     "heroku",
-    "jquery"
+    "angular js"
   ],
   "website": "http://nameless-island-5362.herokuapp.com/helloworld/",
   "success_url": "/index.html",

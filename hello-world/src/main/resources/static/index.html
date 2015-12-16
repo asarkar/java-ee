@@ -1,41 +1,25 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html ng-app="helloWorld">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello World</title>
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-            $(document).ready(function() {
-                $("#all").dataTable({
-                    "paginate": false,
-                    "filter": false,
-                    "info": false,
-                    "sort": false
-                });
-            });
-
-
-
-    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+    <script src="//ui-grid.info/release/ui-grid.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//ui-grid.info/release/ui-grid.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<table id="all" class="display" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-        <th>Countries</th>
-        <th>Cities</th>
-        <th>Languages</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td><a href="countries.html">Click Here</a></td>
-        <td><a href="cities.html">Click Here</a></td>
-        <td><a href="languages.html">Click Here</a></td>
-    </tr>
-    </tbody>
-</table>
+<div id="selection-panel" class="selection-panel" ng-controller="HelloWorldCtrl">
+    <div>
+        <uib-tabset type="pills" justified="true">
+            <uib-tab ng-repeat="tab in tabs" heading="{{tab.title}}" select="update(tab.title)">
+                <div id="data-panel" class="data-panel" ui-grid="tab.gridOptions" ui-grid-pagination></div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
+<script src="js/app.js"></script>
 </body>
 </html>
