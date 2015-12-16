@@ -55,6 +55,7 @@
         paginationPageSize: 25,
         useExternalPagination: true,
         useExternalSorting: false,
+        enableFiltering: true,
         minRowsToShow: 20
       };
 
