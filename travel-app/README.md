@@ -20,8 +20,7 @@ Can be deployed on a Docker container or Heroku.
 
 ### Deploying to Heroku:
    * Run `heroku local web` to verify that stuff works.
-   * Run `heroku create abhijitsarkar-travel-app` from project root.
-   * Heroku adds a git remote named `heroku`. Rename it using `git remote rename heroku abhijitsarkar-travel-app`.
+   * Run `heroku create abhijitsarkar-travel-app --remote abhijitsarkar-travel-app` from project root.
    * Run `git subtree push --prefix travel-app abhijitsarkar-travel-app master` from git root.
      (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
    * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app abhijitsarkar-travel-app yourbranch:master`

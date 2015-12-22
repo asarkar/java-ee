@@ -33,7 +33,6 @@ dependencies {
         exclude group: 'io.reactivex', module: 'rxjava' //by both name and group
     }
     compile("io.reactivex:rxjava:1.1.0")
-    compile("io.reactivex:rxjava-joins:0.22.0")
     compile("com.couchbase.client:core-io:1.2.2")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.projectlombok:lombok:1.16.6")
