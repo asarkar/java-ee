@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import rx.Observable;
 import rx.Subscriber;
+import rx.joins.operators.OperatorJoinPatterns;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -37,15 +38,15 @@ public class FlightService {
 
     public Page<Flight> findFlights(String srcAirportFaa, String destAirportFaa,
                                     LocalDate departureDate, int pageSize, int pageNum) {
-        Observable<Page<Route>> page = routeRepo.findRoutes(
+        final Observable<Page<Route>> page = routeRepo.findRoutes(
                 srcAirportFaa, destAirportFaa, departureDate.getDayOfWeek(), pageSize, pageNum);
 
-        Page<Route> routesPage = new Page<>();
+        final Page<Route> routesPage = new Page<>();
 
-        Airport srcAirport = Airport.builder().build();
-        Airport destAirport = Airport.builder().build();
+        final Airport srcAirport = Airport.builder().build();
+        final Airport destAirport = Airport.builder().build();
 
-        Page<Flight> flightsPage = new Page<>();
+        final Page<Flight> flightsPage = new Page<>();
 
         page.subscribe(new Subscriber<Page<Route>>() {
             @Override

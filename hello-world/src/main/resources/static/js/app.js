@@ -61,7 +61,7 @@
 
       /* Must use forEach, not index loop.
        * http://stackoverflow.com/questions/750486/javascript-closure-inside-loops-simple-practical-example
-      */
+       */
       $scope.tabs.forEach(function(tab) {
         tab.paginationOptions = angular.copy(initPaginationOptions);
         angular.extend(tab.gridOptions, tabCommonGridOptions);
@@ -79,16 +79,18 @@
       $scope.update = function(title) {
         $scope.tabs.forEach(function(tab) {
           if (tab.title === title) {
-            $http.get(tab.title.toLowerCase()
-                + "?pageNum=" + tab.paginationOptions.pageNumber
-                + "&pageSize=" + tab.paginationOptions.pageSize)
-              .success(function(data) {
-                tab.gridOptions.totalItems = data.totalElements;
-                tab.gridOptions.data = data.content;
-                $interval(function() {
-                  tab.gridApi.core.handleWindowResize();
-                }, 10, 500);
-              });
+            $http.get(tab.title.toLowerCase(), {
+              params: {
+                pageSize: tab.paginationOptions.pageSize,
+                pageNum: tab.paginationOptions.pageNumber
+              }
+            }).success(function(data) {
+              tab.gridOptions.totalItems = data.totalElements;
+              tab.gridOptions.data = data.content;
+              $interval(function() {
+                tab.gridApi.core.handleWindowResize();
+              }, 10, 500);
+            });
           }
         });
       };

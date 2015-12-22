@@ -26,16 +26,14 @@ apply plugin: 'net.saliman.properties'
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://repo.spring.io/libs-snapshot"
-    }
-    maven {
-        url "http://files.couchbase.com/maven2"
-    }
 }
 
 dependencies {
-    compile("com.couchbase.client:java-client:2.2.2")
+    compile("com.couchbase.client:java-client:2.2.2") {
+        exclude group: 'io.reactivex', module: 'rxjava' //by both name and group
+    }
+    compile("io.reactivex:rxjava:1.1.0")
+    compile("io.reactivex:rxjava-joins:0.22.0")
     compile("com.couchbase.client:core-io:1.2.2")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.projectlombok:lombok:1.16.6")

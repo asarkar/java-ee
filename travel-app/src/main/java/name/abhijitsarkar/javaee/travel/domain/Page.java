@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author Abhijit Sarkar
@@ -14,7 +18,7 @@ import java.util.Collection;
 public class Page<T> {
     private int pageNum;
     private int pageSize;
-    private long numPages;
+    private int numPages;
     private Collection<T> data;
 
     public Page() {
@@ -29,6 +33,6 @@ public class Page<T> {
         pageNum = from.pageNum;
         pageSize = from.pageSize;
         numPages = from.numPages;
-        data = from.data;
+        data = from.data.stream().filter(e -> e != null).collect(toList());
     }
 }

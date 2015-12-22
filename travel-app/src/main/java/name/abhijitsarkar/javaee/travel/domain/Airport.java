@@ -25,7 +25,7 @@ public class Airport {
     * The ICAO (/ˌaɪˌkeɪˈoʊ/, "I-K-O") airport code or location indicator is a four-character alphanumeric code
     * designating aerodromes around the world. These codes are defined by the International Civil Aviation Organization.
     */
-    private String icao;
+    private String icaoCode;
     private ZoneOffset timeZoneOffset;
 
     public void updateFrom(Airport from) {
@@ -33,7 +33,7 @@ public class Airport {
         city = from.city;
         country = from.country;
         faaCode = from.faaCode;
-        icao = from.icao;
+        icaoCode = from.icaoCode;
         timeZoneOffset = from.timeZoneOffset;
     }
 }

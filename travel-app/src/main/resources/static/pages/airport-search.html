@@ -1,0 +1,18 @@
+<div class="row search-label">
+    <div ng-show="loadingAirports" class="col-md-6">
+        <i class="glyphicon glyphicon-refresh"></i> Searching...
+    </div>
+    <div ng-show="noResults" class="col-md-6">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+    </div>
+</div>
+<div class="row search-panel">
+    <div class="col-md-6" ng-repeat="model in [srcAirport, destAirport] track by $index">
+        <pre>Model: {{model | json}}</pre>
+        <p class="input-group">
+            <input type="text" class="form-control search-box" ng-model="model"
+                   uib-typeahead="airport as airport.name for airport in findAirports($viewValue)"
+                   typeahead-min-length="3" typeahead-loading="loadingAirports" typeahead-no-results="noResults">
+        </p>
+    </div>
+</div>

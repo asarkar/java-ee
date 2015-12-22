@@ -1,12 +1,10 @@
 web:
-  container_name: "travel-app"
   build: .
   ports:
     - "8080:8080"
   env_file:
     - ./gradle-local.properties
 db:
-  container_name: "couchbase"
   image: abhijitsarkar/docker:couchbase4
   ports:
       - 8091:8091

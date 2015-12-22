@@ -28,6 +28,8 @@ Can be deployed on a Docker container or Heroku.
 
 ### References:
 [Mastering observables](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/observables.html)
+
 [Working with N1QL](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/querying-n1ql.html)
+
 [N1QL reference](http://developer.couchbase.com/documentation/server/4.0/n1ql/index.html)
 

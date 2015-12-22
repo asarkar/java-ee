@@ -1,0 +1,18 @@
+.search-panel {
+    margin: 1%;
+    width: 900px;
+    float: left;
+}
+.search-box {
+    border-radius: 4px !important;
+    width: 30em !important;
+}
+.search-label {
+    margin: .3%;
+    width: 900px;
+    float: left;
+}
+.search-btn {
+    float: left;
+    margin: 0% 2%;
+}

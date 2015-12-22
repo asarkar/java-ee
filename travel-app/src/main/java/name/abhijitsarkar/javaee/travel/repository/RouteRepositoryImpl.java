@@ -2,8 +2,7 @@ package name.abhijitsarkar.javaee.travel.repository;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.N1qlMetrics;
-import com.couchbase.client.java.query.N1qlQueryResult;
+import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.query.ParameterizedN1qlQuery;
 import com.couchbase.client.java.query.Statement;
 import name.abhijitsarkar.javaee.travel.domain.Page;
@@ -15,18 +14,13 @@ import org.springframework.stereotype.Repository;
 import rx.Observable;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.OffsetTime;
-import java.util.List;
+import java.util.function.Function;
 
 import static com.couchbase.client.java.query.Select.select;
 import static com.couchbase.client.java.query.dsl.Expression.i;
 import static com.couchbase.client.java.query.dsl.Expression.path;
 import static com.couchbase.client.java.query.dsl.Expression.x;
 import static com.couchbase.client.java.query.dsl.Sort.asc;
-import static java.time.ZoneOffset.UTC;
-import static java.time.format.DateTimeFormatter.ISO_TIME;
-import static java.util.stream.Collectors.toList;
 
 /**
  * @author Abhijit Sarkar
@@ -35,17 +29,19 @@ import static java.util.stream.Collectors.toList;
 public class RouteRepositoryImpl implements RouteRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteRepositoryImpl.class);
 
-    private static final String FIELD_SRC_AIRPORT_FAA = "srcAirportFaa";
-    private static final String FIELD_DEST_AIRPORT_FAA = "destAirportFaa";
-    private static final String FIELD_AIRLINE = "airline";
-    private static final String FIELD_FLIGHT_NUM = "flightNum";
-    private static final String FIELD_AIRCRAFT = "aircraft";
-    private static final String FIELD_STOPS = "stops";
-    private static final String FIELD_DEPARTURE_TIME = "departureTimeUTC";
-    private static final String FIELD_DEPARTURE_DAY = "departureDay";
+    static final String FIELD_SRC_AIRPORT_FAA = "srcAirportFaa";
+    static final String FIELD_DEST_AIRPORT_FAA = "destAirportFaa";
+    static final String FIELD_AIRLINE = "airline";
+    static final String FIELD_FLIGHT_NUM = "flightNum";
+    static final String FIELD_AIRCRAFT = "aircraft";
+    static final String FIELD_STOPS = "stops";
+    static final String FIELD_DEPARTURE_TIME = "departureTimeUTC";
+    static final String FIELD_DEPARTURE_DAY = "departureDay";
 
     @Autowired
     private Bucket bucket;
+
+    Function<N1qlQueryRow, Route> mapper = new N1qlQueryRowToRouteMapper();
 
     private Statement findRoutes(int limit, int offset) {
         return select(
@@ -77,53 +73,22 @@ public class RouteRepositoryImpl implements RouteRepository {
      */
     public Observable<Page<Route>> findRoutes(String srcAirportFaa, String destAirportFaa,
                                               DayOfWeek departureDay, int pageSize, int pageNum) {
-        return Observable.<Page<Route>>create(subscriber -> {
-            ParameterizedN1qlQuery query = ParameterizedN1qlQuery.parameterized(
-                    findRoutes(pageSize, (pageNum - 1) * pageSize),
-                    JsonObject.create()
-                            .put(FIELD_SRC_AIRPORT_FAA, srcAirportFaa)
-                            .put(FIELD_DEST_AIRPORT_FAA, destAirportFaa)
+        ParameterizedN1qlQuery query = ParameterizedN1qlQuery.parameterized(
+                findRoutes(pageSize, (pageNum - 1) * pageSize),
+                JsonObject.create()
+                        .put(FIELD_SRC_AIRPORT_FAA, srcAirportFaa)
+                        .put(FIELD_DEST_AIRPORT_FAA, destAirportFaa)
                             /* DayOfWeek is 1-based, field in document is 0-based */
-                            .put(FIELD_DEPARTURE_DAY, departureDay.getValue() - 1));
+                        .put(FIELD_DEPARTURE_DAY, departureDay.getValue() - 1));
 
-            LOGGER.debug("Executing query: {}.", query.n1ql());
+        GenericPagingSubscriber subscriber = GenericPagingSubscriber.<Route>builder()
+                .mapper(mapper)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .bucket(bucket)
+                .query(query)
+                .build();
 
-            N1qlQueryResult result = bucket.query(query);
-
-            N1qlMetrics metrics = result.info();
-
-            LOGGER.debug("Query metrics: {}.", metrics);
-
-            if (result.finalSuccess()) {
-                List<Route> routes = result.allRows().stream().map(row -> {
-                    JsonObject value = row.value();
-
-                    String departureTime = value.getString(FIELD_DEPARTURE_TIME);
-                    OffsetTime departureTimeUTC = OffsetTime.of(LocalTime.parse(departureTime, ISO_TIME), UTC);
-
-                    return Route.builder()
-                            .srcAirportFaa(value.getString(FIELD_SRC_AIRPORT_FAA))
-                            .destAirportFaa(value.getString(FIELD_DEST_AIRPORT_FAA))
-                            .stops(value.getInt(FIELD_STOPS))
-                            .aircraft(value.getString(FIELD_AIRCRAFT))
-                            .airline(value.getString(FIELD_AIRLINE))
-                            .flightNum(value.getString(FIELD_FLIGHT_NUM))
-                            .departureTimeUTC(departureTimeUTC)
-                            .departureDay(departureDay).build();
-                }).collect(toList());
-
-                Page<Route> page = new Page(pageNum, pageSize, metrics.resultCount(), routes);
-
-                subscriber.onNext(page);
-
-                subscriber.onCompleted();
-            } else {
-                subscriber.onError(
-                        new RuntimeException(
-                                String.format("Failed to find routes between %s and %s on %s.",
-                                        srcAirportFaa, destAirportFaa, departureDay)
-                        ));
-            }
-        });
+        return Observable.create(subscriber);
     }
 }
