@@ -24,6 +24,7 @@ Can be deployed on a Docker container or Heroku.
    * Run `git subtree push --prefix travel-app abhijitsarkar-travel-app master` from git root.
      (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
    * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app abhijitsarkar-travel-app yourbranch:master`
+   * To log onto Heroku bash, `heroku run bash --app abhijitsarkar-travel-app`.
 
 ### References:
 [Mastering observables](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/observables.html)
