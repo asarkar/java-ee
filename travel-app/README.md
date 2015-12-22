@@ -20,11 +20,11 @@ Can be deployed on a Docker container or Heroku.
 
 ### Deploying to Heroku:
    * Run `heroku local web` to verify that stuff works.
-   * Run `git remote -v | grep heroku` to make sure heroku is added as a git remote.
-     If not, run `heroku create` from root.
-   * Run `git subtree push --prefix travel-app heroku master` from root.
+   * Run `heroku create abhijitsarkar-travel-app` from project root.
+   * Heroku adds a git remote named `heroku`. Rename it using `git remote rename heroku abhijitsarkar-travel-app`.
+   * Run `git subtree push --prefix travel-app abhijitsarkar-travel-app master` from git root.
      (Read [this](http://brettdewoody.com/deploying-a-heroku-app-from-a-subdirectory/)).
-   * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app heroku yourbranch:master`
+   * If working from a branch, either first merge to master or run `git subtree push --prefix travel-app abhijitsarkar-travel-app yourbranch:master`
 
 ### References:
 [Mastering observables](http://developer.couchbase.com/documentation/server/4.0/sdks/java-2.2/observables.html)
