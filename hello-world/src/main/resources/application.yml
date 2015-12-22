@@ -16,4 +16,4 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
 server:
   port: ${PORT}
-  contextPath: ${CTX_ROOT}
+  contextPath: /helloworld
