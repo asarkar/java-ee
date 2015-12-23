@@ -2,7 +2,7 @@
   var app = angular.module('travelApp', ['airport-search', 'travel-dt', 'flight-service']);
 
   app.controller('FlightSearchCtrl', [
-    '$scope', '$http', 'flightService',
+    '$scope', '$http', '$filter', 'flightService',
     function($scope, $http, $filter, flightService) {
       $scope.flight = flightService;
 
@@ -52,9 +52,9 @@
       $scope.searchFlights = function() {
         $http.get('flights', {
           params: {
-            src: flight.srcAirport.faaCode,
-            dest: flight.destAirport.faaCode,
-            date: $filter('date')(flight.departureDt, 'yyyy-MM-dd'),
+            src: $scope.flight.srcAirport.faaCode,
+            dest: $scope.flight.destAirport.faaCode,
+            date: $filter('date')($scope.flight.departureDt, 'yyyy-MM-dd'),
             pageSize: paginationOptions.pageSize,
             pageNum: paginationOptions.pageNumber
           }

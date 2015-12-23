@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import rx.Observable;
 import rx.Subscriber;
-import rx.joins.operators.OperatorJoinPatterns;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;

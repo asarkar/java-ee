@@ -1,9 +1,9 @@
 (function() {
   var app = angular.module('airport-search', ['ui.bootstrap', 'flight-service']);
 
-  app.directive('airportSearch', ['flightService', function(flightService) {
-    var airportSearchCtrl = ['$http', '$scope', '$log',
-      function($http, $scope, $log) {
+  app.directive('airportSearch', function() {
+    var airportSearchCtrl = ['$http', '$scope', '$log', 'flightService',
+      function($http, $scope, $log, flightService) {
         $scope.flight = flightService;
 
         $scope.findAirports = function(val) {
@@ -24,11 +24,8 @@
     return {
       restrict: 'E',
       templateUrl: 'pages/airport-search.html',
-      scope: {
-        flight.srcAirport: '=',
-        flight.destAirport: '='
-      },
+      scope: {},
       controller: airportSearchCtrl
     };
-  }]);
+  });
 })();

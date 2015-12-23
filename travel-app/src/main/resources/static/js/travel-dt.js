@@ -1,8 +1,8 @@
 (function() {
   var app = angular.module('travel-dt', ['ui.bootstrap', 'flight-service']);
 
-  app.directive('travelDt', ['flightService', function(flightService) {
-    var travelDtCtrl = ['$scope',
+  app.directive('travelDt', function() {
+    var travelDtCtrl = ['$scope', 'flightService',
       function($scope, flightService) {
         $scope.flight = flightService;
 
@@ -41,11 +41,8 @@
     return {
       restrict: 'E',
       templateUrl: 'pages/travel-dt.html',
-      scope: {
-        flight.departureDt: '=',
-        flight.arrivalDt: '='
-      },
+      scope: {},
       controller: travelDtCtrl
     };
-  }]);
+  });
 })();
