@@ -9,6 +9,7 @@ Can be deployed on a Docker container or Heroku.
    * `CREATE PRIMARY INDEX ``travel-sample-primary-index`` ON ``travel-sample`` USING GSI;`
    * Exit by `CTRL + c`
    * Using Java SDK
+
    ```
    Query createIndex = Query.simple("CREATE PRIMARY INDEX ``travel-sample-primary-index`` ON ``travel-sample`` USING GSI;");
    bucket.query(createIndex);
@@ -16,6 +17,7 @@ Can be deployed on a Docker container or Heroku.
 
 ### Build and Run locally:
 `./gradlew clean stage`
+
 `./gradlew clean stage -Penv=heroku` to build with Heroku property file
 
 ### Deploying to Heroku:
