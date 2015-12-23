@@ -61,5 +61,11 @@ springBoot {
 
 bootRun {
     systemProperties = project.filterTokens
+
+    def activeProfiles = System.getProperty('SPRING_PROFILES')
+
+    if (activeProfiles) {
+        systemProperties += ['spring.profiles.active' : activeProfiles]
+    }
 }
 

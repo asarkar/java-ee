@@ -10,6 +10,7 @@ import name.abhijitsarkar.javaee.travel.domain.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import rx.Observable;
 
@@ -26,6 +27,7 @@ import static com.couchbase.client.java.query.dsl.Sort.asc;
  * @author Abhijit Sarkar
  */
 @Repository
+@Profile("!noDB")
 public class RouteRepositoryImpl implements RouteRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteRepositoryImpl.class);
 

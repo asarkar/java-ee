@@ -1,0 +1,32 @@
+[
+  {
+    "srcAirportFaa": "SEA",
+    "destAirportFaa": "MCO",
+    "stops": 0,
+    "aircraft": "737",
+    "airline": "American Airlines",
+    "flightNum": "AA780",
+    "departureTimeUTC": "22:04:00+00:00",
+    "departureDay": 0
+  },
+  {
+    "srcAirportFaa": "SEA",
+    "destAirportFaa": "MCO",
+    "stops": 0,
+    "aircraft": "737",
+    "airline": "American Airlines",
+    "flightNum": "AA964",
+    "departureTimeUTC": "03:40:00+00:00",
+    "departureDay": 0
+  },
+  {
+    "srcAirportFaa": "SEA",
+    "destAirportFaa": "MCO",
+    "stops": 0,
+    "aircraft": "737",
+    "airline": "American Airlines",
+    "flightNum": "AA592",
+    "departureTimeUTC": "12:46:00+00:00",
+    "departureDay": 0
+  }
+]

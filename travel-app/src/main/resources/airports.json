@@ -1,0 +1,50 @@
+[{
+  "name": "Seal Bay Seaplane Base",
+  "city": "Seal Bay",
+  "country": "United States",
+  "faaCode": "SYB",
+  "icaoCode": null,
+  "timeZoneOffset": "-09:00"
+}, {
+  "name": "Seattle Tacoma Intl",
+  "city": "Seattle",
+  "country": "United States",
+  "faaCode": "SEA",
+  "icaoCode": "KSEA",
+  "timeZoneOffset": "-08:00"
+}, {
+  "name": "Boeing Fld King Co Intl",
+  "city": "Seattle",
+  "country": "United States",
+  "faaCode": "BFI",
+  "icaoCode": "KBFI",
+  "timeZoneOffset": "-08:00"
+}, {
+  "name": "Kenmore Air Harbor Seaplane Base",
+  "city": "Seattle",
+  "country": "United States",
+  "faaCode": "LKE",
+  "icaoCode": "KW55",
+  "timeZoneOffset": "-08:00"
+}, {
+  "name": "King St Station",
+  "city": "Seattle",
+  "country": "United States",
+  "faaCode": null,
+  "icaoCode": "SEAT",
+  "timeZoneOffset": "-08:00"
+}, {
+  "name": "Port of Seattle",
+  "city": "Seattle",
+  "country": "United States",
+  "faaCode": null,
+  "icaoCode": "PSEA",
+  "timeZoneOffset": "-08:00"
+}, {
+  "name": "Seaplane Base",
+  "city": "Winterhaven",
+  "country": "United States",
+  "faaCode": "F57",
+  "icaoCode": null,
+  "timeZoneOffset": "-05:00"
+}]

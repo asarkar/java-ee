@@ -1,7 +1,9 @@
 package name.abhijitsarkar.javaee.travel.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +16,8 @@ import java.util.TimeZone;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Flight {
     private String srcAirportName;
     private String srcCity;

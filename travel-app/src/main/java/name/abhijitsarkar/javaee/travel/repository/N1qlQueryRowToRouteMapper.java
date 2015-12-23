@@ -44,7 +44,7 @@ public class N1qlQueryRowToRouteMapper implements Function<N1qlQueryRow, Route> 
                     .airline(value.getString(FIELD_AIRLINE))
                     .flightNum(value.getString(FIELD_FLIGHT_NUM))
                     .departureTimeUTC(departureTimeUTC)
-                    .departureDay(DayOfWeek.of(Integer.valueOf(value.getString(FIELD_DEPARTURE_DAY)) + 1)).build();
+                    .departureDay(DayOfWeek.of(value.getInt(FIELD_DEPARTURE_DAY) + 1)).build();
         } catch (Exception e) {
             LOGGER.error("Failed to convert result row: {} to route object.", row, e);
 

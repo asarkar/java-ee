@@ -1,17 +1,19 @@
 package name.abhijitsarkar.javaee.travel.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.TimeZone;
 
 /**
  * @author Abhijit Sarkar
  */
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Airport {
     private String name;
     private String city;

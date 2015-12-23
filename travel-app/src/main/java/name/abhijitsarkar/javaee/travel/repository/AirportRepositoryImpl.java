@@ -12,6 +12,7 @@ import name.abhijitsarkar.javaee.travel.domain.Airport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import rx.Observable;
 
@@ -30,6 +31,7 @@ import static com.couchbase.client.java.query.dsl.Expression.x;
  * @author Abhijit Sarkar
  */
 @Repository
+@Profile("!noDB")
 public class AirportRepositoryImpl implements AirportRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirportRepositoryImpl.class);
 
