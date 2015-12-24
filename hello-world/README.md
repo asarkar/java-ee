@@ -1,11 +1,11 @@
 # Spring Boot application that displays various countries, cities and languages spoken. Uses MySQL world schema.
 Can be deployed on a Docker container or Heroku.
 
-### Build and Run locally:
+### Build and Run Locally:
 `./gradlew clean stage`
 `./gradlew clean stage -Penv=heroku` to build with Heroku property file
 
-### Deploying to Heroku:
+### Deploy to Heroku:
   * Run `heroku local web` to verify that stuff works.
   * Run `heroku create abhijitsarkar-hello-world --remote abhijitsarkar-hello-world` from project root.
   * Run `git subtree push --prefix travel-app abhijitsarkar-hello-world master` from git root.

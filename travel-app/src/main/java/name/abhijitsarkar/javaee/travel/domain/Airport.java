@@ -3,7 +3,9 @@ package name.abhijitsarkar.javaee.travel.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.time.ZoneOffset;
 
@@ -11,7 +13,7 @@ import java.time.ZoneOffset;
  * @author Abhijit Sarkar
  */
 @Builder
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Airport {

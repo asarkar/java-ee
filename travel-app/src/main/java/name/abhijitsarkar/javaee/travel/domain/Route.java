@@ -2,7 +2,7 @@ package name.abhijitsarkar.javaee.travel.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
@@ -12,7 +12,7 @@ import java.time.OffsetTime;
  * @author Abhijit Sarkar
  */
 @Builder
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Route {

@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.Iterator;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -105,10 +104,14 @@ public class FlightService {
                                 Assert.state(numAirports == 2,
                                         String.format("Expected 2 airports but got %d.", numAirports));
 
-                                Iterator<Airport> it = all.iterator();
+                                Airport src = all.stream().filter
+                                        (a -> srcAirportFaa.equals((a.getFaaCode()))).findFirst().get();
 
-                                srcAirport.updateFrom(it.next());
-                                destAirport.updateFrom(it.next());
+                                Airport dest = all.stream().filter
+                                        (a -> destAirportFaa.equals((a.getFaaCode()))).findFirst().get();
+
+                                srcAirport.updateFrom(src);
+                                destAirport.updateFrom(dest);
                             }
                         });
             }

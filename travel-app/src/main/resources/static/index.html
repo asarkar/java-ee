@@ -8,6 +8,7 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="//ui-grid.info/release/ui-grid.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <title>Search for Flights</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -16,10 +17,12 @@
 </div>
 <div class="container-fluid" ng-controller="FlightSearchCtrl">
     <button type="button" class="btn btn-primary search-btn" ng-click="searchFlights()">Search</button>
-    <hr class="search-panel">
-    <div class="selection-panel">
-        <div class="search-panel" ui-grid="gridOptions" ui-grid-pagination></div>
+    <hr class="divider">
+    <p>
+    <div class="result-panel" ng-show="gridOptions.data.length">
+        <div ui-grid="gridOptions" class="grid" ui-grid-pagination></div>
     </div>
+    </p>
 </div>
 <script src="js/flight-service.js"></script>
 <script src="js/airport-search.js"></script>

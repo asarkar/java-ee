@@ -1,9 +1,11 @@
 (function() {
-  var app = angular.module('travelApp', ['airport-search', 'travel-dt', 'flight-service']);
+  var app = angular.module('travelApp', ['airport-search', 'travel-dt', 'flight-service',
+    'ui.bootstrap', 'ui.grid', 'ui.grid.pagination'
+  ]);
 
   app.controller('FlightSearchCtrl', [
-    '$scope', '$http', '$filter', 'flightService',
-    function($scope, $http, $filter, flightService) {
+    '$scope', '$http', '$filter', '$interval', 'flightService',
+    function($scope, $http, $filter, $interval, flightService) {
       $scope.flight = flightService;
 
       var paginationOptions = {
@@ -17,29 +19,29 @@
         paginationPageSize: 25,
         useExternalPagination: true,
         useExternalSorting: false,
+        minRowsToShow: 10,
         columnDefs: [{
-          name: 'Airline'
+          name: 'airline',
+          field: 'airline'
         }, {
-          name: 'Flight'
+          name: 'flightNumber',
+          field: 'flightNum'
         }, {
-          name: 'Departure'
+          name: 'departure',
+          field: 'departureTime'
         }, {
-          name: 'From'
+          name: 'from',
+          field: 'srcAirportName'
         }, {
-          name: 'To'
+          name: 'to',
+          field: 'destAirportName'
         }, {
-          name: 'Aircraft'
+          name: 'aircraft',
+          field: 'aircraft'
         }],
         onRegisterApi: function(gridApi) {
           $scope.gridApi = gridApi;
-          //        $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
-          //          if (sortColumns.length == 0) {
-          //            paginationOptions.sort = null;
-          //          } else {
-          //            paginationOptions.sort = sortColumns[0].sort.direction;
-          //          }
-          //          getPage();
-          //        });
+
           gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
             paginationOptions.pageNumber = newPage;
             paginationOptions.pageSize = pageSize;
@@ -59,8 +61,11 @@
             pageNum: paginationOptions.pageNumber
           }
         }).success(function(results) {
-          $scope.gridOptions.totalItems = results.totalElements;
+          $scope.gridOptions.totalItems = results.pageSize * results.numPages;
           $scope.gridOptions.data = results.data;
+          $interval(function() {
+            $scope.gridApi.core.handleWindowResize();
+          }, 10, 500);
         });
       };
     }
