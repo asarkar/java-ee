@@ -1,13 +1,9 @@
-web:
+travel-app:
   build: .
   ports:
     - "8080:8080"
   env_file:
     - ./gradle-local.properties
-db:
-  image: abhijitsarkar/docker:couchbase4
-  ports:
-      - 8091:8091
-      - 8092:8092
-      - 8093:8093
-      - 11210:11210
+  environment:
+    - SPRING_PROFILES_ACTIVE=noDB
+  entrypoint: supervisord -c /etc/supervisord.conf

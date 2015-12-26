@@ -8,27 +8,18 @@ apt-get update && \
 
 nc -w5 -z -n $DB_PORT_3306_TCP_ADDR $DB_PORT_3306_TCP_PORT
 
-STATUS=$?
+WAIT_SCRIPT_URL=https://raw.githubusercontent.com/abhijitsarkar/docker/master/docker-util/wait.sh
 
-DEFAULT_NUM_RETRY=5
-DEFAULT_RETRY_INTERVAL=5
+curl -sSL -o ./wait.sh $WAIT_SCRIPT_URL
+chmod +x ./wait.sh
 
-NUM_RETRY=${NUM_RETRY:-$(echo $DEFAULT_NUM_RETRY)}
-RETRY_INTERVAL=${RETRY_INTERVAL:-$(echo $DEFAULT_RETRY_INTERVAL)}
+MYSQL_ENDPOINT="$MYSQL_ENDPOINT_PORT_3306_TCP_ADDR:$MYSQL_ENDPOINT_PORT_3306_TCP_PORT"
+MYSQL_STATUS=$(./wait.sh $MYSQL_ENDPOINT)
 
-COUNTER=$NUM_RETRY
+rm -f ./wait.sh
 
-while [ $COUNTER -gt 0 -a $STATUS -gt 0 ]; do
-    nc -w5 -z -n $DB_PORT_3306_TCP_ADDR $DB_PORT_3306_TCP_PORT
-
-    STATUS=$?
-    COUNTER=$((COUNTER - 1))
-
-    sleep $RETRY_INTERVAL
-done
-
-if [ $STATUS -gt 0 ]; then
-    printf "[ERROR] Failed to connect to the database after %d seconds.\n" $((NUM_RETRY * RETRY_INTERVAL))
+if [ "$MYSQL_STATUS" -gt 0 ]; then
+    printf "[ERROR] Could not connect to MySQL (%s, %s).\n\n" $MYSQL_ENDPOINT
 
     exit 1
 fi

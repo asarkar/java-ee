@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath(
+                "org.springframework.boot:spring-boot-gradle-plugin:${project['spring.boot.version']}",
+                "com.bmuschko:gradle-docker-plugin:${project['plugin.docker.version']}"
+        )
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+group = 'name.abhijitsarkar.javaee'
+version = '1.0-SNAPSHOT'
+
+apply from: "${project['gradle-common.url']}"
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:${project['spring.boot.version']}"
+        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${project['spring.cloud.parent.version']}"
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.cloud:spring-cloud-starter')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+}
+
+springBoot {
+    mainClass = project['main-class']
+}
+
+docker {
+    if (System.env.DOCKER_HOST) {
+        url = "${System.env.DOCKER_HOST}".replace("tcp","https")
+        if (System.env.DOCKER_CERT_PATH) {
+            certPath = file(System.env.DOCKER_CERT_PATH)
+        }
+    }
+    else {
+        url = 'unix:///var/run/docker.sock'
+    }
+}
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+task buildDockerImage(type: DockerBuildImage, dependsOn: 'war') {
+    inputDir = projectDir
+    tag = project['docker-tag']
+}
