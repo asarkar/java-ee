@@ -1,4 +1,0 @@
-movie-service:
-  id: movie-service
-  popular:
-      url: /movies/popular

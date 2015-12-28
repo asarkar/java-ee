@@ -5,7 +5,7 @@ spring:
 eureka:
   instance:
     hostname: ${DISCOVERY_HOST:localhost}
-    preferIpAddress: false
+    preferIpAddress: true
   client:
     registerWithEureka: false
     fetchRegistry: false

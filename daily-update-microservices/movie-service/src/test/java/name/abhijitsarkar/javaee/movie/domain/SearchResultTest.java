@@ -2,6 +2,8 @@ package name.abhijitsarkar.javaee.movie.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import name.abhijitsarkar.javaee.common.ObjectMapperFactory;
+import name.abhijitsarkar.javaee.common.domain.Movie;
+import name.abhijitsarkar.javaee.common.domain.SearchResult;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class SearchResultTest {
     @Test
     public void testDeserialization() throws IOException {
         try (InputStream is = getClass().getResourceAsStream("/cached/popular-movies.json")) {
-            SearchResult result = mapper.readValue(is, SearchResult.class);
+            name.abhijitsarkar.javaee.common.domain.SearchResult result = mapper.readValue(is, SearchResult.class);
 
             Collection<Movie> movies = result.getMovies();
 

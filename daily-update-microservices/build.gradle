@@ -28,6 +28,10 @@ subprojects {
 
     repositories {
         mavenCentral()
+
+        maven {
+            url "http://repo.spring.io/milestone"
+        }
     }
 
     dependencyManagement {
@@ -35,7 +39,7 @@ subprojects {
             // Last one wins if multiple bom declare the same dependency but with different versions
             mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${project['spring.cloud.parent.version']}"
             mavenBom "org.springframework.cloud:spring-cloud-netflix:${project['spring.cloud.version']}"
-            mavenBom "org.springframework.cloud:spring-cloud-config:${project['spring.cloud.config.version']}"
+            mavenBom "org.springframework.cloud:spring-cloud-config:${project['spring.cloud.version']}"
             mavenBom "org.springframework.boot:spring-boot-starter-parent:${project['spring.boot.version']}"
         }
 
@@ -48,12 +52,6 @@ subprojects {
                 entry 'jackson-databind'
                 entry 'jackson-annotations'
             }
-
-            dependencySet(group: 'com.netflix.feign', version: "${project['feign.version']}") {
-                entry 'feign-core'
-                entry 'feign-ribbon'
-                entry 'feign-slf4j'
-            }
         }
     }
 
@@ -61,49 +59,48 @@ subprojects {
         compile('org.springframework.boot:spring-boot-starter-web')
         compile('org.springframework.cloud:spring-cloud-starter')
         compile('org.springframework.cloud:spring-cloud-starter-eureka')
+        compile('org.springframework.cloud:spring-cloud-netflix-core')
 //        compile('org.springframework.cloud:spring-cloud-starter-hystrix')
         compile('org.springframework.cloud:spring-cloud-starter-feign')
         compile('org.springframework.cloud:spring-cloud-starter-config')
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${project['jackson.version']}")
-        compile project(':commons')
 
         providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
         providedCompile("org.projectlombok:lombok:${project['lombok.version']}")
     }
 
-    springBoot {
-        mainClass = project['main-class']
-    }
+    if (project.hasProperty('main-class')) {
+        dependencies {
+            compile project(':commons')
+        }
 
-    bootRun {
-        def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
-                               'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'SPRING_PROFILES_ACTIVE']
-                .collectEntries { [(it as String): System.properties[it]] }
-                .findAll { it.value }
+        springBoot {
+            mainClass = project['main-class']
+        }
 
-        systemProperties = System.env + additionalProps
-    }
+        bootRun {
+            def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
+                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'SPRING_PROFILES_ACTIVE']
+                    .collectEntries { [(it as String): System.properties[it]] }
+                    .findAll { it.value }
 
-    docker {
-        if (System.env.DOCKER_HOST) {
-            url = "${System.env.DOCKER_HOST}".replace("tcp", "https")
-            if (System.env.DOCKER_CERT_PATH) {
-                certPath = file(System.env.DOCKER_CERT_PATH)
+            systemProperties = System.env + additionalProps
+        }
+
+        docker {
+            if (System.env.DOCKER_HOST) {
+                url = "${System.env.DOCKER_HOST}".replace("tcp", "https")
+                if (System.env.DOCKER_CERT_PATH) {
+                    certPath = file(System.env.DOCKER_CERT_PATH)
+                }
+            } else {
+                url = 'unix:///var/run/docker.sock'
             }
-        } else {
-            url = 'unix:///var/run/docker.sock'
         }
-    }
 
-    task copyInitScript(type: Copy) {
-        from(rootDir) {
-            include 'init.sh'
+        task buildDockerImage(type: DockerBuildImage, dependsOn: 'war') {
+            inputDir = projectDir
+            tag = project['docker-tag']
         }
-        into(new File(projectDir, "build"))
-    }
-
-    task buildDockerImage(type: DockerBuildImage, dependsOn: ['copyInitScript', 'war']) {
-        inputDir = projectDir
-        tag = project['docker-tag']
     }
 }

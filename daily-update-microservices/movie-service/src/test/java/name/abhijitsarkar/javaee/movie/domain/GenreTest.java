@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import name.abhijitsarkar.javaee.common.ObjectMapperFactory;
+import name.abhijitsarkar.javaee.common.domain.Genre;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -27,8 +28,8 @@ public class GenreTest {
         try (InputStream is = getClass().getResourceAsStream("/cached/genres.json")) {
             ObjectReader reader = objectMapper.reader().with(UNWRAP_ROOT_VALUE).withRootName("genres");
 
-            List<Integer> genres = reader.forType(new TypeReference<List<Genre>>() {
-            }).<List<Genre>>readValue(is).stream().map(Genre::getId).collect(toList());
+            List<Integer> genres = reader.forType(new TypeReference<List<name.abhijitsarkar.javaee.common.domain.Genre>>() {
+            }).<List<name.abhijitsarkar.javaee.common.domain.Genre>>readValue(is).stream().map(Genre::getId).collect(toList());
 
             assertFalse(genres.isEmpty());
 

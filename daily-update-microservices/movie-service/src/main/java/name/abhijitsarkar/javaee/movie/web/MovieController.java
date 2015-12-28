@@ -1,6 +1,6 @@
 package name.abhijitsarkar.javaee.movie.web;
 
-import name.abhijitsarkar.javaee.movie.domain.Movie;
+import name.abhijitsarkar.javaee.common.domain.Movie;
 import name.abhijitsarkar.javaee.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
