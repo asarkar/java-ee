@@ -1,0 +1,32 @@
+movie_service:
+  image: abhijitsarkar/docker:movie-service
+  ports:
+    - 9000:9000
+  environment:
+    SPRING_PROFILES_ACTIVE: live
+    DISCOVERY_HOST: 192.168.99.107
+    DISCOVERY_PORT: 8761
+    CONFIG_HOST: 192.168.99.107
+    CONFIG_PORT: 8888
+    MOVIE_HOST: 192.168.99.107
+    HTTP_PORT: 9000
+discovery:
+  image: abhijitsarkar/docker:discovery-service
+  ports:
+    - 8761:8761
+  environment:
+    DISCOVERY_HOST: 192.168.99.107
+    HTTP_PORT: 8761
+config:
+  image: abhijitsarkar/docker:config-service
+  ports:
+      - 8888:8888
+  environment:
+    SPRING_PROFILES_ACTIVE: native
+    CONFIG_LOCATION: "file:/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/"
+    DISCOVERY_HOST: 192.168.99.107
+    DISCOVERY_PORT: 8761
+    CONFIG_HOST: 192.168.99.107
+    HTTP_PORT: 8888
+  volumes:
+      - "/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/:/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/"

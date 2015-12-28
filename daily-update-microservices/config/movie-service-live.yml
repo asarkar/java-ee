@@ -1,0 +1,5 @@
+themoviedb:
+  url: http://api.themoviedb.org
+  apiKey: 2fd49a403cf7bad6686bc14087f8e023
+  popular:
+    url: /3/movie/popular

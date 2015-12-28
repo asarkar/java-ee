@@ -1,24 +1,25 @@
-package name.abhijitsarkar.javaee.discovery;
+package name.abhijitsarkar.javaee.movie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 /**
  * @author Abhijit Sarkar
  */
 @SpringBootApplication
-@EnableEurekaServer
-public class DiscoveryServer extends SpringBootServletInitializer {
-    /* Deep stuff: https://github.com/spring-cloud/spring-cloud-netflix/issues/432 */
+@EnableFeignClients
+@EnableDiscoveryClient
+public class MovieApp extends SpringBootServletInitializer {
     public static void main(String[] args) {
-        SpringApplication.run(DiscoveryServer.class, args);
+        SpringApplication.run(MovieApp.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(DiscoveryServer.class);
+        return application.sources(MovieApp.class);
     }
 }

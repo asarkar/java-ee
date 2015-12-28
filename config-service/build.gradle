@@ -38,8 +38,10 @@ dependencyManagement {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.cloud:spring-cloud-starter')
+    compile('org.springframework.cloud:spring-cloud-config-server')
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+
+    runtime("org.glassfish:javax.el:${project['el.version']}")
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
@@ -49,12 +51,15 @@ springBoot {
 }
 
 bootRun {
-    def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'SPRING_PROFILES_ACTIVE']
+    def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
+                           'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_LOCATION', 'SPRING_PROFILES_ACTIVE',
+                          'REGISTER_WITH_DISCOVERY']
             .collectEntries { [(it as String): System.properties[it]] }
             .findAll { it.value }
 
     systemProperties = System.env + additionalProps
 }
+
 
 docker {
     if (System.env.DOCKER_HOST) {
