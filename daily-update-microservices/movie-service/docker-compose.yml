@@ -11,14 +11,14 @@ movie_service:
     MOVIE_HOST: 192.168.99.107
     HTTP_PORT: 9000
 discovery:
-  image: abhijitsarkar/docker:discovery-service
+  image: abhijitsarkar/java-ee:discovery-service
   ports:
     - 8761:8761
   environment:
     DISCOVERY_HOST: 192.168.99.107
     HTTP_PORT: 8761
 config:
-  image: abhijitsarkar/docker:config-service
+  image: abhijitsarkar/java-ee:config-service
   ports:
       - 8888:8888
   environment:
