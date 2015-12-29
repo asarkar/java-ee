@@ -35,10 +35,10 @@ config:
       - 8888:8888
   environment:
     SPRING_PROFILES_ACTIVE: native
-    CONFIG_LOCATION: "file:/etc/daily-update/config/"
+    CONFIG_LOCATION: "file:/etc/daily-update-service/config/"
     DISCOVERY_HOST: 192.168.99.107
     DISCOVERY_PORT: 8761
     CONFIG_HOST: 192.168.99.107
     HTTP_PORT: 8888
   volumes:
-      - "../config/:/etc/daily-update/config/"
+      - "../config/:/etc/daily-update-service/config/"
