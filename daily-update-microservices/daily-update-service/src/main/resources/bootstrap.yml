@@ -12,12 +12,21 @@ spring:
 
 eureka:
   instance:
-    hostname: ${DAILY_UPDATE_HOST:localhost}
-    preferIpAddress: true
-    nonSecurePort: ${server.port}
+    appname: ${spring.application.name}
+    hostname: ${MOVIE_HOST:localhost}
+    vipAddress: ${spring.application.name}
+    virtualHostName: ${spring.application.name}
+    preferIpAddress: false
+#    securePortEnabled: false
+#    nonSecurePortEnabled: true
+#    nonSecurePort: ${server.port}
     leaseRenewalIntervalInSeconds: 10
   client:
     registerWithEureka: true
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
+#ribbon:
+#  IsSecure: false
+#  eureka:
+#    enabled: true

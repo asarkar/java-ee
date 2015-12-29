@@ -23,10 +23,10 @@ config:
       - 8888:8888
   environment:
     SPRING_PROFILES_ACTIVE: native
-    CONFIG_LOCATION: "file:/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/"
+    CONFIG_LOCATION: "file:/etc/daily-update/config/"
     DISCOVERY_HOST: 192.168.99.107
     DISCOVERY_PORT: 8761
     CONFIG_HOST: 192.168.99.107
     HTTP_PORT: 8888
   volumes:
-      - "/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/:/Users/Abhijit/Repositories/git/java-ee/daily-update-microservices/config/"
+      - "../config/:/etc/daily-update/config/"

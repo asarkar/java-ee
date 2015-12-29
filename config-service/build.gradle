@@ -57,14 +57,13 @@ springBoot {
 
 bootRun {
     def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
-                           'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_LOCATION', 'SPRING_PROFILES_ACTIVE',
+                           'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_LOCATION', 'spring.profiles.active',
                            'REGISTER_WITH_DISCOVERY']
             .collectEntries { [(it as String): System.properties[it]] }
             .findAll { it.value }
 
     systemProperties = System.env + additionalProps
 }
-
 
 docker {
     if (System.env.DOCKER_HOST) {

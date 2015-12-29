@@ -5,9 +5,8 @@ spring:
 eureka:
   instance:
     hostname: ${CONFIG_HOST:localhost}
-    nonSecurePort: ${server.port}
     leaseRenewalIntervalInSeconds: 10
-    preferIpAddress: true
+    preferIpAddress: false
   client:
     registerWithEureka: ${REGISTER_WITH_DISCOVERY:true}
     fetchRegistry: false

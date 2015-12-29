@@ -54,7 +54,7 @@ springBoot {
 }
 
 bootRun {
-    def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'SPRING_PROFILES_ACTIVE']
+    def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'spring.profiles.active']
             .collectEntries { [(it as String): System.properties[it]] }
             .findAll { it.value }
 

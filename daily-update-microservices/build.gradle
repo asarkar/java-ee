@@ -63,6 +63,7 @@ subprojects {
 //        compile('org.springframework.cloud:spring-cloud-starter-hystrix')
         compile('org.springframework.cloud:spring-cloud-starter-feign')
         compile('org.springframework.cloud:spring-cloud-starter-config')
+        compile('org.springframework.cloud:spring-cloud-starter-ribbon')
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${project['jackson.version']}")
 
         providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -80,7 +81,7 @@ subprojects {
 
         bootRun {
             def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
-                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'SPRING_PROFILES_ACTIVE']
+                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'spring.profiles.active']
                     .collectEntries { [(it as String): System.properties[it]] }
                     .findAll { it.value }
 
