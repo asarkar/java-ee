@@ -4,6 +4,7 @@ spring:
   cloud:
     config:
         uri: http://${CONFIG_HOST:localhost}:${CONFIG_PORT:8888}
+        failFast: true
     # Instead of going directly to config service, go via discovery service
     # Only works if config service is already registered with discovery service
 #      discovery:
@@ -12,21 +13,13 @@ spring:
 
 eureka:
   instance:
-    appname: ${spring.application.name}
     hostname: ${MOVIE_HOST:localhost}
-    vipAddress: ${spring.application.name}
-    virtualHostName: ${spring.application.name}
-    preferIpAddress: false
-#    securePortEnabled: false
-#    nonSecurePortEnabled: true
-#    nonSecurePort: ${server.port}
+    preferIpAddress: true
     leaseRenewalIntervalInSeconds: 10
   client:
     registerWithEureka: true
-    fetchRegistry: false
+    fetchRegistry: true
     serviceUrl:
       defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
-#ribbon:
-#  IsSecure: false
-#  eureka:
-#    enabled: true
+encrypt:
+  key: ${ENCRYPT_KEY}

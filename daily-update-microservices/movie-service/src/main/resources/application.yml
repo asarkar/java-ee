@@ -1,2 +1,8 @@
 server:
   port: ${HTTP_PORT:8080}
+#ribbon:
+#  eureka:
+#    enabled: false
+theMovieDb:
+  ribbon:
+    listOfServers: ${themoviedb.baseUrl}

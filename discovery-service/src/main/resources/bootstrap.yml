@@ -5,12 +5,10 @@ spring:
 eureka:
   instance:
     hostname: ${DISCOVERY_HOST:localhost}
-    preferIpAddress: false
+    preferIpAddress: true
   client:
     registerWithEureka: false
     fetchRegistry: false
-#    serviceUrl:
-#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 #security:
 #  basic:

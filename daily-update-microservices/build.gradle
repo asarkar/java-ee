@@ -15,10 +15,10 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 allprojects {
     apply plugin: 'idea'
 
+    apply from: "${project['gradle-common.url']}"
+
     group = 'name.abhijitsarkar.javaee'
     version = '1.0-SNAPSHOT'
-
-    apply from: "${project['gradle-common.url']}"
 }
 
 subprojects {
@@ -81,9 +81,14 @@ subprojects {
 
         bootRun {
             def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
-                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'spring.profiles.active']
+                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'spring.profiles.active',
+                                   'ENCRYPT_KEY']
                     .collectEntries { [(it as String): System.properties[it]] }
                     .findAll { it.value }
+
+            if (!additionalProps.containsKey('ENCRYPT_KEY')) {
+                throw new GradleException('Encrypt key must be provided.')
+            }
 
             systemProperties = System.env + additionalProps
         }

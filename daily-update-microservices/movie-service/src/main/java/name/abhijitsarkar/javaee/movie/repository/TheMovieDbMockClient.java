@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 @Profile("!live")
 @Repository
-public class MockTheMovieDbClient implements TheMovieDbClient {
+public class TheMovieDbMockClient implements TheMovieDbClient {
     @Autowired
     private ObjectMapper objectMapper;
 

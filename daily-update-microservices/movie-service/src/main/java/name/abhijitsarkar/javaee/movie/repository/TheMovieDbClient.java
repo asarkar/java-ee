@@ -11,10 +11,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * @author Abhijit Sarkar
  */
-@FeignClient(url = "${themoviedb.url}?api_key=${themoviedb.apiKey}")
+@FeignClient(name = "theMovieDb", url = "${themoviedb.baseUrl}?api_key=${themoviedb.apiKey}")
 @Profile("live")
 public interface TheMovieDbClient {
-    @RequestMapping(value = "${themoviedb.popular.url}",
+    @RequestMapping(value = "/3/movie/popular",
             method = GET, produces = APPLICATION_JSON_VALUE)
     public SearchResult findPopularMovies();
 }

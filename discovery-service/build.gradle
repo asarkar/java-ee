@@ -15,10 +15,10 @@ apply plugin: 'spring-boot'
 apply plugin: 'war'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
+apply from: "${project['gradle-common.url']}"
+
 group = 'name.abhijitsarkar.javaee'
 version = '1.0-SNAPSHOT'
-
-apply from: "${project['gradle-common.url']}"
 
 repositories {
     mavenCentral()

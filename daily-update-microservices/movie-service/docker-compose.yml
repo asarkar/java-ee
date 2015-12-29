@@ -1,5 +1,5 @@
 movie_service:
-  image: abhijitsarkar/docker:movie-service
+  image: abhijitsarkar/java-ee:movie-service
   ports:
     - 9000:9000
   environment:
@@ -10,6 +10,7 @@ movie_service:
     CONFIG_PORT: 8888
     MOVIE_HOST: 192.168.99.107
     HTTP_PORT: 9000
+    ENCRYPT_KEY: "${ENCRYPT_KEY}"
 discovery:
   image: abhijitsarkar/java-ee:discovery-service
   ports:

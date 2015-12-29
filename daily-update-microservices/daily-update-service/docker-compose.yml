@@ -1,5 +1,5 @@
 daily_update_service:
-  image: abhijitsarkar/docker:daily-update-service
+  image: abhijitsarkar/java-ee:daily-update-service
   ports:
     - 10000:10000
     - 12000:12000
@@ -12,7 +12,7 @@ daily_update_service:
     HTTP_PORT: 10000
     DEBUG_PORT: 12000
 movie_service:
-  image: abhijitsarkar/docker:movie-service
+  image: abhijitsarkar/java-ee:movie-service
   ports:
     - 9000:9000
   environment:
@@ -22,6 +22,7 @@ movie_service:
     CONFIG_PORT: 8888
     MOVIE_HOST: 192.168.99.107
     HTTP_PORT: 9000
+    ENCRYPT_KEY: "${ENCRYPT_KEY}"
 discovery:
   image: abhijitsarkar/java-ee:discovery-service
   ports:

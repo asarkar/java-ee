@@ -11,5 +11,8 @@ docker run -it -p 8888:8888 \
 -e HTTP_PORT=8888 \
 -e DISCOVERY_HOST="$(echo $DOCKER_HOST | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}')" \
 -e DISCOVERY_PORT=8761 \
+-e ENCRYPT_KEY=<secret>
 <CONTAINER ID>
 ```
+
+**Full-strength JCE must be installed to use encryption**

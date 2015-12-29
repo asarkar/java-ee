@@ -6,9 +6,11 @@ eureka:
   instance:
     hostname: ${CONFIG_HOST:localhost}
     leaseRenewalIntervalInSeconds: 10
-    preferIpAddress: false
+    preferIpAddress: true
   client:
     registerWithEureka: ${REGISTER_WITH_DISCOVERY:true}
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
+encrypt:
+  key: ${ENCRYPT_KEY}

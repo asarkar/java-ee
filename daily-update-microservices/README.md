@@ -14,3 +14,5 @@ Provider: http://api.nytimes.com
 
 ### Weather
 
+**Full-strength JCE must be installed to use encryption**
+
