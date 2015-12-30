@@ -73,6 +73,7 @@ subprojects {
     if (project.hasProperty('main-class')) {
         dependencies {
             compile project(':commons')
+            runtime project(':auth')
         }
 
         springBoot {
@@ -85,10 +86,6 @@ subprojects {
                                    'ENCRYPT_KEY']
                     .collectEntries { [(it as String): System.properties[it]] }
                     .findAll { it.value }
-
-            if (!additionalProps.containsKey('ENCRYPT_KEY')) {
-                throw new GradleException('Encrypt key must be provided.')
-            }
 
             systemProperties = System.env + additionalProps
         }
@@ -108,5 +105,13 @@ subprojects {
             inputDir = projectDir
             tag = project['docker-tag']
         }
+
+        task ensureKeyIsProvided << {
+            if (!System.properties['ENCRYPT_KEY']) {
+                throw new GradleException('Encrypt key must be provided.')
+            }
+        }
+
+        project.bootRun.dependsOn ensureKeyIsProvided
     }
 }

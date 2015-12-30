@@ -1,0 +1,5 @@
+dependencies {
+    compile('org.springframework.cloud:spring-cloud-starter-zuul')
+    compile('org.springframework.cloud:spring-cloud-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-security')
+}
