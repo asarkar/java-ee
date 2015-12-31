@@ -1,5 +1,8 @@
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-starter-zuul')
-    compile('org.springframework.cloud:spring-cloud-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-security')
+//    compile "org.springframework.cloud:spring-cloud-starter-zuul:${project['spring.cloud.version']}"
+//    compile "org.springframework.cloud:spring-cloud-starter-security:${project['spring.cloud.security.version']}"
+//    compile "org.springframework.cloud:spring-cloud-security:${project['spring.cloud.security.version']}"
+    compile "org.springframework.boot:spring-boot-starter-security:${project['spring.boot.version']}"
+
+    compile project(':commons')
 }

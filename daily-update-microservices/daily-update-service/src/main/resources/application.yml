@@ -1,2 +1,8 @@
 server:
-  port: ${HTTP_PORT:8080}
+  port: ${HTTP_PORT:10000}
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+  file: ${LOG_LOCATION:/var/log/daily-update-service.log}

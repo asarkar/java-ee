@@ -12,7 +12,7 @@ buildscript {
 
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: 'war'
+apply plugin: 'java'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
 apply from: "${project['gradle-common.url']}"
@@ -45,8 +45,6 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter')
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
     compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
-
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 springBoot {
@@ -74,7 +72,7 @@ docker {
 
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
-task buildDockerImage(type: DockerBuildImage, dependsOn: 'war') {
+task buildDockerImage(type: DockerBuildImage, dependsOn: 'bootRepackage') {
     inputDir = projectDir
     tag = project['docker-tag']
 }

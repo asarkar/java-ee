@@ -7,5 +7,5 @@ spring:
         native:
           searchLocations: ${CONFIG_LOCATION}
 server:
-  port: ${HTTP_PORT:8080}
+  port: ${HTTP_PORT:8888}
 

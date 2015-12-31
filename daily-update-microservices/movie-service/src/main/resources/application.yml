@@ -1,8 +1,15 @@
 server:
-  port: ${HTTP_PORT:8080}
+  port: ${HTTP_PORT:9000}
 #ribbon:
 #  eureka:
 #    enabled: false
 theMovieDb:
   ribbon:
     listOfServers: ${themoviedb.baseUrl}
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+  file: ${LOG_LOCATION:/var/log/movie-service.log}
+spring:
