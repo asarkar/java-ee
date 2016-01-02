@@ -88,3 +88,5 @@ task ensureKeyIsProvided << {
 }
 
 project.bootRun.dependsOn ensureKeyIsProvided
+
+defaultTasks 'clean', 'buildDockerImage'

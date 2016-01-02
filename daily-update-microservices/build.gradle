@@ -20,6 +20,11 @@ allprojects {
 
     group = 'name.abhijitsarkar.javaee'
     version = '1.0-SNAPSHOT'
+
+    // Find the first non-null task
+    def defaultBuildTask = ['buildDockerImage', 'build'].findResult { project.tasks.findByName(it) }
+
+    defaultTasks 'clean', defaultBuildTask.name
 }
 
 subprojects {
@@ -54,6 +59,8 @@ subprojects {
         compile 'org.springframework.boot:spring-boot-starter-web'
         compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${project['jackson.version']}"
         compile "org.projectlombok:lombok:${project['lombok.version']}"
+        testCompile "org.springframework.boot:spring-boot-starter-test:${project['spring.boot.version']}"
+        testCompile "org.jmockit:jmockit:${project['jmockit.version']}"
     }
 
     if (project.hasProperty('main-class')) {
@@ -80,7 +87,6 @@ subprojects {
             compile 'org.springframework.cloud:spring-cloud-starter-ribbon'
 
             compile project(':commons')
-            compile project(':auth')
         }
 
         springBoot {
@@ -113,12 +119,12 @@ subprojects {
             tag = project['docker-tag']
         }
 
-        task ensureKeyIsProvided << {
-            if (!System.properties['ENCRYPT_KEY']) {
+        task mayRequireEncryptKey << {
+            if (project.properties['require-encrypt-key'] && !System.properties['ENCRYPT_KEY']) {
                 throw new GradleException('Encrypt key must be provided.')
             }
         }
 
-        project.bootRun.dependsOn ensureKeyIsProvided
+        project.bootRun.dependsOn mayRequireEncryptKey
     }
 }

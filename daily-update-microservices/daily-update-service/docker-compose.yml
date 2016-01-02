@@ -1,45 +1,32 @@
 daily_update_service:
   image: abhijitsarkar/java-ee:daily-update-service
   ports:
-    - 10000:10000
-    - 12000:12000
+    - 10050:10050
   environment:
-    DISCOVERY_HOST: 192.168.99.107
-    DISCOVERY_PORT: 8761
-    CONFIG_HOST: 192.168.99.107
-    CONFIG_PORT: 8888
-    DAILY_UPDATE_HOST: 192.168.99.107
-    HTTP_PORT: 10000
-    DEBUG_PORT: 12000
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    CONFIG_HOST: $DOCKER_MACHINE_HOST
+    DAILY_UPDATE_HOST: $DOCKER_MACHINE_HOST
 movie_service:
   image: abhijitsarkar/java-ee:movie-service
   ports:
+    - 10010:10010
+  environment:
+    SPRING_PROFILES_ACTIVE: live
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    CONFIG_HOST: $DOCKER_MACHINE_HOST
+    MOVIE_HOST: $DOCKER_MACHINE_HOST
+    ENCRYPT_KEY: "${ENCRYPT_KEY}"
+auth:
+  image: abhijitsarkar/java-ee:auth-service
+  ports:
     - 9000:9000
   environment:
-    DISCOVERY_HOST: 192.168.99.107
-    DISCOVERY_PORT: 8761
-    CONFIG_HOST: 192.168.99.107
-    CONFIG_PORT: 8888
-    MOVIE_HOST: 192.168.99.107
-    HTTP_PORT: 9000
-    ENCRYPT_KEY: "${ENCRYPT_KEY}"
-discovery:
-  image: abhijitsarkar/java-ee:discovery-service
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    AUTH_HOST: $DOCKER_MACHINE_HOST
+gateway:
+  image: abhijitsarkar/java-ee:gateway-service
   ports:
-    - 8761:8761
+    - 8080:8080
   environment:
-    DISCOVERY_HOST: 192.168.99.107
-    HTTP_PORT: 8761
-config:
-  image: abhijitsarkar/java-ee:config-service
-  ports:
-      - 8888:8888
-  environment:
-    SPRING_PROFILES_ACTIVE: native
-    CONFIG_LOCATION: "file:/etc/daily-update-service/config/"
-    DISCOVERY_HOST: 192.168.99.107
-    DISCOVERY_PORT: 8761
-    CONFIG_HOST: 192.168.99.107
-    HTTP_PORT: 8888
-  volumes:
-      - "../config/:/etc/daily-update-service/config/"
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    GATEWAY_HOST: $DOCKER_MACHINE_HOST

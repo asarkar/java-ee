@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import com.fasterxml.jackson.databind.type.MapType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -31,7 +30,6 @@ import static java.util.stream.Collectors.toMap;
 /**
  * @author Abhijit Sarkar
  */
-@Profile("noDB")
 @Service
 public class FileSystemUserDetailsService implements UserDetailsService {
     @Autowired

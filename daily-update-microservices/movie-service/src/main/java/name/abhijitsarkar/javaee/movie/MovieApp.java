@@ -1,6 +1,5 @@
 package name.abhijitsarkar.javaee.movie;
 
-import name.abhijitsarkar.javaee.auth.HttpSecurityConfig;
 import name.abhijitsarkar.javaee.common.CommonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = {MovieApp.class, CommonConfig.class, HttpSecurityConfig.class})
+@ComponentScan(basePackageClasses = {MovieApp.class, CommonConfig.class})
 @EnableFeignClients
 @EnableDiscoveryClient
 public class MovieApp {

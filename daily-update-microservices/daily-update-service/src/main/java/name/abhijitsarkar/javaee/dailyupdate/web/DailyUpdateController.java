@@ -15,7 +15,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * @author Abhijit Sarkar
  */
 @RestController
-@RequestMapping(value = "dailyupdate", method = GET, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "dailyupdate", method = GET, produces = APPLICATION_JSON_VALUE)
 public class DailyUpdateController {
     @Autowired
     private MovieServiceClient movieServiceClient;

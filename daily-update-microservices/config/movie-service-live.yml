@@ -1,4 +1,4 @@
+#  Encrypted using curl http://<CONFIG HOST>:<CONFIG PORT>/encrypt --data-urlencode <SECRET>
 themoviedb:
   baseUrl: http://api.themoviedb.org
-#  Encrypted using curl localhost:8888/encrypt --data-urlencode <secret>
-  apiKey: '{cipher}6f5b9fa8912e08826dc2cb52f8554fd8cac65b2c61259f4def5c26fe5337e186e68120b6e66bc1652b2f84a57f38e4a1be798554db4d160681024afcf03144c2'
+  apiKey: '{cipher}ef7ec40a5ebbe14704c9310d5fd223634b72e4817cf4df6bb5e412a2671b8fb964b4a3ae4a2ee23c33b9be2646e6246ca83b5c10a1e2c863e1bec4ff69842c53'

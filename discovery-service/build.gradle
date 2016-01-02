@@ -76,3 +76,5 @@ task buildDockerImage(type: DockerBuildImage, dependsOn: 'bootRepackage') {
     inputDir = projectDir
     tag = project['docker-tag']
 }
+
+defaultTasks 'clean', 'buildDockerImage'
