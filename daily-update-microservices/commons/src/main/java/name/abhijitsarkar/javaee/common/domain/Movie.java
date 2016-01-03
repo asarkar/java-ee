@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -11,7 +12,9 @@ import java.util.Collection;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Movie {
+public class Movie implements Serializable {
+    private static final long serialVersionUID = -1033383885971690417L;
+
     private long id;
     private String title;
     private String releaseDate;

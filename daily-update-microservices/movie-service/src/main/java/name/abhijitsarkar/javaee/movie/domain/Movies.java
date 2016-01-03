@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import name.abhijitsarkar.javaee.common.domain.Movie;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -12,7 +13,9 @@ import java.util.Collection;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchResult {
+public class Movies implements Serializable {
+    private static final long serialVersionUID = 5890868013684382576L;
+
     @JsonProperty("results")
     private Collection<Movie> movies;
 }

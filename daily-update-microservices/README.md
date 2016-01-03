@@ -16,3 +16,5 @@ Provider: http://api.nytimes.com
 
 **Full-strength JCE must be installed to use encryption**
 
+[Spring Cloud Integration Tests](https://github.com/spring-cloud-samples/tests)
+

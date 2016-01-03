@@ -22,4 +22,4 @@ eureka:
     serviceUrl:
       defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
 encrypt:
-  key: ${ENCRYPT_KEY}
+  key: ${ENCRYPT_KEY:n/a}

@@ -16,13 +16,13 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Abhijit Sarkar
  */
-public class SearchResultTest {
+public class MoviesTest {
     private ObjectMapper mapper = ObjectMapperFactory.newInstance();
 
     @Test
     public void testDeserialization() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/cached/popular-movies.json")) {
-            SearchResult result = mapper.readValue(is, SearchResult.class);
+        try (InputStream is = getClass().getResourceAsStream("/popular-movies.json")) {
+            Movies result = mapper.readValue(is, Movies.class);
 
             Collection<Movie> movies = result.getMovies();
 

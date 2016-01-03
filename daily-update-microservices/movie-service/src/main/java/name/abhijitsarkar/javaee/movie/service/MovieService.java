@@ -1,22 +1,16 @@
 package name.abhijitsarkar.javaee.movie.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import name.abhijitsarkar.javaee.common.domain.Movie;
 import name.abhijitsarkar.javaee.movie.domain.Genre;
 import name.abhijitsarkar.javaee.movie.repository.TheMovieDbClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_ROOT_VALUE;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -24,26 +18,14 @@ import static java.util.stream.Collectors.toMap;
  * @author Abhijit Sarkar
  */
 @Service
+@CacheConfig(cacheResolver = "cacheResolver")
 public class MovieService {
     @Autowired
-    private TheMovieDbClient movieDbClient;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    private Map<Integer, String> genreIdToNameMap;
-
-    @PostConstruct
-    void initGenres() throws IOException {
-        ObjectReader reader = objectMapper.reader().with(UNWRAP_ROOT_VALUE).withRootName("genres");
-
-        try (InputStream is = getClass().getResourceAsStream("/cached/genres.json")) {
-            genreIdToNameMap = reader.forType(new TypeReference<List<Genre>>() {
-            }).<List<Genre>>readValue(is).stream().collect(toMap(Genre::getId, Genre::getName));
-        }
-    }
+    TheMovieDbClient movieDbClient;
 
     public Collection<Movie> findPopularMovies() {
+        Map<Integer, String> genreIdToNameMap = getGenreIdToNameMap();
+
         Collection<Movie> movies = movieDbClient.findPopularMovies().getMovies();
 
         movies.stream().forEach(m -> {
@@ -53,5 +35,12 @@ public class MovieService {
         });
 
         return movies;
+    }
+
+    Map<Integer, String> getGenreIdToNameMap() {
+        return movieDbClient.getAllGenres().
+                getGenres().
+                stream().
+                collect(toMap(Genre::getId, Genre::getName));
     }
 }
