@@ -1,0 +1,1 @@
+spring.hazelcast.config: classpath:hazelcast.xml

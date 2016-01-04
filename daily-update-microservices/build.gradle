@@ -12,6 +12,7 @@ buildscript {
 }
 
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import org.apache.tools.ant.filters.ReplaceTokens
 
 allprojects {
     apply plugin: 'idea'
@@ -62,11 +63,26 @@ subprojects {
         compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${project['jackson.version']}"
         compile 'javax.cache:cache-api'
         compile 'org.springframework.boot:spring-boot-starter-cache'
-        runtime "org.infinispan:infinispan-spring4:${project['infinispan.version']}"
-        runtime "org.infinispan:infinispan-jcache:${project['infinispan.version']}"
+        compile "org.springframework.session:spring-session:${project['spring.session.version']}"
+        compile "com.hazelcast:hazelcast:${project['hazelcast.version']}"
+        compile "com.hazelcast:hazelcast-client:${project['hazelcast.version']}"
         compile "org.projectlombok:lombok:${project['lombok.version']}"
         testCompile "org.springframework.boot:spring-boot-starter-test:${project['spring.boot.version']}"
         testCompile "org.jmockit:jmockit:${project['jmockit.version']}"
+    }
+
+    /* Gradle screws up class files if files not selected for filtering
+     * https://issues.gradle.org/browse/GRADLE-1566
+     */
+    processResources {
+        def mancenterHost = System.properties['MANCENTER_HOST'] ?: 'localhost'
+        def mancenterPort = System.properties['MANCENTER_PORT'] ?: '12000'
+
+        from(sourceSets.main.resources.srcDirs) {
+            include 'hazelcast.xml'
+            filter(ReplaceTokens, tokens: ['MANCENTER_HOST': mancenterHost])
+            filter(ReplaceTokens, tokens: ['MANCENTER_PORT': mancenterPort])
+        }
     }
 
     if (project.hasProperty('main-class')) {
@@ -85,6 +101,7 @@ subprojects {
         dependencies {
             compile 'org.springframework.cloud:spring-cloud-starter'
             compile 'org.springframework.cloud:spring-cloud-starter-feign'
+
             runtime 'org.springframework.cloud:spring-cloud-starter-config'
             runtime 'org.springframework.cloud:spring-cloud-starter-eureka'
             runtime 'org.springframework.cloud:spring-cloud-netflix-core'
@@ -97,10 +114,14 @@ subprojects {
             mainClass = project['main-class']
         }
 
+        bootRepackage {
+            mainClass = project['main-class']
+        }
+
         bootRun {
             def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
                                    'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'spring.profiles.active',
-                                   'ENCRYPT_KEY']
+                                   'ENCRYPT_KEY', 'MANCENTER_HOST', 'MANCENTER_PORT']
                     .collectEntries { [(it as String): System.properties[it]] }
                     .findAll { it.value }
 

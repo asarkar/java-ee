@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 /**
  * @author Abhijit Sarkar
@@ -35,7 +34,6 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http. //
                 httpBasic().and(). //
-                sessionManagement().sessionCreationPolicy(STATELESS).and().
                 exceptionHandling().and(). //
                 authorizeRequests(). //
                 antMatchers(GET, "/movies/**").hasAnyAuthority("MOVIES", "ADMIN"). //

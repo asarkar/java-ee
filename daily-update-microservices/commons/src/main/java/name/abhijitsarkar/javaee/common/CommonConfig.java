@@ -26,6 +26,8 @@ import static javax.cache.expiry.Duration.ONE_DAY;
  */
 @Configuration
 @EnableCaching
+//@EnableHazelcastHttpSession(maxInactiveIntervalInSeconds = "180")
+//@ImportAutoConfiguration({ CacheAutoConfiguration.class, HazelcastHttpSessionConfiguration.class })
 @ImportAutoConfiguration(CacheAutoConfiguration.class)
 public class CommonConfig {
     @Bean
@@ -56,4 +58,9 @@ public class CommonConfig {
             }
         };
     }
+
+//    @Bean
+//    public HttpSessionStrategy httpSessionStrategy() {
+//        return new HeaderHttpSessionStrategy();
+//    }
 }

@@ -5,6 +5,7 @@ movie_service:
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
     MOVIE_HOST: $DOCKER_MACHINE_HOST
+    MANCENTER_HOST: $DOCKER_MACHINE_HOST
     ENCRYPT_KEY: "${ENCRYPT_KEY}"
 auth:
   image: abhijitsarkar/java-ee:auth-service
@@ -20,3 +21,4 @@ gateway:
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
     GATEWAY_HOST: $DOCKER_MACHINE_HOST
+    MANCENTER_HOST: $DOCKER_MACHINE_HOST
