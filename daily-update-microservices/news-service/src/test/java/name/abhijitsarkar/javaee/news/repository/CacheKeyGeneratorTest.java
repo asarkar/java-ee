@@ -1,4 +1,4 @@
-package name.abhijitsarkar.javaee.movie.repository;
+package name.abhijitsarkar.javaee.news.repository;
 
 import org.junit.Test;
 
@@ -18,19 +18,11 @@ public class CacheKeyGeneratorTest {
     }
 
     @Test
-    public void testKeyGenerationForPopularMovies() {
+    public void testKeyGenerationForTopStoriesInWorld() {
         Object cacheKey = keyGenerator.generate(
-                this, findMethod(TheMovieDbClient.class, "findPopularMovies"));
+                this, findMethod(NYTClient.class, "getTopStories", String.class), "world");
 
-        assertEquals(String.format("test.popular.%s", LocalDate.now()), cacheKey);
-    }
-
-    @Test
-    public void testKeyGenerationForGenres() {
-        Object cacheKey = keyGenerator.generate(
-                this, findMethod(TheMovieDbClient.class, "getAllGenres"));
-
-        assertEquals(String.format("test.genres.%s", LocalDate.now().getMonthValue()), cacheKey);
+        assertEquals(String.format("test.top.world.%s", LocalDate.now()), cacheKey);
     }
 
     @Test

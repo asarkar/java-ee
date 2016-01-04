@@ -8,4 +8,4 @@ logging:
     ROOT: INFO
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
-  file: ${LOG_LOCATION:/var/log/daily-update/movie-service.log}
+  file: ${LOG_LOCATION:/var/log/daily-update/${spring.application.name:movie-service}.log}

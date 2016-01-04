@@ -5,4 +5,4 @@ logging:
     ROOT: INFO
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
-  file: ${LOG_LOCATION:/var/log/daily-update/auth-service.log}
+  file: ${LOG_LOCATION:/var/log/daily-update/${spring.application.name:auth-service}.log}

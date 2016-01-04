@@ -1,2 +1,2 @@
 rootProject.name = 'daily-update-microservices'
-include 'movie-service','daily-update-service','commons', 'auth-service', 'gateway-service'
+include 'movie-service','daily-update-service', 'news-service' ,'commons', 'auth-service', 'gateway-service'

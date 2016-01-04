@@ -15,6 +15,15 @@ movie_service:
     CONFIG_HOST: $DOCKER_MACHINE_HOST
     MOVIE_HOST: $DOCKER_MACHINE_HOST
     ENCRYPT_KEY: "${ENCRYPT_KEY}"
+news_service:
+  image: abhijitsarkar/java-ee:news-service
+  ports:
+    - 10020:10020
+  environment:
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    CONFIG_HOST: $DOCKER_MACHINE_HOST
+    NEWS_HOST: $DOCKER_MACHINE_HOST
+    ENCRYPT_KEY: "${ENCRYPT_KEY}"
 auth:
   image: abhijitsarkar/java-ee:auth-service
   ports:

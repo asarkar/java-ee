@@ -1,16 +1,11 @@
 package name.abhijitsarkar.javaee.common;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
-import static com.fasterxml.jackson.annotation.PropertyAccessor.CREATOR;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.GETTER;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.SETTER;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * @author Abhijit Sarkar
@@ -28,6 +23,7 @@ public class ObjectMapperFactory {
                 PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
         mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new JavaTimeModule());
 
 //        mapper.setVisibility(FIELD, JsonAutoDetect.Visibility.NONE)
 //                .setVisibility(GETTER, JsonAutoDetect.Visibility.ANY)
