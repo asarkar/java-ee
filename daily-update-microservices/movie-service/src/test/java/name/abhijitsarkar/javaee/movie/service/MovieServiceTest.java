@@ -1,7 +1,7 @@
 package name.abhijitsarkar.javaee.movie.service;
 
 import name.abhijitsarkar.javaee.common.domain.Movie;
-import name.abhijitsarkar.javaee.movie.repository.TheMovieDbMockClient;
+import name.abhijitsarkar.javaee.movie.repository.TheMovieDbClientStub;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class MovieServiceTest {
     private MovieService movieService = new MovieService();
 
     public MovieServiceTest() throws IOException {
-        movieService.movieDbClient = new TheMovieDbMockClient();
+        movieService.movieDbClient = new TheMovieDbClientStub();
     }
 
     @Test

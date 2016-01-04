@@ -1,10 +1,10 @@
-movie_service:
-  image: abhijitsarkar/java-ee:movie-service
+weather_service:
+  image: abhijitsarkar/java-ee:weather-service
   ports:
     - 10010:10010
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
-    MOVIE_HOST: $DOCKER_MACHINE_HOST
+    WEATHER_HOST: $DOCKER_MACHINE_HOST
     ENCRYPT_KEY: "${ENCRYPT_KEY}"
 auth:
   image: abhijitsarkar/java-ee:auth-service

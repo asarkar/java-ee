@@ -6,6 +6,7 @@ import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import name.abhijitsarkar.javaee.common.domain.Story;
 import name.abhijitsarkar.javaee.news.repository.NYTClient;
+import name.abhijitsarkar.javaee.news.repository.NYTClientStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @RunWith(JMockit.class)
 public class NewsServiceTest {
     private NewsService newsService = new NewsService();
-    NYTMockClient nytMockClient = new NYTMockClient();
+    NYTClientStub nytClientStub = new NYTClientStub();
 
     @Mocked
     private NYTClient nytClient;
@@ -37,7 +38,7 @@ public class NewsServiceTest {
     public void testGetTopStoriesInWorld() {
         new Expectations() {{
             nytClient.getTopStories("world");
-            result = nytMockClient.getTopStories("world");
+            result = nytClientStub.getTopStories("world");
         }};
 
         Collection<Story> topStories = newsService.getTopStories(ImmutableList.of("world"));
@@ -51,7 +52,7 @@ public class NewsServiceTest {
     public void testGetTopStoriesCaseInsensitive() {
         new Expectations() {{
             nytClient.getTopStories("world");
-            result = nytMockClient.getTopStories("world");
+            result = nytClientStub.getTopStories("world");
         }};
 
         Collection<Story> topStories = newsService.getTopStories(ImmutableList.of("WORLD"));
@@ -65,7 +66,7 @@ public class NewsServiceTest {
     public void testGetTopStoriesForNonExistentSection() {
         new Expectations() {{
             nytClient.getTopStories("junk");
-            result = nytMockClient.getTopStories("junk");
+            result = nytClientStub.getTopStories("junk");
         }};
 
         Collection<Story> topStories = newsService.getTopStories(ImmutableList.of("junk"));

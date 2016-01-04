@@ -27,7 +27,17 @@ Provider: OpenWeatherMap
      - Daily update: http:\<HOST\>:10050/dailyupdate/weather/zipCode/{zipCode}
      - Gateway: http:\<HOST\>:8080/[dailyupdate/]weather/zipCode/{zipCode}
 
-### Notes
+### Dev Notes
    * Full-strength JCE must be installed to use encryption
    * [Spring Cloud Integration Tests](https://github.com/spring-cloud-samples/tests)
+   * Setting breakpoint in `feign.SynchronousMethodHandler.executeAndDecode()`
+   shows the request made and response received, in one place.
+
+Minimal discovery and config startup command:
+```
+(DOCKER_MACHINE_HOST="$(echo $DOCKER_HOST | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}')" && \
+export DOCKER_MACHINE_HOST=${DOCKER_MACHINE_HOST:-localhost} && \
+export ENCRYPT_KEY=<SECRET> && \
+docker-compose up)
+```
 

@@ -11,11 +11,11 @@ import java.io.InputStream;
 /**
  * @author Abhijit Sarkar
  */
-public class TheMovieDbMockClient implements TheMovieDbClient {
+public class TheMovieDbClientStub implements TheMovieDbClient {
     private Movies result;
     private Genres genres;
 
-    public TheMovieDbMockClient() throws IOException {
+    public TheMovieDbClientStub() throws IOException {
         ObjectMapper objectMapper = ObjectMapperFactory.newInstance();
 
         String cachedPopularMoviesUri = "/popular-movies.json";

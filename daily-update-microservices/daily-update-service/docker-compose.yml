@@ -4,7 +4,6 @@ daily_update_service:
     - 10050:10050
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
-    CONFIG_HOST: $DOCKER_MACHINE_HOST
     DAILY_UPDATE_HOST: $DOCKER_MACHINE_HOST
 movie_service:
   image: abhijitsarkar/java-ee:movie-service
@@ -12,7 +11,6 @@ movie_service:
     - 10010:10010
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
-    CONFIG_HOST: $DOCKER_MACHINE_HOST
     MOVIE_HOST: $DOCKER_MACHINE_HOST
     ENCRYPT_KEY: "${ENCRYPT_KEY}"
 news_service:
@@ -21,8 +19,15 @@ news_service:
     - 10020:10020
   environment:
     DISCOVERY_HOST: $DOCKER_MACHINE_HOST
-    CONFIG_HOST: $DOCKER_MACHINE_HOST
     NEWS_HOST: $DOCKER_MACHINE_HOST
+    ENCRYPT_KEY: "${ENCRYPT_KEY}"
+weather_service:
+  image: abhijitsarkar/java-ee:weather-service
+  ports:
+    - 10030:10030
+  environment:
+    DISCOVERY_HOST: $DOCKER_MACHINE_HOST
+    WEATHER_HOST: $DOCKER_MACHINE_HOST
     ENCRYPT_KEY: "${ENCRYPT_KEY}"
 auth:
   image: abhijitsarkar/java-ee:auth-service

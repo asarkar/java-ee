@@ -39,7 +39,9 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
                 exceptionHandling().and(). //
                 authorizeRequests(). //
                 antMatchers(GET, "/movies/**").hasAnyAuthority("MOVIES", "ADMIN"). //
-                antMatchers(GET, "/dailyupdate/**").hasAnyAuthority("MOVIES", "NEWS", "WEATHER", "ADMIN"). //
+                antMatchers(GET, "/news/**").hasAnyAuthority("NEWS", "ADMIN"). //
+                antMatchers(GET, "/weather/**").hasAnyAuthority("WEATHER", "ADMIN"). //
+                antMatchers(GET, "/dailyupdate/**").hasAuthority("ADMIN"). //
 //                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 //                    public <O extends FilterSecurityInterceptor> O postProcess(
 //                            O fsi) {
@@ -48,9 +50,10 @@ public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        return fsi;
 //                    }
 //                })
-                and().
+        anyRequest().fullyAuthenticated().and().
+                anonymous().disable().
                 csrf().disable();
-                // addFilter(basicAuthFilter());
+        // addFilter(basicAuthFilter());
     }
 
 //    private Filter basicAuthFilter() throws Exception {

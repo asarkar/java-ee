@@ -4,6 +4,6 @@ logging:
   level:
     ROOT: INFO
     org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
+    feign: DEBUG
   file: ${LOG_LOCATION:/var/log/daily-update/${spring.application.name:daily-update-service}.log}
 
