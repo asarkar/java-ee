@@ -119,11 +119,17 @@ subprojects {
         }
 
         bootRun {
-            def additionalProps = ['HTTP_PORT', 'DISCOVERY_HOST', 'DISCOVERY_PORT', 'DISCOVERY_USERNAME',
-                                   'DISCOVERY_PASSWORD', 'CONFIG_HOST', 'CONFIG_PORT', 'spring.profiles.active',
-                                   'ENCRYPT_KEY', 'MANCENTER_HOST', 'MANCENTER_PORT']
+            def additionalProps = ['DISCOVERY_USERNAME', 'DISCOVERY_PASSWORD', 'spring.profiles.active',
+                                   'ENCRYPT_KEY']
                     .collectEntries { [(it as String): System.properties[it]] }
                     .findAll { it.value }
+
+            additionalProps += System.properties.findAll {
+                def key = it.key.toString()
+                key.endsWith('_HOST') || key.endsWith('_PORT')
+            }
+
+            additionalProps ? println("Found additional properties: $additionalProps") : ''
 
             systemProperties = System.env + additionalProps
         }

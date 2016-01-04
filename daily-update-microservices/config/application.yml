@@ -1,1 +1,1 @@
-spring.hazelcast.config: classpath:hazelcast.xml
+# spring.hazelcast.config: classpath:hazelcast.xml
