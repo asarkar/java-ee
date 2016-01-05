@@ -13,8 +13,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * @author Abhijit Sarkar
  */
-@FeignClient(name = "theMovieDb",
-        url = "${themoviedb.baseUrl}?api_key=${themoviedb.apiKey}")
+@FeignClient(name = "the-movie-db",
+        url = "${the-movie-db.base-url}?api_key=${the-movie-db.api-key}")
 @CacheConfig(cacheResolver = "cacheResolver")
 public interface TheMovieDbClient {
     @RequestMapping(value = "/3/movie/popular",

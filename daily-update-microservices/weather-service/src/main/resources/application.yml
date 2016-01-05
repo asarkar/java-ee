@@ -2,7 +2,7 @@ server:
   port: ${HTTP_PORT:10030}
 nyt:
   ribbon:
-    listOfServers: ${openWeatherMap.baseUrl}
+    listOfServers: ${open-weather-map.base-url}
 logging:
   level:
     ROOT: INFO

@@ -1,8 +1,8 @@
 server:
   port: ${HTTP_PORT:10010}
-theMovieDb:
+the-movie-db:
   ribbon:
-    listOfServers: ${themoviedb.baseUrl}
+    listOfServers: ${the-movie-db.base-url}
 logging:
   level:
     ROOT: INFO

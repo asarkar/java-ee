@@ -2,7 +2,7 @@ server:
   port: ${HTTP_PORT:10020}
 nyt:
   ribbon:
-    listOfServers: ${nyt.baseUrl}
+    listOfServers: ${nyt.base-url}
 logging:
   level:
     ROOT: INFO

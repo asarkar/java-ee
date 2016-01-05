@@ -20,7 +20,7 @@ Provider: http://api.nytimes.com
 
 ### Weather
 
-Provider: OpenWeatherMap
+Provider: http://openweathermap.org/
 
    * Get weather by zip code:
      - Direct: http:\<HOST\>:10030/weather/zipCode/{zipCode}

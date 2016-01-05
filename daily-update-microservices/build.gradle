@@ -11,8 +11,10 @@ buildscript {
     }
 }
 
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import org.apache.tools.ant.filters.ReplaceTokens
+
+//import org.apache.tools.ant.filters.ReplaceTokens
 
 allprojects {
     apply plugin: 'idea'
@@ -65,7 +67,6 @@ subprojects {
         compile 'org.springframework.boot:spring-boot-starter-cache'
         compile "org.springframework.session:spring-session:${project['spring.session.version']}"
         compile "com.hazelcast:hazelcast:${project['hazelcast.version']}"
-        compile "com.hazelcast:hazelcast-client:${project['hazelcast.version']}"
         compile "org.projectlombok:lombok:${project['lombok.version']}"
         testCompile "org.springframework.boot:spring-boot-starter-test:${project['spring.boot.version']}"
         testCompile "org.jmockit:jmockit:${project['jmockit.version']}"
@@ -74,16 +75,16 @@ subprojects {
     /* Gradle screws up class files if files not selected for filtering
      * https://issues.gradle.org/browse/GRADLE-1566
      */
-    processResources {
-        def mancenterHost = System.properties['MANCENTER_HOST'] ?: 'localhost'
-        def mancenterPort = System.properties['MANCENTER_PORT'] ?: '12000'
-
-        from(sourceSets.main.resources.srcDirs) {
-            include 'hazelcast.xml'
-            filter(ReplaceTokens, tokens: ['MANCENTER_HOST': mancenterHost])
-            filter(ReplaceTokens, tokens: ['MANCENTER_PORT': mancenterPort])
-        }
-    }
+//    processResources {
+//        def mancenterHost = System.properties['MANCENTER_HOST'] ?: 'localhost'
+//        def mancenterPort = System.properties['MANCENTER_PORT'] ?: '12000'
+//
+//        from(sourceSets.main.resources.srcDirs) {
+//            include 'hazelcast.xml'
+//            filter(ReplaceTokens, tokens: ['MANCENTER_HOST': mancenterHost])
+//            filter(ReplaceTokens, tokens: ['MANCENTER_PORT': mancenterPort])
+//        }
+//    }
 
     if (project.hasProperty('main-class')) {
         apply plugin: 'com.bmuschko.docker-remote-api'
@@ -110,6 +111,12 @@ subprojects {
             compile project(':commons')
         }
 
+        if (System.properties['HAZELCAST_MANCENTER_ENABLED']) {
+            dependencies {
+                runtime "com.hazelcast:hazelcast-client:${project['hazelcast.version']}"
+            }
+        }
+
         springBoot {
             mainClass = project['main-class']
         }
@@ -119,17 +126,19 @@ subprojects {
         }
 
         bootRun {
-            def additionalProps = ['DISCOVERY_USERNAME', 'DISCOVERY_PASSWORD', 'spring.profiles.active',
-                                   'ENCRYPT_KEY']
-                    .collectEntries { [(it as String): System.properties[it]] }
-                    .findAll { it.value }
+            def additionalProps = System.properties.findAll {
+                def key = it.key as String
 
-            additionalProps += System.properties.findAll {
-                def key = it.key.toString()
-                key.endsWith('_HOST') || key.endsWith('_PORT')
+                def includePropNamesStartingWith = ['HAZELCAST_']
+                def includePropNamesEndingWith = ['_HOST', '_PORT', '_USERNAME', '_PASSWORD']
+                def includePropNamesEqualTo = ['spring.profiles.active', 'ENCRYPT_KEY']
+
+                includePropNamesStartingWith.find { key.startsWith(it) } ||
+                        includePropNamesEndingWith.find { key.endsWith(it) } ||
+                        includePropNamesEqualTo.find { it == key }
             }
 
-            additionalProps ? println("Found additional properties: $additionalProps") : ''
+            additionalProps ? println("Found additional properties in project ${project.name}: $additionalProps") : ''
 
             systemProperties = System.env + additionalProps
         }

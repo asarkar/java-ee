@@ -12,8 +12,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * @author Abhijit Sarkar
  */
-@FeignClient(name = "openWeatherMap",
-        url = "${openWeatherMap.baseUrl}?APPID=${openWeatherMap.apiKey}")
+@FeignClient(name = "open-weather-map",
+        url = "${open-weather-map.base-url}?APPID=${open-weather-map.api-key}")
 @CacheConfig(cacheResolver = "cacheResolver")
 public interface OpenWeatherMapClient {
     @RequestMapping(value = "weather",

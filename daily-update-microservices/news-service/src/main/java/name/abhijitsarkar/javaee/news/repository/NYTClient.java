@@ -13,7 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * @author Abhijit Sarkar
  */
 @FeignClient(name = "nyt",
-        url = "${nyt.baseUrl}?api-key=${nyt.top-stories.apiKey}")
+        url = "${nyt.base-url}?api-key=${nyt.top-stories.api-key}")
 @CacheConfig(cacheResolver = "cacheResolver")
 public interface NYTClient {
     @RequestMapping(value = "svc/topstories/v1/{section}.json",
