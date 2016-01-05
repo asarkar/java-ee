@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class HazelcastMancenterConfig {
+    public static final String DEFAULT_MANCENETER_URL = "http://localhost:12000/mancenter";
+
     private String mancenterURL;
     private boolean mancenterEnabled;
 }

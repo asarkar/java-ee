@@ -111,12 +111,6 @@ subprojects {
             compile project(':commons')
         }
 
-        if (System.properties['HAZELCAST_MANCENTER_ENABLED']) {
-            dependencies {
-                runtime "com.hazelcast:hazelcast-client:${project['hazelcast.version']}"
-            }
-        }
-
         springBoot {
             mainClass = project['main-class']
         }

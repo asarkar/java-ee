@@ -24,6 +24,7 @@ import java.util.Collection;
 
 import static java.util.Collections.singleton;
 import static javax.cache.expiry.Duration.ONE_DAY;
+import static name.abhijitsarkar.javaee.common.domain.HazelcastMancenterConfig.DEFAULT_MANCENETER_URL;
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**
@@ -36,6 +37,8 @@ import static org.springframework.util.StringUtils.isEmpty;
 @EnableAutoConfiguration
 @Slf4j
 public class CommonConfig {
+    private static final String GLOBAL_CACHE_NAME = "global-cache";
+
     @Autowired
     private HazelcastMancenterConfig mancenterConfig;
 
@@ -47,9 +50,6 @@ public class CommonConfig {
     /* Good config example: http://docs.hazelcast.org/docs/3.5/manual/html-single/index.html#jcache-programmatic-configuration */
     @Bean
     CacheManager cacheManager() {
-        /* We're a JCache server as well as a client that may connect to Hazelcast Mancenter. */
-        System.setProperty("hazelcast.jcache.provider.type", "server");
-
         CachingProvider cachingProvider = Caching.getCachingProvider();
         javax.cache.CacheManager jCacheManager = cachingProvider.getCacheManager();
 
@@ -57,7 +57,7 @@ public class CommonConfig {
         config.setStoreByValue(true);
         config.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(
                 ONE_DAY));
-        jCacheManager.createCache("global-cache", config);
+        jCacheManager.createCache(GLOBAL_CACHE_NAME, config);
 
         return new JCacheCacheManager(jCacheManager);
     }
@@ -67,7 +67,7 @@ public class CommonConfig {
         return new CacheResolver() {
             @Override
             public Collection<? extends Cache> resolveCaches(CacheOperationInvocationContext<?> context) {
-                return singleton(cacheManager().getCache("global-cache"));
+                return singleton(cacheManager().getCache(GLOBAL_CACHE_NAME));
             }
         };
     }
@@ -76,18 +76,15 @@ public class CommonConfig {
     @Bean
     public Config hazelcastConfig() {
         Config config = new Config();
-        config.setInstanceName("daily-update-microsevices");
 
         ManagementCenterConfig mancenterConfig = new ManagementCenterConfig();
 
         if (this.mancenterConfig.isMancenterEnabled()) {
-            String defaultMancenterUrl = "http://localhost:12000/mancenter";
-
             if (isEmpty(this.mancenterConfig.getMancenterURL())) {
                 log.warn("System property 'HAZELCAST_MANCENTER_URL' not found. " +
-                        "Defaulting to: {}.", defaultMancenterUrl);
+                        "Defaulting to: {}.", DEFAULT_MANCENETER_URL);
 
-                mancenterConfig.setUrl(defaultMancenterUrl);
+                mancenterConfig.setUrl(DEFAULT_MANCENETER_URL);
             } else {
                 mancenterConfig.setUrl(this.mancenterConfig.getMancenterURL());
             }
