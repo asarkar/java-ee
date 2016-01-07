@@ -32,8 +32,6 @@ import static org.springframework.util.StringUtils.isEmpty;
  */
 @Configuration
 @EnableCaching
-//@EnableHazelcastHttpSession(maxInactiveIntervalInSeconds = "180")
-//@ImportAutoConfiguration({ CacheAutoConfiguration.class, HazelcastHttpSessionConfiguration.class })
 @EnableAutoConfiguration
 @Slf4j
 public class CommonConfig {
@@ -96,9 +94,4 @@ public class CommonConfig {
 
         return config;
     }
-
-//    @Bean
-//    public HttpSessionStrategy httpSessionStrategy() {
-//        return new HeaderHttpSessionStrategy();
-//    }
 }

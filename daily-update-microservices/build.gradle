@@ -61,12 +61,6 @@ subprojects {
 
     dependencies {
         compile 'org.springframework.boot:spring-boot-starter-web'
-        compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${project['jackson.version']}"
-        compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${project['jackson.version']}"
-        compile 'javax.cache:cache-api'
-        compile 'org.springframework.boot:spring-boot-starter-cache'
-        compile "org.springframework.session:spring-session:${project['spring.session.version']}"
-        compile "com.hazelcast:hazelcast:${project['hazelcast.version']}"
         compile "org.projectlombok:lombok:${project['lombok.version']}"
         testCompile "org.springframework.boot:spring-boot-starter-test:${project['spring.boot.version']}"
         testCompile "org.jmockit:jmockit:${project['jmockit.version']}"

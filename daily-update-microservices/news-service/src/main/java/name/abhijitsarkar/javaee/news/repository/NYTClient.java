@@ -16,7 +16,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
         url = "${nyt.base-url}?api-key=${nyt.top-stories.api-key}")
 @CacheConfig(cacheResolver = "cacheResolver")
 public interface NYTClient {
-    @RequestMapping(value = "svc/topstories/v1/{section}.json",
+    @RequestMapping(value = "svc/topstories/v2/{section}.json",
             method = GET, produces = "text/json")
     @Cacheable(keyGenerator = "cacheKeyGenerator")
     public TopStories getTopStories(@PathVariable("section") String section);
