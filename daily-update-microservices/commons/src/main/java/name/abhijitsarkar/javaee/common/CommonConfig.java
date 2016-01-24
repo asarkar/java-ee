@@ -14,6 +14,7 @@ import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.cache.Caching;
@@ -33,6 +34,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Configuration
 @EnableCaching
 @EnableAutoConfiguration
+@ComponentScan
 @Slf4j
 public class CommonConfig {
     private static final String GLOBAL_CACHE_NAME = "global-cache";

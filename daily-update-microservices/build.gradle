@@ -1,12 +1,16 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath(
                 "org.springframework.boot:spring-boot-gradle-plugin:${project['spring.boot.version']}",
                 "com.bmuschko:gradle-docker-plugin:${project['plugin.docker.version']}",
-                "io.spring.gradle:dependency-management-plugin:${project['plugin.dependency-management.version']}"
+                "io.spring.gradle:dependency-management-plugin:${project['plugin.dependency-management.version']}",
+                "gradle.plugin.net.franz-becker:gradle-lombok:${project['plugin.lombok.version']}"
         )
     }
 }
@@ -18,7 +22,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 allprojects {
     apply plugin: 'idea'
-    apply plugin: 'java'
+    apply plugin: 'groovy'
 
     apply from: "${project['gradle-common.url']}"
 
@@ -33,6 +37,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'net.franz-becker.gradle-lombok'
 
     repositories {
         mavenCentral()
@@ -64,6 +69,14 @@ subprojects {
         compile "org.projectlombok:lombok:${project['lombok.version']}"
         testCompile "org.springframework.boot:spring-boot-starter-test:${project['spring.boot.version']}"
         testCompile "org.jmockit:jmockit:${project['jmockit.version']}"
+        testCompile "org.hamcrest:hamcrest-all:${project['hamcrest.version']}"
+        testCompile "org.spockframework:spock-core:${project['spock.version']}"
+        testCompile "org.spockframework:spock-spring:${project['spock.version']}"
+        testCompile "org.codehaus.groovy:groovy-all:${project['groovy.version']}"
+    }
+
+    lombok {
+        version = "${project['lombok.version']}"
     }
 
     /* Gradle screws up class files if files not selected for filtering
