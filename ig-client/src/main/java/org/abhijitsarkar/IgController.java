@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +31,10 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
  */
 @RestController
 public class IgController {
-    @Value("${HOST:#{T(org.abhijitsarkar.IgController).host()}}")
+    @Value("${HOST:}")
     private String host;
+    @Value("${server.port:8080}")
+    private int port;
 
     @Value("${CLIENT_ID}")
     private String clientId;
@@ -43,13 +46,14 @@ public class IgController {
     private String authorizationUrl;
     private String redirectUri;
 
-    public static String host() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    public String host() throws UnknownHostException {
+        return String.format("http://%s:%d", InetAddress.getLocalHost().getHostAddress(), port);
     }
 
     @PostConstruct
-    public void postConstruct() {
-        redirectUri = String.format("http://%s:8080/callback", host);
+    public void postConstruct() throws UnknownHostException {
+        host = StringUtils.isEmpty(host) ? host() : host;
+        redirectUri = String.format("%s/callback", host);
         authorizationUrl = UriComponentsBuilder.fromUriString("https://api.instagram.com/oauth/authorize/")
                 .queryParam("client_id", clientId)
                 .queryParam("redirect_uri", redirectUri)
