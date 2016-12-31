@@ -16,8 +16,7 @@
    asarkar:java-ee$ git subtree push --prefix ig-client heroku-ig-client master
    ```
 
-`ig-client` is the name of the subdirectory that's to be deployed, `heroku-ig-client` is the remote name added in step 1
- and `master` is the branch.
+   `ig-client` is the name of the subdirectory that's to be deployed, `heroku-ig-client` is the remote name added in step 1 and `master` is the branch.
  
 > If need to force update, use the following command:
 
