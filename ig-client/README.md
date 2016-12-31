@@ -4,26 +4,26 @@
 
 2. Find the Git URL from _settings_ and add it to the local repo as a new remote.
 
-```
-asarkar:java-ee$ git remote add heroku-ig-client git@heroku.com:ig-client.git
-```
+   ```
+   asarkar:java-ee$ git remote add heroku-ig-client git@heroku.com:ig-client.git
+   ```
 
 3. Commit changes.
 
 4. Push.
 
-```
-asarkar:java-ee$ git subtree push --prefix ig-client heroku-ig-client master
-```
+   ```
+   asarkar:java-ee$ git subtree push --prefix ig-client heroku-ig-client master
+   ```
 
 `ig-client` is the name of the subdirectory that's to be deployed, `heroku-ig-client` is the remote name added in step 1
  and `master` is the branch.
  
 > If need to force update, use the following command:
 
-```
-asarkar:java-ee$ git push heroku-ig-client $(git subtree split --prefix ig-client master):master --force
-```
+  ```
+  asarkar:java-ee$ git push heroku-ig-client $(git subtree split --prefix ig-client master):master --force
+  ```
  
  
 # How to fetch top Instagram posts
