@@ -9,15 +9,15 @@ import java.util.Collection;
  * @author Abhijit Sarkar
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IgResponse {
-    @JsonProperty("data")
-    private Collection<Media> media;
+public class AccessToken {
+    @JsonProperty("access_token")
+    private String token;
 
-    public Collection<Media> getMedia() {
-        return media;
+    public String getToken() {
+        return token;
     }
 
-    public void setMedia(Collection<Media> media) {
-        this.media = media;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,7 +1,9 @@
 package org.abhijitsarkar;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -9,6 +11,20 @@ import java.util.Map;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Media {
+    @JsonProperty("data")
+    private Collection<Medium> media;
+
+    public Collection<Medium> getMedia() {
+        return media;
+    }
+
+    public void setMedia(Collection<Medium> media) {
+        this.media = media;
+    }
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Medium {
     private String link;
     private long likes;
 
@@ -29,6 +45,7 @@ public class Media {
     }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 class Likes {
     private long count;
 
