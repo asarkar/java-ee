@@ -1,7 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
-    }
     repositories {
         mavenCentral()
         maven { url "https://repo.spring.io/snapshot" }
@@ -15,10 +12,9 @@ buildscript {
 apply plugin: "java"
 apply plugin: "org.springframework.boot"
 
-jar {
-    baseName = "ig-client"
-    version = "0.0.1-SNAPSHOT"
-}
+group = "name.abhijitsarkar.ig"
+version = "1.0.0-SNAPSHOT"
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -34,11 +30,19 @@ dependencies {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
     compile("io.projectreactor.ipc:reactor-netty")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    testCompile(
+            "org.springframework.boot:spring-boot-starter-test",
+            "com.jayway.jsonpath:json-path"
+    )
 }
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.boot.experimental:spring-boot-dependencies-web-reactive:0.1.0.BUILD-SNAPSHOT")
+        mavenBom("org.springframework.boot.experimental:spring-boot-dependencies-web-reactive:$springBootDependenciesWebReactiveVersion")
     }
+}
+
+bootRun {
+    systemProperties = System.properties
 }

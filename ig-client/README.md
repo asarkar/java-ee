@@ -27,19 +27,15 @@
  
 # How to fetch top Instagram posts
 
-1. Go to [http://ig-client.herokuapp.com/url](http://ig-client.herokuapp.com/url). It will return a URL.
-
-2. Take the output, paste in the browser address bar and press enter. It will present Instagram login page 
-   (if already logged in, skip to step 4). 
+1. Go to [http://ig-client.herokuapp.com](http://ig-client.herokuapp.com). It will open the Instagram login page 
+   (if already logged in, skip to step 3). 
    
-3. Login with your username and password. It will return a URL.
+2. Login with your username and password.
 
-4. Copy the `access_token` from the output and replace the `{accessToken}` with it in the URL:
-   https://ig-client.herokuapp.com/top?accessToken={accessToken}
-   
-5. Take the output, paste in the browser address bar and press enter. 
-   It will return your top 20 posts with the image URLs and number of likes.
-   
+3. It will return your recent 20 posts with the image URLs and number of likes. The posts are sorted by number of likes.
 
+# Running with bootRun
 
+`./gradlew clean bootRun -DCLIENT_ID=<clientId> -DCLIENT_SECRET=<clientSecret> -Dspring.profiles.active=webClient`
 
+> Profile `webClient` only exists to reproduce the bug [SPR-15080](https://jira.spring.io/browse/SPR-15080).
