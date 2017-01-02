@@ -9,8 +9,6 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 /**
@@ -21,8 +19,8 @@ public class WebClientIgService extends AbstractIgService {
     private final ExchangeFunction igClient;
 
     @Override
-    protected Mono<AccessToken> accessToken(MultiValueMap<String, String> queryParams) {
-        ClientRequest<MultiValueMap<String, String>> request = ClientRequest.POST("https://api.instagram.com/oauth/access_token")
+    protected Mono<AccessToken> accessToken(String accessTokenUrl, MultiValueMap<String, String> queryParams) {
+        ClientRequest<MultiValueMap<String, String>> request = ClientRequest.POST(accessTokenUrl)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromObject(queryParams));
 
@@ -31,13 +29,11 @@ public class WebClientIgService extends AbstractIgService {
     }
 
     @Override
-    protected Mono<Collection> top(AccessToken accessToken) {
-        ClientRequest<Void> request =
-                ClientRequest.GET("https://api.instagram.com/v1/users/self/media/recent?access_token={accessToken}", accessToken.getToken())
-                        .build();
+    protected Mono<Media> top(String recentPostsUrl) {
+        ClientRequest<Void> request = ClientRequest.GET(recentPostsUrl)
+                .build();
 
         return igClient.exchange(request)
-                .then(response -> response.bodyToMono(Media.class))
-                .map(Media::getMedia);
+                .then(response -> response.bodyToMono(Media.class));
     }
 }

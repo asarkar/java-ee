@@ -1,5 +1,6 @@
 package org.abhijitsarkar.ig.web;
 
+import org.abhijitsarkar.ig.domain.Media;
 import org.abhijitsarkar.ig.service.IgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class IgController {
 
     @ResponseBody
     @GetMapping(value = "/callback", produces = APPLICATION_JSON_UTF8_VALUE)
-    public Mono<Collection> callback(@RequestParam("code") String code) {
+    public Mono<Media> callback(@RequestParam("code") String code) {
         return igService.callback(code);
     }
 }

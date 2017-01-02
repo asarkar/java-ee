@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Abhijit Sarkar
@@ -20,11 +19,7 @@ public class Media {
     @Data
     public static class Medium {
         private String link;
-        private long likes;
-
-        public void setLikes(Map<String, Object> likes) {
-            this.likes = Long.parseLong(likes.get("count").toString());
-        }
+        private Likes likes;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

@@ -1,55 +1,52 @@
 package org.abhijitsarkar.ig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.abhijitsarkar.ig.domain.AccessToken;
 import org.abhijitsarkar.ig.domain.Media;
-import org.abhijitsarkar.ig.service.IgService;
-import org.abhijitsarkar.ig.service.WebClientIgService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.web.reactive.function.client.ClientRequest;
-import org.springframework.web.reactive.function.client.ClientResponse;
-import org.springframework.web.reactive.function.client.ExchangeFunction;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.OK;
+import static java.util.Collections.singleton;
 
 /**
  * @author Abhijit Sarkar
  */
 @Configuration
-@Profile("test")
 public class IgTestConfiguration {
-    @Bean
-    IgService webClientIgService() throws IOException {
-        ExchangeFunction webClient = mock(ExchangeFunction.class);
-        Mono<ClientResponse> response = Mono.just(clientResponse());
-        when(webClient.exchange(any(ClientRequest.class))).thenReturn(response);
+    @RestController
+    public static class MockIg {
+        private final ObjectReader reader = new ObjectMapper().readerFor(Media.class);
 
-        return new WebClientIgService(webClient);
-    }
-
-    private ClientResponse clientResponse() throws IOException {
-        ClientResponse response = null;
-
-        try (InputStream is = getClass().getResourceAsStream("/recent.json")) {
-            Media media = new ObjectMapper().reader().forType(Media.class).readValue(is);
+        @PostMapping("/oauth/access_token")
+        public AccessToken accessToken() {
             AccessToken token = new AccessToken();
             token.setToken("whatever");
-            response = mock(ClientResponse.class);
 
-            when(response.statusCode()).thenReturn(OK);
-            when(response.bodyToMono(AccessToken.class)).thenReturn(Mono.just(token));
-            when(response.bodyToMono(Media.class)).thenReturn(Mono.just(media));
+            return token;
         }
 
-        return response;
+        @GetMapping("/v1/users/self/media/recent")
+        public Media recentPosts() throws IOException {
+            Media.Likes likes = new Media.Likes();
+            likes.setCount(1);
+            Media.Medium medium = new Media.Medium();
+            medium.setLink("http://whatever");
+            medium.setLikes(likes);
+
+            Media media = new Media();
+            media.setMedia(singleton(medium));
+
+            return media;
+        }
     }
 }

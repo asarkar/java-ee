@@ -1,0 +1,4 @@
+server.port: 8080
+instagram.baseUrl: http://localhost:${server.port}
+CLIENT_ID: whatever
+CLIENT_SECRET: whatever

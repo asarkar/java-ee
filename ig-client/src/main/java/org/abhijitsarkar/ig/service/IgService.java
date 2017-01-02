@@ -1,6 +1,7 @@
 package org.abhijitsarkar.ig.service;
 
 import org.abhijitsarkar.ig.domain.AccessToken;
+import org.abhijitsarkar.ig.domain.Media;
 import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Mono;
 
@@ -12,5 +13,5 @@ import java.util.Collection;
 public interface IgService {
     Mono<String> authorizationUrl();
 
-    Mono<Collection> callback(String code);
+    Mono<Media> callback(String code);
 }
