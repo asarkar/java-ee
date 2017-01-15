@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -jar build/libs/hello-world-0.0.1-SNAPSHOT.war

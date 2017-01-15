@@ -1,3 +1,0 @@
-server:
-  port: ${HTTP_PORT:8761}
-#  contextPath: /eureka
